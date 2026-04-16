@@ -314,5 +314,17 @@
     "Role": "角色",
     "Defines a set of privileges that grant users access to various services and allow them to perform specific tasks or operations.": "定義一組特權，授予使用者存取各種服務並允許其執行特定任務的權限。",
     "Permission/Privilege": "權限/特權",
-    "A privilege is necessary to perform certain tasks and operations in an area.": "執行某些任務和操作需要相應的特權。"
+    "A privilege is necessary to perform certain tasks and operations in an area.": "執行某些任務和操作需要相應的特權。",
+
+    "Organization": "組織",
+    "Notes": "備註",
+    "Active": "啟用",
+    "Account is disabled or not found.": "帳戶已禁用或不存在。",
+    "Invalid credentials.": "登入憑證無效。",
+    "Your account has been disabled.": "您的帳戶已被禁用。",
+    "Login": "登入",
+    "Remember me": "記住我",
+    "Enter your username": "請輸入使用者名稱",
+    "Enter your password": "請輸入密碼",
+    "Sign in to your account": "登入您的帳戶"
 }

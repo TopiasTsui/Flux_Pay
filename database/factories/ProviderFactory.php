@@ -26,9 +26,9 @@ class ProviderFactory extends Factory
             'vendor_meta' => [],
             'currency_code' => 'PHP',
             'status' => EntityStatus::ACTIVE,
-            'total_balance' => '0.000000',
-            'available_balance' => '0.000000',
-            'hold_balance' => '0.000000',
+            'total_balance' => '0.00',
+            'available_balance' => '0.00',
+            'hold_balance' => '0.00',
         ];
     }
 

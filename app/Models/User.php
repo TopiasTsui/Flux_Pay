@@ -9,16 +9,25 @@ use Orchid\Platform\Models\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    protected function serializeDate(\DateTimeInterface $date): string
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
+        'username',
         'name',
         'email',
         'password',
         'locale',
+        'organization',
+        'notes',
+        'is_active',
     ];
 
     /**
@@ -40,6 +49,7 @@ class User extends Authenticatable
     protected $casts = [
         'permissions'          => 'array',
         'email_verified_at'    => 'datetime',
+        'is_active'            => 'boolean',
     ];
 
     /**

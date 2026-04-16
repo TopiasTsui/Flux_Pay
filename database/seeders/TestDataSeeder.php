@@ -26,6 +26,7 @@ class TestDataSeeder extends Seeder
         $admin = User::firstOrCreate(
             ['email' => 'admin@fluxpay.com'],
             [
+                'username' => 'admin',
                 'name' => 'admin',
                 'password' => Hash::make('password123'),
                 'permissions' => [
@@ -79,9 +80,9 @@ class TestDataSeeder extends Seeder
                 'level' => 1,
                 'status' => EntityStatus::ACTIVE->value,
                 'currency' => 'PHP',
-                'total_balance' => '0.000000',
-                'available_balance' => '0.000000',
-                'hold_balance' => '0.000000',
+                'total_balance' => '0.00',
+                'available_balance' => '0.00',
+                'hold_balance' => '0.00',
             ],
         );
 
@@ -94,9 +95,9 @@ class TestDataSeeder extends Seeder
                 'level' => 2,
                 'status' => EntityStatus::ACTIVE->value,
                 'currency' => 'PHP',
-                'total_balance' => '0.000000',
-                'available_balance' => '0.000000',
-                'hold_balance' => '0.000000',
+                'total_balance' => '0.00',
+                'available_balance' => '0.00',
+                'hold_balance' => '0.00',
             ],
         );
 
@@ -109,9 +110,9 @@ class TestDataSeeder extends Seeder
                 'md5key' => 'test_secret_key_123',
                 'currency_code' => 'PHP',
                 'status' => EntityStatus::ACTIVE->value,
-                'total_balance' => '100000.000000',
-                'available_balance' => '100000.000000',
-                'hold_balance' => '0.000000',
+                'total_balance' => '100000.00',
+                'available_balance' => '100000.00',
+                'hold_balance' => '0.00',
                 'white_ips' => [],
             ],
         );
@@ -126,9 +127,9 @@ class TestDataSeeder extends Seeder
                 'vendor_meta' => [],
                 'currency_code' => 'PHP',
                 'status' => EntityStatus::ACTIVE->value,
-                'total_balance' => '0.000000',
-                'available_balance' => '0.000000',
-                'hold_balance' => '0.000000',
+                'total_balance' => '0.00',
+                'available_balance' => '0.00',
+                'hold_balance' => '0.00',
             ],
         );
 
@@ -155,13 +156,13 @@ class TestDataSeeder extends Seeder
                 'alias' => 'TestPay Bank Deposit',
                 'status' => EntityStatus::ACTIVE->value,
                 'weight' => 100,
-                'single_min_amount' => '100.000000',
-                'single_max_amount' => '500000.000000',
-                'daily_amount_limit' => '10000000.000000',
+                'single_min_amount' => '100.00',
+                'single_max_amount' => '500000.00',
+                'daily_amount_limit' => '10000000.00',
                 'daily_count_limit' => 1000,
-                'current_daily_amount' => '0.000000',
+                'current_daily_amount' => '0.00',
                 'deposit_fee_type' => FeeType::PERCENTAGE->value,
-                'deposit_fee' => '1.000000',
+                'deposit_fee' => '1.00',
             ],
         );
 
@@ -176,13 +177,13 @@ class TestDataSeeder extends Seeder
                 'alias' => 'TestPay Bank Withdraw',
                 'status' => EntityStatus::ACTIVE->value,
                 'weight' => 100,
-                'single_min_amount' => '100.000000',
-                'single_max_amount' => '500000.000000',
-                'daily_amount_limit' => '10000000.000000',
+                'single_min_amount' => '100.00',
+                'single_max_amount' => '500000.00',
+                'daily_amount_limit' => '10000000.00',
                 'daily_count_limit' => 1000,
-                'current_daily_amount' => '0.000000',
+                'current_daily_amount' => '0.00',
                 'withdraw_fee_type' => FeeType::PERCENTAGE->value,
-                'withdraw_fee' => '1.000000',
+                'withdraw_fee' => '1.00',
             ],
         );
 
@@ -194,16 +195,16 @@ class TestDataSeeder extends Seeder
             ],
             [
                 'status' => EntityStatus::ACTIVE->value,
-                'single_min_amount' => '100.000000',
-                'single_max_amount' => '500000.000000',
+                'single_min_amount' => '100.00',
+                'single_max_amount' => '500000.00',
                 'deposit_fee_type' => FeeType::PERCENTAGE->value,
-                'deposit_fee' => '2.000000',
+                'deposit_fee' => '2.00',
                 'deposit_agents_fee' => [
                     $agentL1->id => '0.5',
                     $agentL2->id => '0.3',
                 ],
                 'withdraw_fee_type' => FeeType::PERCENTAGE->value,
-                'withdraw_fee' => '2.000000',
+                'withdraw_fee' => '2.00',
                 'withdraw_agents_fee' => [
                     $agentL1->id => '0.5',
                     $agentL2->id => '0.3',

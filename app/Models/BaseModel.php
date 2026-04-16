@@ -10,6 +10,11 @@ abstract class BaseModel extends Model
 {
     use AsSource, Filterable;
 
+    protected function serializeDate(\DateTimeInterface $date): string
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
+
     /**
      * Override Orchid's AsSource::getContent to handle BackedEnum values.
      */

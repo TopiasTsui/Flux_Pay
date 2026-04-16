@@ -54,7 +54,8 @@ class ProviderWalletListScreen extends Screen
                 TD::make('available_balance', __('After'))->alignRight(),
                 TD::make('system_order_no', __('Order No'))->filter(Input::make()),
                 TD::make('remark', __('Remark')),
-                TD::make('created_at', __('Created'))->sort(),
+                TD::make('created_at', __('Created'))->sort()
+                    ->render(fn (ProviderWalletRecord $r) => $r->created_at?->format('Y-m-d H:i:s')),
             ]),
         ];
     }

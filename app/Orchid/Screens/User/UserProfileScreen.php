@@ -120,9 +120,15 @@ class UserProfileScreen extends Screen
     public function save(Request $request): void
     {
         $request->validate([
+            'user.username' => [
+                'required',
+                'string',
+                'max:50',
+                Rule::unique(User::class, 'username')->ignore($request->user()),
+            ],
             'user.name'  => 'required|string',
             'user.email' => [
-                'required',
+                'nullable',
                 Rule::unique(User::class, 'email')->ignore($request->user()),
             ],
         ]);

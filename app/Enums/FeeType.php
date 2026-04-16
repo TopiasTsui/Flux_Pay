@@ -18,7 +18,7 @@ enum FeeType: int
     public function calculate(string $amount, string $rate): string
     {
         return match ($this) {
-            self::PERCENTAGE => bcmul($amount, bcdiv($rate, '100', 8), 6),
+            self::PERCENTAGE => bcmul($amount, bcdiv($rate, '100', 8), 2),
             self::FIXED => $rate,
         };
     }

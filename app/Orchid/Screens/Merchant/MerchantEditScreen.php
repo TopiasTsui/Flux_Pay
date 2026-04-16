@@ -127,11 +127,27 @@ class MerchantEditScreen extends Screen
         }
 
         // Auto-generate md5key on create
-        if (!$merchant->exists) {
+        $isNew = !$merchant->exists;
+        if ($isNew) {
             $merchantData['md5key'] = Str::random(32);
         }
 
         $merchant->fill($merchantData)->save();
+
+        // Create backend user account for new merchant
+        if ($isNew) {
+            $user = \App\Models\User::create([
+                'username' => $merchantData['code'],
+                'name' => $merchantData['name'],
+                'password' => \Illuminate\Support\Facades\Hash::make($merchantData['code']),
+                'merchant_id' => $merchant->id,
+                'is_active' => true,
+            ]);
+            $merchantRole = \Orchid\Platform\Models\Role::where('slug', 'merchant')->first();
+            if ($merchantRole) {
+                $user->addRole($merchantRole);
+            }
+        }
 
         Toast::info(__('Saved successfully.'));
 

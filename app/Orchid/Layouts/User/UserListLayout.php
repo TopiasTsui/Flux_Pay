@@ -9,7 +9,6 @@ use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\DropDown;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Actions\ModalToggle;
-use Orchid\Screen\Components\Cells\DateTimeSplit;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Layouts\Persona;
 use Orchid\Screen\Layouts\Table;
@@ -28,6 +27,11 @@ class UserListLayout extends Table
     public function columns(): array
     {
         return [
+            TD::make('username', __('Username'))
+                ->sort()
+                ->cantHide()
+                ->filter(Input::make()),
+
             TD::make('name', __('Name'))
                 ->sort()
                 ->cantHide()
@@ -36,9 +40,8 @@ class UserListLayout extends Table
 
             TD::make('email', __('Email'))
                 ->sort()
-                ->cantHide()
                 ->filter(Input::make())
-                ->render(fn (User $user) => ModalToggle::make($user->email)
+                ->render(fn (User $user) => ModalToggle::make($user->email ?? '-')
                     ->modal('editUserModal')
                     ->modalTitle($user->presenter()->title())
                     ->method('saveUser')
@@ -46,16 +49,22 @@ class UserListLayout extends Table
                         'user' => $user->id,
                     ])),
 
+            TD::make('is_active', __('Active'))
+                ->sort()
+                ->render(fn (User $user) => $user->is_active
+                    ? '<span class="text-success">&#9679;</span>'
+                    : '<span class="text-danger">&#9679;</span>'),
+
             TD::make('created_at', __('Created'))
-                ->usingComponent(DateTimeSplit::class)
+                ->sort()
                 ->align(TD::ALIGN_RIGHT)
                 ->defaultHidden()
-                ->sort(),
+                ->render(fn (User $user) => $user->created_at?->format('Y-m-d H:i:s')),
 
             TD::make('updated_at', __('Last edit'))
-                ->usingComponent(DateTimeSplit::class)
+                ->sort()
                 ->align(TD::ALIGN_RIGHT)
-                ->sort(),
+                ->render(fn (User $user) => $user->updated_at?->format('Y-m-d H:i:s')),
 
             TD::make(__('Actions'))
                 ->align(TD::ALIGN_CENTER)

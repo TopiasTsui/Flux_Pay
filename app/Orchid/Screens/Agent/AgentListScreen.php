@@ -64,7 +64,8 @@ class AgentListScreen extends Screen
                 TD::make('available_balance', __('Balance'))->sort()->alignRight(),
                 TD::make('parent_id', __('Parent'))
                     ->render(fn (Agent $a) => $a->parent?->name ?? '-'),
-                TD::make('created_at', __('Created'))->sort()->defaultHidden(),
+                TD::make('created_at', __('Created'))->sort()->defaultHidden()
+                    ->render(fn (Agent $a) => $a->created_at?->format('Y-m-d H:i:s')),
                 TD::make(__('Actions'))
                     ->render(fn (Agent $a) => Link::make(__('Edit'))
                         ->route('platform.agents.edit', $a)

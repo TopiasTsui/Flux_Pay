@@ -67,7 +67,8 @@ class WithdrawOrderListScreen extends Screen
                     ->render(fn (WithdrawOrder $o) => \App\Enums\CallbackStatus::tryFrom($o->callback_status)?->label() ?? '-'),
                 TD::make('fund_status', __('Fund'))
                     ->render(fn (WithdrawOrder $o) => \App\Enums\FundStatus::tryFrom($o->fund_status)?->label() ?? '-'),
-                TD::make('created_at', __('Created'))->sort(),
+                TD::make('created_at', __('Created'))->sort()
+                    ->render(fn (WithdrawOrder $o) => $o->created_at?->format('Y-m-d H:i:s')),
             ]),
         ];
     }

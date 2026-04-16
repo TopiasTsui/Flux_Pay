@@ -153,8 +153,14 @@ class UserEditScreen extends Screen
     public function save(User $user, Request $request)
     {
         $request->validate([
-            'user.email' => [
+            'user.username' => [
                 'required',
+                'string',
+                'max:50',
+                Rule::unique(User::class, 'username')->ignore($user),
+            ],
+            'user.email' => [
+                'nullable',
                 Rule::unique(User::class, 'email')->ignore($user),
             ],
         ]);

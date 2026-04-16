@@ -25,11 +25,11 @@ class Provider extends BaseModel
         'status' => 'integer',
         'vendor_meta' => 'array',
         'options' => 'array',
-        'total_balance' => 'decimal:6',
-        'available_balance' => 'decimal:6',
-        'hold_balance' => 'decimal:6',
-        'api_available_balance' => 'decimal:6',
-        'api_hold_balance' => 'decimal:6',
+        'total_balance' => 'decimal:2',
+        'available_balance' => 'decimal:2',
+        'hold_balance' => 'decimal:2',
+        'api_available_balance' => 'decimal:2',
+        'api_hold_balance' => 'decimal:2',
     ];
 
     public function agent(): BelongsTo

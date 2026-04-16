@@ -23,9 +23,9 @@ class Merchant extends BaseModel
         'status' => 'integer',
         'white_ips' => 'array',
         'options' => 'array',
-        'total_balance' => 'decimal:6',
-        'available_balance' => 'decimal:6',
-        'hold_balance' => 'decimal:6',
+        'total_balance' => 'decimal:2',
+        'available_balance' => 'decimal:2',
+        'hold_balance' => 'decimal:2',
     ];
 
     protected $hidden = ['md5key'];

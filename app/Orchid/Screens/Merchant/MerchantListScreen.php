@@ -59,7 +59,8 @@ class MerchantListScreen extends Screen
                     ->render(fn (Merchant $m) => \App\Enums\EntityStatus::tryFrom($m->status)?->label() ?? $m->status)
                     ->filter(Select::make()->options(EntityStatus::options())->empty(__('All'))),
                 TD::make('available_balance', __('Balance'))->sort()->alignRight(),
-                TD::make('created_at', __('Created'))->sort(),
+                TD::make('created_at', __('Created'))->sort()
+                    ->render(fn (Merchant $m) => $m->created_at?->format('Y-m-d H:i:s')),
                 TD::make(__('Actions'))
                     ->render(fn (Merchant $m) => Link::make(__('Edit'))
                         ->route('platform.merchants.edit', $m)

@@ -89,8 +89,8 @@ class FakeGateway implements PaymentGatewayInterface
     {
         return $this->balanceQueryResult ?? new BalanceQueryResult(
             success: true,
-            availableBalance: '100000.000000',
-            holdBalance: '0.000000',
+            availableBalance: '100000.00',
+            holdBalance: '0.00',
         );
     }
 

@@ -9,6 +9,8 @@ use App\Enums\Currency;
 use App\Enums\EntityStatus;
 use App\Models\Agent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\RedirectResponse;
 use Orchid\Screen\Actions\Button;
@@ -114,7 +116,28 @@ class AgentEditScreen extends Screen
             }
         }
 
+        $isNew = !$agent->exists;
+        if ($isNew) {
+            $agentData['created_by'] = Auth::id();
+        }
+
         $agent->fill($agentData)->save();
+
+        // Create backend user account for new agent
+        if ($isNew) {
+            $username = Str::slug($agentData['name']);
+            $user = \App\Models\User::create([
+                'username' => $username,
+                'name' => $agentData['name'],
+                'password' => \Illuminate\Support\Facades\Hash::make($username),
+                'agent_id' => $agent->id,
+                'is_active' => true,
+            ]);
+            $agentRole = \Orchid\Platform\Models\Role::where('slug', 'agent')->first();
+            if ($agentRole) {
+                $user->addRole($agentRole);
+            }
+        }
 
         Toast::info(__('Saved successfully.'));
 

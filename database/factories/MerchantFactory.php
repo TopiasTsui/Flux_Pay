@@ -26,9 +26,9 @@ class MerchantFactory extends Factory
             'md5key' => Str::random(32),
             'currency_code' => 'PHP',
             'status' => EntityStatus::ACTIVE,
-            'total_balance' => '0.000000',
-            'available_balance' => '0.000000',
-            'hold_balance' => '0.000000',
+            'total_balance' => '0.00',
+            'available_balance' => '0.00',
+            'hold_balance' => '0.00',
             'white_ips' => [],
         ];
     }

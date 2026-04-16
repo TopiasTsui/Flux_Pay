@@ -20,7 +20,7 @@ class DepositOrderResource extends JsonResource
             'status' => $this->status,
             'payUrl' => $this->pay_url ?? null,
             'merchantFee' => (string) $this->merchant_fee,
-            'createdAt' => $this->created_at?->toIso8601String(),
+            'createdAt' => $this->created_at?->format('Y-m-d H:i:s'),
         ];
     }
 }

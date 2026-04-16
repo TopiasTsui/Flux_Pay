@@ -22,7 +22,7 @@ class WithdrawOrderResource extends JsonResource
             'bankCode' => $this->bank_code,
             'bankAccountName' => $this->bank_account_name,
             'bankAccountNo' => $this->bank_account_no,
-            'createdAt' => $this->created_at?->toIso8601String(),
+            'createdAt' => $this->created_at?->format('Y-m-d H:i:s'),
         ];
     }
 }

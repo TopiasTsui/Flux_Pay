@@ -50,7 +50,7 @@ return [
 
     'middleware' => [
         'public'  => ['web', 'cache.headers:private;must_revalidate;etag'],
-        'private' => ['web', 'platform', \App\Http\Middleware\SetLocaleMiddleware::class, 'cache.headers:private;must_revalidate;etag'],
+        'private' => ['web', 'platform', \App\Http\Middleware\CheckUserActive::class, \App\Http\Middleware\SetLocaleMiddleware::class, 'cache.headers:private;must_revalidate;etag'],
     ],
 
     /*

@@ -69,12 +69,15 @@ class DepositOrderDetailScreen extends Screen
                 Sight::make('payer_name', __('Payer Name')),
                 Sight::make('provider_order_no', __('Provider Order No')),
                 Sight::make('remark', __('Remark')),
-                Sight::make('created_at', __('Created')),
-                Sight::make('updated_at', __('Updated')),
+                Sight::make('created_at', __('Created'))
+                    ->render(fn (DepositOrder $o) => $o->created_at?->format('Y-m-d H:i:s')),
+                Sight::make('updated_at', __('Updated'))
+                    ->render(fn (DepositOrder $o) => $o->updated_at?->format('Y-m-d H:i:s')),
             ]),
 
             Layout::table('logs', [
-                TD::make('created_at', __('Time'))->sort(),
+                TD::make('created_at', __('Time'))->sort()
+                    ->render(fn ($log) => $log->created_at?->format('Y-m-d H:i:s')),
                 TD::make('action', __('Action')),
                 TD::make('request_data', __('Request'))
                     ->render(fn ($log) => '<pre class="mb-0" style="max-height:100px;overflow:auto;font-size:11px">' . e(json_encode($log->request_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)) . '</pre>'),

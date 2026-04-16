@@ -30,10 +30,10 @@ class CommissionCalculatorTest extends TestCase
             'payment_type_id' => 1,
             'status' => EntityStatus::ACTIVE->value,
             'deposit_fee_type' => FeeType::PERCENTAGE->value,
-            'deposit_fee' => '2.000000',
+            'deposit_fee' => '2.00',
             'deposit_agents_fee' => [],
             'withdraw_fee_type' => FeeType::PERCENTAGE->value,
-            'withdraw_fee' => '2.000000',
+            'withdraw_fee' => '2.00',
             'withdraw_agents_fee' => [],
         ], $attributes));
 
@@ -55,11 +55,11 @@ class CommissionCalculatorTest extends TestCase
 
         // Agent 1: 10000 * 0.5 / 100 = 50
         // Agent 2: 10000 * 0.3 / 100 = 30
-        $this->assertSame('80.000000', $result->total);
+        $this->assertSame('80.00', $result->total);
         $this->assertArrayHasKey(1, $result->agentFeeMap);
         $this->assertArrayHasKey(2, $result->agentFeeMap);
-        $this->assertSame('50.000000', $result->agentFeeMap[1]);
-        $this->assertSame('30.000000', $result->agentFeeMap[2]);
+        $this->assertSame('50.00', $result->agentFeeMap[1]);
+        $this->assertSame('30.00', $result->agentFeeMap[2]);
     }
 
     #[Test]
@@ -76,7 +76,7 @@ class CommissionCalculatorTest extends TestCase
         $result = $this->calculator->calculate($mpt, PaymentDirection::DEPOSIT, '10000');
 
         // Fixed fee: agent gets the rate value directly
-        $this->assertSame('150.000000', $result->total);
+        $this->assertSame('150.00', $result->total);
         $this->assertSame('100', $result->agentFeeMap[1]);
         $this->assertSame('50', $result->agentFeeMap[2]);
     }
@@ -120,8 +120,8 @@ class CommissionCalculatorTest extends TestCase
         $result = $this->calculator->calculate($mpt, PaymentDirection::WITHDRAW, '10000');
 
         // Should use withdraw_agents_fee: 10000 * 1.0 / 100 = 100
-        $this->assertSame('100.000000', $result->total);
-        $this->assertSame('100.000000', $result->agentFeeMap[1]);
+        $this->assertSame('100.00', $result->total);
+        $this->assertSame('100.00', $result->agentFeeMap[1]);
     }
 
     #[Test]
@@ -139,11 +139,11 @@ class CommissionCalculatorTest extends TestCase
         $result = $this->calculator->calculate($mpt, PaymentDirection::DEPOSIT, '10000');
 
         // 10000 * 0.5/100 = 50, 10000 * 0.3/100 = 30, 10000 * 0.2/100 = 20
-        $this->assertSame('100.000000', $result->total);
+        $this->assertSame('100.00', $result->total);
         $this->assertCount(3, $result->agentFeeMap);
-        $this->assertSame('50.000000', $result->agentFeeMap[10]);
-        $this->assertSame('30.000000', $result->agentFeeMap[20]);
-        $this->assertSame('20.000000', $result->agentFeeMap[30]);
+        $this->assertSame('50.00', $result->agentFeeMap[10]);
+        $this->assertSame('30.00', $result->agentFeeMap[20]);
+        $this->assertSame('20.00', $result->agentFeeMap[30]);
     }
 
     #[Test]
@@ -160,7 +160,7 @@ class CommissionCalculatorTest extends TestCase
         $result = $this->calculator->calculate($mpt, PaymentDirection::DEPOSIT, '10000');
 
         // Agent 2 has 0 rate, so commission is 0, not positive, should be excluded
-        $this->assertSame('50.000000', $result->total);
+        $this->assertSame('50.00', $result->total);
         $this->assertArrayHasKey(1, $result->agentFeeMap);
         $this->assertArrayNotHasKey(2, $result->agentFeeMap);
     }

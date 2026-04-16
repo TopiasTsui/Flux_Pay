@@ -24,9 +24,9 @@ class AgentFactory extends Factory
             'level' => 1,
             'status' => EntityStatus::ACTIVE,
             'currency' => 'PHP',
-            'total_balance' => '0.000000',
-            'available_balance' => '0.000000',
-            'hold_balance' => '0.000000',
+            'total_balance' => '0.00',
+            'available_balance' => '0.00',
+            'hold_balance' => '0.00',
         ];
     }
 

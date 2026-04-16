@@ -22,7 +22,7 @@ class AgentWalletRecord extends BaseModel
 
     protected $casts = [
         'type_code' => 'string',
-        'amount' => 'decimal:6',
+        'amount' => 'decimal:2',
         'created_at' => 'datetime',
     ];
 

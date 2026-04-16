@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 class MoneyHelper
 {
-    private const SCALE = 6;
+    private const SCALE = 2;
 
     public static function add(string $a, string $b): string
     {

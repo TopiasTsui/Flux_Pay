@@ -52,8 +52,8 @@ class BalanceQueryTest extends TestCase
             'timestamp',
         ]);
         $response->assertJsonPath('data.merchantNo', 'TEST001');
-        $response->assertJsonPath('data.availableBalance', '100000.000000');
-        $response->assertJsonPath('data.holdBalance', '0.000000');
+        $response->assertJsonPath('data.availableBalance', '100000.00');
+        $response->assertJsonPath('data.holdBalance', '0.00');
     }
 
     #[Test]
