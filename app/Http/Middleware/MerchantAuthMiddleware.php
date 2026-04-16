@@ -43,7 +43,7 @@ class MerchantAuthMiddleware
             ], 200);
         }
 
-        if ($merchant->status !== EntityStatus::ACTIVE) {
+        if ($merchant->status !== EntityStatus::ACTIVE->value) {
             return response()->json([
                 'code' => 1003,
                 'message' => 'Merchant is not active',

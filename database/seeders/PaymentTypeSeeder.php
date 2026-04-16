@@ -24,7 +24,7 @@ class PaymentTypeSeeder extends Seeder
         foreach ($types as $type) {
             PaymentType::updateOrCreate(
                 ['payment_type_code' => $type['payment_type_code']],
-                array_merge($type, ['status' => EntityStatus::ACTIVE]),
+                array_merge($type, ['status' => EntityStatus::ACTIVE->value]),
             );
         }
     }

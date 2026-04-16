@@ -29,7 +29,7 @@ class BankSeeder extends Seeder
             Bank::updateOrCreate(
                 ['bank_code' => $bank['bank_code']],
                 array_merge($bank, [
-                    'status' => EntityStatus::ACTIVE,
+                    'status' => EntityStatus::ACTIVE->value,
                     'sort_order' => $index + 1,
                 ]),
             );

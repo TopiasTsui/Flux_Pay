@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\EntityStatus;
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -12,7 +11,7 @@ class MerchantProviderPaymentType extends BaseModel
     protected $fillable = ['merchant_id', 'provider_payment_type_id', 'status', 'remark'];
 
     protected $casts = [
-        'status' => EntityStatus::class,
+        'status' => 'integer',
     ];
 
     public function merchant(): BelongsTo

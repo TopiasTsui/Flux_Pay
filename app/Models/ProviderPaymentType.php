@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\EntityStatus;
-use App\Enums\FeeType;
-use App\Enums\PaymentDirection;
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -20,10 +17,10 @@ class ProviderPaymentType extends BaseModel
     ];
 
     protected $casts = [
-        'type' => PaymentDirection::class,
-        'status' => EntityStatus::class,
-        'deposit_fee_type' => FeeType::class,
-        'withdraw_fee_type' => FeeType::class,
+        'type' => 'string',
+        'status' => 'integer',
+        'deposit_fee_type' => 'integer',
+        'withdraw_fee_type' => 'integer',
         'weight' => 'integer',
         'daily_count_limit' => 'integer',
     ];

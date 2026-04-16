@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\EntityStatus;
-use App\Enums\FeeType;
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -18,9 +16,9 @@ class MerchantPaymentType extends BaseModel
     ];
 
     protected $casts = [
-        'status' => EntityStatus::class,
-        'deposit_fee_type' => FeeType::class,
-        'withdraw_fee_type' => FeeType::class,
+        'status' => 'integer',
+        'deposit_fee_type' => 'integer',
+        'withdraw_fee_type' => 'integer',
         'deposit_agents_fee' => 'array',
         'withdraw_agents_fee' => 'array',
     ];

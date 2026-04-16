@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\EntityStatus;
 use App\Models\Concerns\HasTenantScope;
 use App\Models\Concerns\HasWallet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,7 +20,7 @@ class Merchant extends BaseModel
     ];
 
     protected $casts = [
-        'status' => EntityStatus::class,
+        'status' => 'integer',
         'white_ips' => 'array',
         'options' => 'array',
         'total_balance' => 'decimal:6',

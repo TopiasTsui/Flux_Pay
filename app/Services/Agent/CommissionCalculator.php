@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Agent;
 
 use App\DTOs\AgentCommissionResult;
+use App\Enums\FeeType;
 use App\Enums\PaymentDirection;
 use App\Helpers\MoneyHelper;
 use App\Models\MerchantPaymentType;
@@ -28,7 +29,7 @@ class CommissionCalculator
         $total = '0';
 
         foreach ($agentsFee as $agentId => $rate) {
-            $commission = $feeType->calculate($amount, (string) $rate);
+            $commission = FeeType::from($feeType)->calculate($amount, (string) $rate);
 
             if (MoneyHelper::isPositive($commission)) {
                 $agentFeeMap[(int) $agentId] = $commission;

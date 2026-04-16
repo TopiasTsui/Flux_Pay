@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\CallbackStatus;
-use App\Enums\FundStatus;
-use App\Enums\OrderStatus;
 use App\Models\Concerns\HasTenantScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\BaseModel;
@@ -29,9 +26,9 @@ class WithdrawOrder extends BaseModel
     ];
 
     protected $casts = [
-        'status' => OrderStatus::class,
-        'callback_status' => CallbackStatus::class,
-        'fund_status' => FundStatus::class,
+        'status' => 'integer',
+        'callback_status' => 'integer',
+        'fund_status' => 'integer',
         'agent_fee_map' => 'array',
         'provider_agent_fee_map' => 'array',
         'order_amount' => 'decimal:6',

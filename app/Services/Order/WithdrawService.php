@@ -8,6 +8,7 @@ use App\Contracts\Repositories\MerchantRepositoryInterface;
 use App\Contracts\Repositories\WithdrawOrderRepositoryInterface;
 use App\DTOs\Gateway\WithdrawCallbackResult;
 use App\Enums\CallbackStatus;
+use App\Enums\FeeType;
 use App\Enums\FundStatus;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentDirection;
@@ -57,13 +58,13 @@ class WithdrawService
 
         $merchantFee = '0';
         if ($mpt && $mpt->withdraw_fee_type) {
-            $merchantFee = $mpt->withdraw_fee_type->calculate($amount, (string) $mpt->withdraw_fee);
+            $merchantFee = FeeType::from($mpt->withdraw_fee_type)->calculate($amount, (string) $mpt->withdraw_fee);
         }
 
         // Calculate provider fee
         $providerFee = '0';
         if ($channel->withdraw_fee_type) {
-            $providerFee = $channel->withdraw_fee_type->calculate($amount, (string) $channel->withdraw_fee);
+            $providerFee = FeeType::from($channel->withdraw_fee_type)->calculate($amount, (string) $channel->withdraw_fee);
         }
 
         // Calculate agent commissions
@@ -103,9 +104,9 @@ class WithdrawService
                 'provider_agent_fee_map' => [],
                 'total_debit' => $totalDebit,
                 'currency' => $merchant->currency_code,
-                'status' => OrderStatus::PENDING,
-                'callback_status' => CallbackStatus::PENDING,
-                'fund_status' => FundStatus::PENDING,
+                'status' => OrderStatus::PENDING->value,
+                'callback_status' => CallbackStatus::PENDING->value,
+                'fund_status' => FundStatus::PENDING->value,
                 'merchant_notify_url' => $data['notify_url'] ?? null,
                 'merchant_extra' => $data['extend'] ?? null,
                 'bank_code' => $data['bank_code'] ?? null,
@@ -133,7 +134,7 @@ class WithdrawService
         ];
 
         if ($gatewayResult->success) {
-            $updateData['status'] = OrderStatus::SENT_TO_PROVIDER;
+            $updateData['status'] = OrderStatus::SENT_TO_PROVIDER->value;
             if ($gatewayResult->providerOrderNo) {
                 $updateData['provider_order_no'] = $gatewayResult->providerOrderNo;
             }
@@ -145,7 +146,7 @@ class WithdrawService
                 $systemOrderNo,
                 "Withdraw gateway failed, unfreeze: {$systemOrderNo}",
             );
-            $updateData['status'] = OrderStatus::FAILED;
+            $updateData['status'] = OrderStatus::FAILED->value;
         }
 
         $this->orderRepo->update($order->id, $updateData);
@@ -156,14 +157,14 @@ class WithdrawService
 
     public function handleCallback(WithdrawOrder $order, WithdrawCallbackResult $result): void
     {
-        if ($order->status->isFinal()) {
+        if (OrderStatus::from($order->status)->isFinal()) {
             Log::info("Withdraw order #{$order->system_order_no} already in final state, skipping callback");
             return;
         }
 
         DB::transaction(function () use ($order, $result) {
             $updateData = [
-                'callback_status' => CallbackStatus::PROVIDER_SUCCESS,
+                'callback_status' => CallbackStatus::PROVIDER_SUCCESS->value,
                 'provider_callback_time' => now(),
             ];
 
@@ -172,13 +173,13 @@ class WithdrawService
             }
 
             if ($result->status === OrderStatus::SUCCESS) {
-                $updateData['status'] = OrderStatus::SUCCESS;
+                $updateData['status'] = OrderStatus::SUCCESS->value;
                 $this->orderRepo->update($order->id, $updateData);
 
                 $order = $this->orderRepo->findOrFail($order->id);
                 $this->settleFunds($order);
             } elseif ($result->status === OrderStatus::FAILED) {
-                $updateData['status'] = OrderStatus::FAILED;
+                $updateData['status'] = OrderStatus::FAILED->value;
                 $this->orderRepo->update($order->id, $updateData);
 
                 // Unfreeze on failure
@@ -197,7 +198,7 @@ class WithdrawService
 
     public function settleFunds(WithdrawOrder $order): void
     {
-        if ($order->fund_status === FundStatus::SETTLED) {
+        if ($order->fund_status === FundStatus::SETTLED->value) {
             return;
         }
 
@@ -241,7 +242,7 @@ class WithdrawService
             }
 
             $this->orderRepo->update($order->id, [
-                'fund_status' => FundStatus::SETTLED,
+                'fund_status' => FundStatus::SETTLED->value,
                 'fund_at' => now(),
             ]);
         });

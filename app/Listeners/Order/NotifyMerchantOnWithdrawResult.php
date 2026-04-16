@@ -26,7 +26,7 @@ class NotifyMerchantOnWithdrawResult implements ShouldQueue
             'orderNo' => $order->merchant_order_no,
             'systemOrderNo' => $order->system_order_no,
             'amount' => (string) $order->actual_amount,
-            'status' => $order->status->name,
+            'status' => $order->status,
             'currency' => $order->currency,
         ];
 

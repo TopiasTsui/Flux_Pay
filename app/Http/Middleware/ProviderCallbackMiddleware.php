@@ -31,7 +31,7 @@ class ProviderCallbackMiddleware
             return response('fail', 400);
         }
 
-        if ($provider->status !== EntityStatus::ACTIVE) {
+        if ($provider->status !== EntityStatus::ACTIVE->value) {
             return response('fail', 403);
         }
 

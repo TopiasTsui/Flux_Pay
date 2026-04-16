@@ -21,10 +21,10 @@ class ChannelSelector
     ): ProviderPaymentType {
         $query = MerchantProviderPaymentType::query()
             ->where('merchant_id', $merchantId)
-            ->where('status', EntityStatus::ACTIVE)
+            ->where('status', EntityStatus::ACTIVE->value)
             ->whereHas('providerPaymentType', function ($q) use ($direction, $amount, $paymentTypeCode) {
-                $q->where('status', EntityStatus::ACTIVE)
-                    ->where('type', $direction)
+                $q->where('status', EntityStatus::ACTIVE->value)
+                    ->where('type', $direction->value)
                     ->where(function ($q) use ($amount) {
                         $q->whereNull('single_min_amount')
                             ->orWhereRaw('single_min_amount <= ?', [$amount]);
@@ -46,7 +46,7 @@ class ChannelSelector
             ->map(fn ($mppt) => $mppt->providerPaymentType)
             ->filter(function (ProviderPaymentType $ppt) use ($amount) {
                 // Check provider is active
-                if ($ppt->provider && $ppt->provider->status !== EntityStatus::ACTIVE) {
+                if ($ppt->provider && $ppt->provider->status !== EntityStatus::ACTIVE->value) {
                     return false;
                 }
 

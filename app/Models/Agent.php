@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\AgentType;
-use App\Enums\EntityStatus;
 use App\Models\Concerns\HasTenantScope;
 use App\Models\Concerns\HasWallet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,8 +19,8 @@ class Agent extends BaseModel
     ];
 
     protected $casts = [
-        'types' => AgentType::class,
-        'status' => EntityStatus::class,
+        'types' => 'string',
+        'status' => 'integer',
         'level' => 'integer',
         'total_balance' => 'decimal:6',
         'available_balance' => 'decimal:6',

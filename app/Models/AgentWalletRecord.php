@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\WalletOperationType;
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -22,7 +21,7 @@ class AgentWalletRecord extends BaseModel
     ];
 
     protected $casts = [
-        'type_code' => WalletOperationType::class,
+        'type_code' => 'string',
         'amount' => 'decimal:6',
         'created_at' => 'datetime',
     ];

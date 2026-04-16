@@ -28,11 +28,11 @@ class CommissionCalculatorTest extends TestCase
         $mpt->forceFill(array_merge([
             'merchant_id' => 1,
             'payment_type_id' => 1,
-            'status' => EntityStatus::ACTIVE,
-            'deposit_fee_type' => FeeType::PERCENTAGE,
+            'status' => EntityStatus::ACTIVE->value,
+            'deposit_fee_type' => FeeType::PERCENTAGE->value,
             'deposit_fee' => '2.000000',
             'deposit_agents_fee' => [],
-            'withdraw_fee_type' => FeeType::PERCENTAGE,
+            'withdraw_fee_type' => FeeType::PERCENTAGE->value,
             'withdraw_fee' => '2.000000',
             'withdraw_agents_fee' => [],
         ], $attributes));
@@ -44,7 +44,7 @@ class CommissionCalculatorTest extends TestCase
     public function calculate_with_percentage_fees_for_deposit(): void
     {
         $mpt = $this->makeMerchantPaymentType([
-            'deposit_fee_type' => FeeType::PERCENTAGE,
+            'deposit_fee_type' => FeeType::PERCENTAGE->value,
             'deposit_agents_fee' => [
                 1 => '0.5',
                 2 => '0.3',
@@ -66,7 +66,7 @@ class CommissionCalculatorTest extends TestCase
     public function calculate_with_fixed_fees(): void
     {
         $mpt = $this->makeMerchantPaymentType([
-            'deposit_fee_type' => FeeType::FIXED,
+            'deposit_fee_type' => FeeType::FIXED->value,
             'deposit_agents_fee' => [
                 1 => '100',
                 2 => '50',
@@ -111,9 +111,9 @@ class CommissionCalculatorTest extends TestCase
     public function calculate_uses_withdraw_fees_for_withdraw_direction(): void
     {
         $mpt = $this->makeMerchantPaymentType([
-            'deposit_fee_type' => FeeType::PERCENTAGE,
+            'deposit_fee_type' => FeeType::PERCENTAGE->value,
             'deposit_agents_fee' => [1 => '0.5'],
-            'withdraw_fee_type' => FeeType::PERCENTAGE,
+            'withdraw_fee_type' => FeeType::PERCENTAGE->value,
             'withdraw_agents_fee' => [1 => '1.0'],
         ]);
 
@@ -128,7 +128,7 @@ class CommissionCalculatorTest extends TestCase
     public function calculate_with_multiple_agents(): void
     {
         $mpt = $this->makeMerchantPaymentType([
-            'deposit_fee_type' => FeeType::PERCENTAGE,
+            'deposit_fee_type' => FeeType::PERCENTAGE->value,
             'deposit_agents_fee' => [
                 10 => '0.5',
                 20 => '0.3',
@@ -150,7 +150,7 @@ class CommissionCalculatorTest extends TestCase
     public function calculate_with_zero_rate_agent_excluded(): void
     {
         $mpt = $this->makeMerchantPaymentType([
-            'deposit_fee_type' => FeeType::PERCENTAGE,
+            'deposit_fee_type' => FeeType::PERCENTAGE->value,
             'deposit_agents_fee' => [
                 1 => '0.5',
                 2 => '0',

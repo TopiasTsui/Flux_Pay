@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\EntityStatus;
 use App\Models\BaseModel;
 
 class Proxy extends BaseModel
@@ -10,7 +9,7 @@ class Proxy extends BaseModel
     
     protected $fillable = ['name', 'host', 'port', 'username', 'password', 'protocol', 'status', 'priority', 'description'];
 
-    protected $casts = ['status' => EntityStatus::class];
+    protected $casts = ['status' => 'integer'];
     protected $hidden = ['password'];
 
     public function getUrl(): string

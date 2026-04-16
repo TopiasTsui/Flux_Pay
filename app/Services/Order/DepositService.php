@@ -8,6 +8,7 @@ use App\Contracts\Repositories\DepositOrderRepositoryInterface;
 use App\Contracts\Repositories\MerchantRepositoryInterface;
 use App\DTOs\Gateway\DepositCallbackResult;
 use App\Enums\CallbackStatus;
+use App\Enums\FeeType;
 use App\Enums\FundStatus;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentDirection;
@@ -57,13 +58,13 @@ class DepositService
 
         $merchantFee = '0';
         if ($mpt && $mpt->deposit_fee_type) {
-            $merchantFee = $mpt->deposit_fee_type->calculate($amount, (string) $mpt->deposit_fee);
+            $merchantFee = FeeType::from($mpt->deposit_fee_type)->calculate($amount, (string) $mpt->deposit_fee);
         }
 
         // Calculate provider fee
         $providerFee = '0';
         if ($channel->deposit_fee_type) {
-            $providerFee = $channel->deposit_fee_type->calculate($amount, (string) $channel->deposit_fee);
+            $providerFee = FeeType::from($channel->deposit_fee_type)->calculate($amount, (string) $channel->deposit_fee);
         }
 
         // Calculate agent commissions
@@ -91,9 +92,9 @@ class DepositService
             'provider_agent_fee' => '0',
             'provider_agent_fee_map' => [],
             'currency' => $merchant->currency_code,
-            'status' => OrderStatus::PENDING,
-            'callback_status' => CallbackStatus::PENDING,
-            'fund_status' => FundStatus::PENDING,
+            'status' => OrderStatus::PENDING->value,
+            'callback_status' => CallbackStatus::PENDING->value,
+            'fund_status' => FundStatus::PENDING->value,
             'merchant_notify_url' => $data['notify_url'] ?? null,
             'merchant_extra' => $data['extend'] ?? null,
             'bank_code' => $data['bank_code'] ?? null,
@@ -117,12 +118,12 @@ class DepositService
         ];
 
         if ($gatewayResult->success) {
-            $updateData['status'] = OrderStatus::SENT_TO_PROVIDER;
+            $updateData['status'] = OrderStatus::SENT_TO_PROVIDER->value;
             if ($gatewayResult->providerOrderNo) {
                 $updateData['provider_order_no'] = $gatewayResult->providerOrderNo;
             }
         } else {
-            $updateData['status'] = OrderStatus::FAILED;
+            $updateData['status'] = OrderStatus::FAILED->value;
         }
 
         $this->orderRepo->update($order->id, $updateData);
@@ -133,14 +134,14 @@ class DepositService
 
     public function handleCallback(DepositOrder $order, DepositCallbackResult $result): void
     {
-        if ($order->status->isFinal()) {
+        if (OrderStatus::from($order->status)->isFinal()) {
             Log::info("Deposit order #{$order->system_order_no} already in final state, skipping callback");
             return;
         }
 
         DB::transaction(function () use ($order, $result) {
             $updateData = [
-                'callback_status' => CallbackStatus::PROVIDER_SUCCESS,
+                'callback_status' => CallbackStatus::PROVIDER_SUCCESS->value,
                 'provider_callback_time' => now(),
             ];
 
@@ -153,13 +154,13 @@ class DepositService
             }
 
             if ($result->status === OrderStatus::SUCCESS) {
-                $updateData['status'] = OrderStatus::SUCCESS;
+                $updateData['status'] = OrderStatus::SUCCESS->value;
                 $this->orderRepo->update($order->id, $updateData);
 
                 $order = $this->orderRepo->findOrFail($order->id);
                 $this->settleFunds($order);
             } elseif ($result->status === OrderStatus::FAILED) {
-                $updateData['status'] = OrderStatus::FAILED;
+                $updateData['status'] = OrderStatus::FAILED->value;
                 $this->orderRepo->update($order->id, $updateData);
             } else {
                 $this->orderRepo->update($order->id, $updateData);
@@ -169,7 +170,7 @@ class DepositService
 
     public function settleFunds(DepositOrder $order): void
     {
-        if ($order->fund_status === FundStatus::SETTLED) {
+        if ($order->fund_status === FundStatus::SETTLED->value) {
             return;
         }
 
@@ -217,7 +218,7 @@ class DepositService
             }
 
             $this->orderRepo->update($order->id, [
-                'fund_status' => FundStatus::SETTLED,
+                'fund_status' => FundStatus::SETTLED->value,
                 'fund_at' => now(),
             ]);
         });
