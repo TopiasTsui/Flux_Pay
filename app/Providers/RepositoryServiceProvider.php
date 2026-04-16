@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
-    protected array $bindings = [
+    public array $bindings = [
         \App\Contracts\Repositories\MerchantRepositoryInterface::class => \App\Repositories\MerchantRepository::class,
         \App\Contracts\Repositories\AgentRepositoryInterface::class => \App\Repositories\AgentRepository::class,
         \App\Contracts\Repositories\ProviderRepositoryInterface::class => \App\Repositories\ProviderRepository::class,
