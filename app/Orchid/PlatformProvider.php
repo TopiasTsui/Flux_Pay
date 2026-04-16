@@ -92,9 +92,6 @@ class PlatformProvider extends OrchidServiceProvider
                         ->icon('bs.wallet-fill')
                         ->route('platform.wallets.provider'),
 
-                    Menu::make(__('Manual Adjustment'))
-                        ->icon('bs.pencil-square')
-                        ->route('platform.wallets.adjust'),
                 ]),
 
             Menu::make(__('Reports'))

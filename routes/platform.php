@@ -33,7 +33,6 @@ use App\Orchid\Screens\User\UserProfileScreen;
 use App\Orchid\Screens\Wallet\AgentWalletListScreen;
 use App\Orchid\Screens\Wallet\MerchantWalletListScreen;
 use App\Orchid\Screens\Wallet\ProviderWalletListScreen;
-use App\Orchid\Screens\Wallet\WalletAdjustScreen;
 use Illuminate\Support\Facades\Route;
 use Tabuna\Breadcrumbs\Trail;
 
@@ -203,12 +202,6 @@ Route::screen('wallets/provider', ProviderWalletListScreen::class)
     ->breadcrumbs(fn (Trail $trail) => $trail
         ->parent('platform.index')
         ->push('Provider Wallet', route('platform.wallets.provider')));
-
-Route::screen('wallets/adjust', WalletAdjustScreen::class)
-    ->name('platform.wallets.adjust')
-    ->breadcrumbs(fn (Trail $trail) => $trail
-        ->parent('platform.index')
-        ->push(__('Manual Adjustment'), route('platform.wallets.adjust')));
 
 // ── Reports ─────────────────────────────────────────────────────────────
 Route::screen('reports/transactions', DailyTransactionStatScreen::class)
