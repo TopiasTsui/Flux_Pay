@@ -25,6 +25,7 @@ class PlatformProvider extends OrchidServiceProvider
 
             Menu::make(__('Payment Management'))
                 ->icon('bs.credit-card-2-front')
+                ->slug('payment-management')
                 ->permission('platform.orders')
                 ->list([
                     Menu::make(__('Deposit Orders'))
@@ -38,6 +39,7 @@ class PlatformProvider extends OrchidServiceProvider
 
             Menu::make(__('Entity Management'))
                 ->icon('bs.building')
+                ->slug('entity-management')
                 ->list([
                     Menu::make(__('Merchants'))
                         ->icon('bs.shop')
@@ -57,6 +59,7 @@ class PlatformProvider extends OrchidServiceProvider
 
             Menu::make(__('Payment Config'))
                 ->icon('bs.sliders')
+                ->slug('payment-config')
                 ->permission('platform.payment-config')
                 ->list([
                     Menu::make(__('Payment Types'))
@@ -74,6 +77,7 @@ class PlatformProvider extends OrchidServiceProvider
 
             Menu::make(__('Finance'))
                 ->icon('bs.wallet2')
+                ->slug('finance')
                 ->permission('platform.wallets')
                 ->list([
                     Menu::make(__('Merchant Wallet'))
@@ -91,6 +95,7 @@ class PlatformProvider extends OrchidServiceProvider
 
             Menu::make(__('Reports'))
                 ->icon('bs.graph-up')
+                ->slug('reports')
                 ->permission('platform.reports')
                 ->list([
                     Menu::make(__('Transaction Stats'))
@@ -104,6 +109,7 @@ class PlatformProvider extends OrchidServiceProvider
 
             Menu::make(__('Banks'))
                 ->icon('bs.bank')
+                ->slug('banks')
                 ->permission('platform.banks')
                 ->list([
                     Menu::make(__('Bank List'))
@@ -117,6 +123,7 @@ class PlatformProvider extends OrchidServiceProvider
 
             Menu::make(__('System'))
                 ->icon('bs.gear')
+                ->slug('system')
                 ->permission('platform.system')
                 ->list([
                     Menu::make(__('System Config'))
@@ -134,6 +141,7 @@ class PlatformProvider extends OrchidServiceProvider
 
             Menu::make(__('Access Controls'))
                 ->icon('bs.lock')
+                ->slug('access-controls')
                 ->list([
                     Menu::make(__('Users'))
                         ->icon('bs.people')
