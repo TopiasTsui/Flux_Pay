@@ -53,10 +53,10 @@ class AgentListScreen extends Screen
             Layout::table('agents', [
                 TD::make('id', 'ID')->sort(),
                 TD::make('name', 'Name')->sort()->filter(Input::make()),
-                TD::make('types', 'Type')->render(fn (Agent $a) => $a->types?->label()),
+                TD::make('types', 'Type')->render(fn (Agent $a) => \App\Enums\AgentType::tryFrom($a->types)?->label() ?? $a->types),
                 TD::make('level', 'Level')->sort(),
                 TD::make('status', 'Status')
-                    ->render(fn (Agent $a) => $a->status->label())
+                    ->render(fn (Agent $a) => \App\Enums\EntityStatus::tryFrom($a->status)?->label() ?? $a->status)
                     ->filter(Select::make()->options(EntityStatus::options())->empty('All')),
                 TD::make('available_balance', 'Balance')->sort()->alignRight(),
                 TD::make('parent_id', 'Parent')

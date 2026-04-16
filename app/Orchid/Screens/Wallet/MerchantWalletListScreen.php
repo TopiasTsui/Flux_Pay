@@ -48,7 +48,7 @@ class MerchantWalletListScreen extends Screen
                     ->render(fn (MerchantWalletRecord $r) => $r->merchant?->name ?? '-'),
                 TD::make('sn', 'SN')->filter(Input::make()),
                 TD::make('type_code', 'Type')
-                    ->render(fn (MerchantWalletRecord $r) => $r->type_code?->label()),
+                    ->render(fn (MerchantWalletRecord $r) => \App\Enums\WalletOperationType::tryFrom($r->type_code)?->label()),
                 TD::make('amount', 'Amount')->sort()->alignRight(),
                 TD::make('pre_available_balance', 'Before')->alignRight(),
                 TD::make('available_balance', 'After')->alignRight(),

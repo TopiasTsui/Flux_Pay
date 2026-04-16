@@ -57,7 +57,7 @@ class ProxyScreen extends Screen
                 TD::make('host', 'Host'),
                 TD::make('port', 'Port'),
                 TD::make('status', 'Status')
-                    ->render(fn (Proxy $p) => $p->status->label()),
+                    ->render(fn (Proxy $p) => \App\Enums\EntityStatus::tryFrom($p->status)?->label() ?? $p->status),
                 TD::make('priority', 'Priority')->sort(),
                 TD::make('description', 'Description'),
                 TD::make('actions', 'Actions')

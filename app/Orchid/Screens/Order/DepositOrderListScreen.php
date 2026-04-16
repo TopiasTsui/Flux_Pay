@@ -62,12 +62,12 @@ class DepositOrderListScreen extends Screen
                         OrderStatus::FAILED => 'danger',
                         OrderStatus::CANCELLED => 'secondary',
                         default => 'warning',
-                    } . '">' . $o->status->label() . '</span>')
+                    } . '">' . \App\Enums\OrderStatus::tryFrom($o->status)?->label() ?? $o->status . '</span>')
                     ->filter(Select::make()->options(OrderStatus::options())->empty('All')),
                 TD::make('callback_status', 'Callback')
-                    ->render(fn (DepositOrder $o) => $o->callback_status?->label() ?? '-'),
+                    ->render(fn (DepositOrder $o) => \App\Enums\CallbackStatus::tryFrom($o->callback_status)?->label() ?? '-'),
                 TD::make('fund_status', 'Fund')
-                    ->render(fn (DepositOrder $o) => $o->fund_status?->label() ?? '-'),
+                    ->render(fn (DepositOrder $o) => \App\Enums\FundStatus::tryFrom($o->fund_status)?->label() ?? '-'),
                 TD::make('created_at', 'Created')->sort(),
             ]),
         ];

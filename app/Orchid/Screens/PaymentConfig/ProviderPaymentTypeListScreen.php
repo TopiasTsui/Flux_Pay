@@ -56,10 +56,10 @@ class ProviderPaymentTypeListScreen extends Screen
                 TD::make('payment_type_id', 'Payment Type')
                     ->render(fn (ProviderPaymentType $c) => $c->paymentType?->name ?? '-'),
                 TD::make('type', 'Direction')
-                    ->render(fn (ProviderPaymentType $c) => $c->type?->label()),
+                    ->render(fn (ProviderPaymentType $c) => \App\Enums\PaymentDirection::tryFrom($c->type)?->label()),
                 TD::make('alias', 'Alias'),
                 TD::make('status', 'Status')
-                    ->render(fn (ProviderPaymentType $c) => $c->status->label())
+                    ->render(fn (ProviderPaymentType $c) => \App\Enums\EntityStatus::tryFrom($c->status)?->label() ?? $c->status)
                     ->filter(Select::make()->options(EntityStatus::options())->empty('All')),
                 TD::make('weight', 'Weight')->sort(),
                 TD::make('actions', 'Actions')

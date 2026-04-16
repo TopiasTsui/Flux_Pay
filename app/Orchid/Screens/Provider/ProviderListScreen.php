@@ -53,7 +53,7 @@ class ProviderListScreen extends Screen
                 TD::make('name', 'Name')->sort()->filter(Input::make()),
                 TD::make('vendor_id', 'Vendor ID')->sort()->filter(Input::make()),
                 TD::make('status', 'Status')
-                    ->render(fn (Provider $p) => $p->status->label())
+                    ->render(fn (Provider $p) => \App\Enums\EntityStatus::tryFrom($p->status)?->label() ?? $p->status)
                     ->filter(Select::make()->options(EntityStatus::options())->empty('All')),
                 TD::make('available_balance', 'Balance')->sort()->alignRight(),
                 TD::make('actions', 'Actions')

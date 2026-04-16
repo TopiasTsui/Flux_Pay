@@ -55,7 +55,7 @@ class ProviderBankCodeScreen extends Screen
                 TD::make('bank_code', 'Bank Code')->filter(Input::make()),
                 TD::make('provider_bank_code', 'Provider Code'),
                 TD::make('status', 'Status')
-                    ->render(fn (ProviderBankCode $m) => $m->status->label()),
+                    ->render(fn (ProviderBankCode $m) => \App\Enums\EntityStatus::tryFrom($m->status)?->label() ?? $m->status),
                 TD::make('actions', 'Actions')
                     ->render(fn (ProviderBankCode $m) => ModalToggle::make('Edit')
                         ->icon('bs.pencil')

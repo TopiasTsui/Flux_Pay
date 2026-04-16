@@ -55,7 +55,7 @@ class PaymentTypeListScreen extends Screen
                 TD::make('payment_type_code', 'Code')->sort(),
                 TD::make('name', 'Name')->sort(),
                 TD::make('status', 'Status')
-                    ->render(fn (PaymentType $t) => $t->status->label()),
+                    ->render(fn (PaymentType $t) => \App\Enums\EntityStatus::tryFrom($t->status)?->label() ?? $t->status),
                 TD::make('actions', 'Actions')
                     ->render(fn (PaymentType $t) => ModalToggle::make('Edit')
                         ->icon('bs.pencil')

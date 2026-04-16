@@ -55,7 +55,7 @@ class BankListScreen extends Screen
                 TD::make('bank_code', 'Code')->sort()->filter(Input::make()),
                 TD::make('name', 'Name')->sort(),
                 TD::make('status', 'Status')
-                    ->render(fn (Bank $b) => $b->status->label()),
+                    ->render(fn (Bank $b) => \App\Enums\EntityStatus::tryFrom($b->status)?->label() ?? $b->status),
                 TD::make('sort_order', 'Sort')->sort(),
                 TD::make('actions', 'Actions')
                     ->render(fn (Bank $b) => ModalToggle::make('Edit')

@@ -56,7 +56,7 @@ class MerchantListScreen extends Screen
                 TD::make('agent_id', 'Agent')
                     ->render(fn (Merchant $m) => $m->agent?->name ?? '-'),
                 TD::make('status', 'Status')
-                    ->render(fn (Merchant $m) => $m->status->label())
+                    ->render(fn (Merchant $m) => \App\Enums\EntityStatus::tryFrom($m->status)?->label() ?? $m->status)
                     ->filter(Select::make()->options(EntityStatus::options())->empty('All')),
                 TD::make('available_balance', 'Balance')->sort()->alignRight(),
                 TD::make('created_at', 'Created')->sort(),

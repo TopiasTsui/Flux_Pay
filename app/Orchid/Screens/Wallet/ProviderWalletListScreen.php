@@ -48,7 +48,7 @@ class ProviderWalletListScreen extends Screen
                     ->render(fn (ProviderWalletRecord $r) => $r->provider?->name ?? '-'),
                 TD::make('sn', 'SN')->filter(Input::make()),
                 TD::make('type_code', 'Type')
-                    ->render(fn (ProviderWalletRecord $r) => $r->type_code?->label()),
+                    ->render(fn (ProviderWalletRecord $r) => \App\Enums\WalletOperationType::tryFrom($r->type_code)?->label()),
                 TD::make('amount', 'Amount')->sort()->alignRight(),
                 TD::make('pre_available_balance', 'Before')->alignRight(),
                 TD::make('available_balance', 'After')->alignRight(),

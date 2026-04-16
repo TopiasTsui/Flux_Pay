@@ -53,12 +53,12 @@ class MerchantPaymentTypeListScreen extends Screen
                 TD::make('payment_type_id', 'Payment Type')
                     ->render(fn (MerchantPaymentType $c) => $c->paymentType?->name ?? '-'),
                 TD::make('status', 'Status')
-                    ->render(fn (MerchantPaymentType $c) => $c->status->label()),
+                    ->render(fn (MerchantPaymentType $c) => \App\Enums\EntityStatus::tryFrom($c->status)?->label() ?? $c->status),
                 TD::make('deposit_fee_type', 'Deposit Fee Type')
-                    ->render(fn (MerchantPaymentType $c) => $c->deposit_fee_type?->label() ?? '-'),
+                    ->render(fn (MerchantPaymentType $c) => \App\Enums\FeeType::tryFrom($c->deposit_fee_type)?->label() ?? '-'),
                 TD::make('deposit_fee', 'Deposit Fee'),
                 TD::make('withdraw_fee_type', 'Withdraw Fee Type')
-                    ->render(fn (MerchantPaymentType $c) => $c->withdraw_fee_type?->label() ?? '-'),
+                    ->render(fn (MerchantPaymentType $c) => \App\Enums\FeeType::tryFrom($c->withdraw_fee_type)?->label() ?? '-'),
                 TD::make('withdraw_fee', 'Withdraw Fee'),
                 TD::make('actions', 'Actions')
                     ->render(fn (MerchantPaymentType $c) => Link::make('Edit')

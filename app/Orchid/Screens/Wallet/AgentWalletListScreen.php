@@ -48,7 +48,7 @@ class AgentWalletListScreen extends Screen
                     ->render(fn (AgentWalletRecord $r) => $r->agent?->name ?? '-'),
                 TD::make('sn', 'SN')->filter(Input::make()),
                 TD::make('type_code', 'Type')
-                    ->render(fn (AgentWalletRecord $r) => $r->type_code?->label()),
+                    ->render(fn (AgentWalletRecord $r) => \App\Enums\WalletOperationType::tryFrom($r->type_code)?->label()),
                 TD::make('amount', 'Amount')->sort()->alignRight(),
                 TD::make('pre_available_balance', 'Before')->alignRight(),
                 TD::make('available_balance', 'After')->alignRight(),

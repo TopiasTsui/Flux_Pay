@@ -55,7 +55,7 @@ class BlacklistScreen extends Screen
                 TD::make('value', 'Value')->filter(Input::make()),
                 TD::make('remark', 'Remark'),
                 TD::make('status', 'Status')
-                    ->render(fn (Blacklist $b) => $b->status->label()),
+                    ->render(fn (Blacklist $b) => \App\Enums\EntityStatus::tryFrom($b->status)?->label() ?? $b->status),
                 TD::make('created_at', 'Created')->sort(),
                 TD::make('actions', 'Actions')
                     ->render(fn (Blacklist $b) => ModalToggle::make('Edit')
