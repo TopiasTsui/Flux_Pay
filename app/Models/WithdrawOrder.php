@@ -6,13 +6,14 @@ use App\Enums\CallbackStatus;
 use App\Enums\FundStatus;
 use App\Enums\OrderStatus;
 use App\Models\Concerns\HasTenantScope;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class WithdrawOrder extends Model
 {
-    use HasTenantScope;
+    use HasFactory, HasTenantScope;
 
     protected $fillable = [
         'merchant_id', 'merchant_order_no', 'system_order_no',

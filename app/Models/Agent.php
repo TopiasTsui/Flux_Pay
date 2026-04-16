@@ -6,13 +6,14 @@ use App\Enums\AgentType;
 use App\Enums\EntityStatus;
 use App\Models\Concerns\HasTenantScope;
 use App\Models\Concerns\HasWallet;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Agent extends Model
 {
-    use HasTenantScope, HasWallet;
+    use HasFactory, HasTenantScope, HasWallet;
 
     protected $fillable = [
         'parent_id', 'types', 'name', 'level', 'status', 'currency',

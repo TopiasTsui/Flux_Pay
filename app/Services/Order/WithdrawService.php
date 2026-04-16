@@ -125,7 +125,7 @@ class WithdrawService
             'bank_account_name' => $data['bank_account_name'] ?? null,
             'bank_account_no' => $data['bank_account_no'] ?? null,
             'bank_branch' => $data['bank_branch'] ?? null,
-            'notify_url' => route('callback.withdraw', ['provider' => $channel->provider->provider_no]),
+            'notify_url' => route('callback.withdraw', ['vendor' => $channel->provider->vendor_id]),
         ]);
 
         $updateData = [

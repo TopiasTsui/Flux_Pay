@@ -5,13 +5,14 @@ namespace App\Models;
 use App\Enums\EntityStatus;
 use App\Models\Concerns\HasTenantScope;
 use App\Models\Concerns\HasWallet;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Provider extends Model
 {
-    use HasTenantScope, HasWallet;
+    use HasFactory, HasTenantScope, HasWallet;
 
     protected $fillable = [
         'agent_id', 'name', 'provider_no', 'vendor_id', 'vendor_meta',

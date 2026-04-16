@@ -108,7 +108,7 @@ class DepositService
             'amount' => $amount,
             'bank_code' => $data['bank_code'] ?? null,
             'payer_name' => $data['payer_name'] ?? null,
-            'notify_url' => route('callback.deposit', ['provider' => $channel->provider->provider_no]),
+            'notify_url' => route('callback.deposit', ['vendor' => $channel->provider->vendor_id]),
             'extra' => $data['extend'] ?? null,
         ]);
 

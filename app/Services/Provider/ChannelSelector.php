@@ -35,7 +35,7 @@ class ChannelSelector
                     });
 
                 if ($paymentTypeCode) {
-                    $q->whereHas('paymentType', fn ($pt) => $pt->where('code', $paymentTypeCode));
+                    $q->whereHas('paymentType', fn ($pt) => $pt->where('payment_type_code', $paymentTypeCode));
                 }
             });
 
@@ -50,8 +50,8 @@ class ChannelSelector
                     return false;
                 }
 
-                // Check daily amount limit
-                if ($ppt->daily_amount_limit !== null) {
+                // Check daily amount limit (0 means no limit)
+                if (MoneyHelper::isPositive((string) $ppt->daily_amount_limit)) {
                     $newDaily = MoneyHelper::add((string) ($ppt->current_daily_amount ?? '0'), $amount);
                     if (MoneyHelper::gt($newDaily, (string) $ppt->daily_amount_limit)) {
                         return false;
