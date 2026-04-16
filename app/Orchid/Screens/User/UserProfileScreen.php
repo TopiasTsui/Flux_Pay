@@ -86,6 +86,25 @@ class UserProfileScreen extends Screen
                         ->method('save')
                 ),
 
+            Layout::block(Layout::rows([
+                    \Orchid\Screen\Fields\Select::make('user.locale')
+                        ->title(__('Language'))
+                        ->options([
+                            'en' => 'English',
+                            'zh-CN' => '简体中文',
+                            'zh-TW' => '繁體中文',
+                        ])
+                        ->required(),
+                ]))
+                ->title(__('Language Settings'))
+                ->description(__('Select your preferred language for the admin panel.'))
+                ->commands(
+                    Button::make(__('Save'))
+                        ->type(Color::BASIC())
+                        ->icon('bs.check-circle')
+                        ->method('saveLocale')
+                ),
+
             Layout::block(ProfilePasswordLayout::class)
                 ->title(__('Update Password'))
                 ->description(__('Ensure your account is using a long, random password to stay secure.'))
@@ -113,6 +132,19 @@ class UserProfileScreen extends Screen
             ->save();
 
         Toast::info(__('Profile updated.'));
+    }
+
+    public function saveLocale(Request $request): void
+    {
+        $request->validate([
+            'user.locale' => 'required|in:en,zh-CN,zh-TW',
+        ]);
+
+        $request->user()->forceFill([
+            'locale' => $request->input('user.locale'),
+        ])->save();
+
+        Toast::info(__('Language updated.'));
     }
 
     public function changePassword(Request $request): void
