@@ -10,10 +10,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Orchid\Filters\Filterable;
+use Orchid\Screen\AsSource;
 
 class DepositOrder extends Model
 {
-    use HasFactory, HasTenantScope;
+    use AsSource, Filterable, HasFactory, HasTenantScope;
 
     protected $fillable = [
         'merchant_id', 'merchant_order_no', 'system_order_no',

@@ -6,9 +6,13 @@ use App\Enums\WalletOperationType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Orchid\Filters\Filterable;
+use Orchid\Screen\AsSource;
 
 class AgentWalletRecord extends Model
 {
+    use AsSource, Filterable;
+
     public $timestamps = false;
 
     protected $fillable = [
