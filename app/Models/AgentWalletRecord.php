@@ -3,15 +3,13 @@
 namespace App\Models;
 
 use App\Enums\WalletOperationType;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Orchid\Filters\Filterable;
-use Orchid\Screen\AsSource;
 
-class AgentWalletRecord extends Model
+class AgentWalletRecord extends BaseModel
 {
-    use AsSource, Filterable;
+    
 
     public $timestamps = false;
 

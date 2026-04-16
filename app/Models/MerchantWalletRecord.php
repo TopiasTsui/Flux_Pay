@@ -3,14 +3,12 @@
 namespace App\Models;
 
 use App\Enums\WalletOperationType;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Orchid\Filters\Filterable;
-use Orchid\Screen\AsSource;
 
-class MerchantWalletRecord extends Model
+class MerchantWalletRecord extends BaseModel
 {
-    use AsSource, Filterable;
+    
     public $timestamps = false;
 
     protected $fillable = [

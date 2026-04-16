@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Support\Facades\Cache;
-use Orchid\Filters\Filterable;
-use Orchid\Screen\AsSource;
 
-class SystemConfig extends Model
+class SystemConfig extends BaseModel
 {
-    use AsSource, Filterable;
+    
     protected $fillable = ['group', 'key', 'value', 'remark'];
 
     public static function getValue(string $key, mixed $default = null): mixed

@@ -6,15 +6,13 @@ use App\Enums\EntityStatus;
 use App\Models\Concerns\HasTenantScope;
 use App\Models\Concerns\HasWallet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Orchid\Filters\Filterable;
-use Orchid\Screen\AsSource;
 
-class Provider extends Model
+class Provider extends BaseModel
 {
-    use AsSource, Filterable, HasFactory, HasTenantScope, HasWallet;
+    use HasFactory, HasTenantScope, HasWallet;
 
     protected $fillable = [
         'agent_id', 'name', 'provider_no', 'vendor_id', 'vendor_meta',

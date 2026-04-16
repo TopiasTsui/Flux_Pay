@@ -4,14 +4,12 @@ namespace App\Models;
 
 use App\Enums\EntityStatus;
 use App\Enums\FeeType;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Orchid\Filters\Filterable;
-use Orchid\Screen\AsSource;
 
-class MerchantPaymentType extends Model
+class MerchantPaymentType extends BaseModel
 {
-    use AsSource, Filterable;
+    
     protected $fillable = [
         'merchant_id', 'payment_type_id', 'status',
         'single_min_amount', 'single_max_amount',

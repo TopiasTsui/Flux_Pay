@@ -7,15 +7,13 @@ use App\Enums\FundStatus;
 use App\Enums\OrderStatus;
 use App\Models\Concerns\HasTenantScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Orchid\Filters\Filterable;
-use Orchid\Screen\AsSource;
 
-class WithdrawOrder extends Model
+class WithdrawOrder extends BaseModel
 {
-    use AsSource, Filterable, HasFactory, HasTenantScope;
+    use HasFactory, HasTenantScope;
 
     protected $fillable = [
         'merchant_id', 'merchant_order_no', 'system_order_no',

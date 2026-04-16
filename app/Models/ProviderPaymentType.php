@@ -5,15 +5,13 @@ namespace App\Models;
 use App\Enums\EntityStatus;
 use App\Enums\FeeType;
 use App\Enums\PaymentDirection;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Orchid\Filters\Filterable;
-use Orchid\Screen\AsSource;
 
-class ProviderPaymentType extends Model
+class ProviderPaymentType extends BaseModel
 {
-    use AsSource, Filterable;
+    
     protected $fillable = [
         'provider_id', 'payment_type_id', 'type', 'alias', 'status', 'weight',
         'single_min_amount', 'single_max_amount', 'daily_amount_limit', 'daily_count_limit',

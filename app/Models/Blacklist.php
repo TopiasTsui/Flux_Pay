@@ -3,13 +3,11 @@
 namespace App\Models;
 
 use App\Enums\EntityStatus;
-use Illuminate\Database\Eloquent\Model;
-use Orchid\Filters\Filterable;
-use Orchid\Screen\AsSource;
+use App\Models\BaseModel;
 
-class Blacklist extends Model
+class Blacklist extends BaseModel
 {
-    use AsSource, Filterable;
+    
     protected $fillable = ['type', 'value', 'remark', 'status'];
 
     protected $casts = ['status' => EntityStatus::class];

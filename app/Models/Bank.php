@@ -3,13 +3,11 @@
 namespace App\Models;
 
 use App\Enums\EntityStatus;
-use Illuminate\Database\Eloquent\Model;
-use Orchid\Filters\Filterable;
-use Orchid\Screen\AsSource;
+use App\Models\BaseModel;
 
-class Bank extends Model
+class Bank extends BaseModel
 {
-    use AsSource, Filterable;
+    
     protected $fillable = ['bank_code', 'name', 'status', 'sort_order'];
 
     protected $casts = ['status' => EntityStatus::class];

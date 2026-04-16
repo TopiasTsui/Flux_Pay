@@ -7,15 +7,13 @@ use App\Enums\EntityStatus;
 use App\Models\Concerns\HasTenantScope;
 use App\Models\Concerns\HasWallet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Orchid\Filters\Filterable;
-use Orchid\Screen\AsSource;
 
-class Agent extends Model
+class Agent extends BaseModel
 {
-    use AsSource, Filterable, HasFactory, HasTenantScope, HasWallet;
+    use HasFactory, HasTenantScope, HasWallet;
 
     protected $fillable = [
         'parent_id', 'types', 'name', 'level', 'status', 'currency',

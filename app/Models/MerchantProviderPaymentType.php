@@ -3,14 +3,12 @@
 namespace App\Models;
 
 use App\Enums\EntityStatus;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Orchid\Filters\Filterable;
-use Orchid\Screen\AsSource;
 
-class MerchantProviderPaymentType extends Model
+class MerchantProviderPaymentType extends BaseModel
 {
-    use AsSource, Filterable;
+    
     protected $fillable = ['merchant_id', 'provider_payment_type_id', 'status', 'remark'];
 
     protected $casts = [
