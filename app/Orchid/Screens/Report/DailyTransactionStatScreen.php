@@ -15,12 +15,12 @@ class DailyTransactionStatScreen extends Screen
 
     public function name(): ?string
     {
-        return 'Daily Transaction Statistics';
+        return __('Daily Transaction Statistics');
     }
 
     public function description(): ?string
     {
-        return 'Transaction volume and success rates by day';
+        return __('Transaction volume and success rates by day');
     }
 
     public function query(): iterable
@@ -48,22 +48,22 @@ class DailyTransactionStatScreen extends Screen
     {
         return [
             Layout::table('stats', [
-                TD::make('date', 'Date')->sort(),
-                TD::make('deposit_count', 'Deposit Count')->alignRight(),
-                TD::make('deposit_amount', 'Deposit Amount')->alignRight()
+                TD::make('date', __('Date'))->sort(),
+                TD::make('deposit_count', __('Deposit Count'))->alignRight(),
+                TD::make('deposit_amount', __('Deposit Amount'))->alignRight()
                     ->render(fn ($r) => number_format((float) $r->deposit_amount, 2)),
-                TD::make('deposit_success_count', 'Deposit Success')->alignRight(),
-                TD::make('deposit_success_amount', 'Success Amount')->alignRight()
+                TD::make('deposit_success_count', __('Deposit Success'))->alignRight(),
+                TD::make('deposit_success_amount', __('Success Amount'))->alignRight()
                     ->render(fn ($r) => number_format((float) $r->deposit_success_amount, 2)),
-                TD::make('deposit_rate', 'Deposit Rate')->alignRight()
+                TD::make('deposit_rate', __('Deposit Rate'))->alignRight()
                     ->render(fn ($r) => $r->deposit_count > 0
                         ? round($r->deposit_success_count / $r->deposit_count * 100, 1) . '%'
                         : '-'),
-                TD::make('withdraw_count', 'Withdraw Count')->alignRight(),
-                TD::make('withdraw_amount', 'Withdraw Amount')->alignRight()
+                TD::make('withdraw_count', __('Withdraw Count'))->alignRight(),
+                TD::make('withdraw_amount', __('Withdraw Amount'))->alignRight()
                     ->render(fn ($r) => number_format((float) $r->withdraw_amount, 2)),
-                TD::make('withdraw_success_count', 'Withdraw Success')->alignRight(),
-                TD::make('withdraw_rate', 'Withdraw Rate')->alignRight()
+                TD::make('withdraw_success_count', __('Withdraw Success'))->alignRight(),
+                TD::make('withdraw_rate', __('Withdraw Rate'))->alignRight()
                     ->render(fn ($r) => $r->withdraw_count > 0
                         ? round($r->withdraw_success_count / $r->withdraw_count * 100, 1) . '%'
                         : '-'),

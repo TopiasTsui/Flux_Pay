@@ -20,7 +20,7 @@ class WithdrawOrderDetailScreen extends Screen
 
     public function name(): ?string
     {
-        return 'Withdraw Order: ' . ($this->order?->system_order_no ?? '');
+        return __('Withdraw Order') . ': ' . ($this->order?->system_order_no ?? '');
     }
 
     public function query(WithdrawOrder $order): iterable
@@ -36,15 +36,15 @@ class WithdrawOrderDetailScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Button::make('Manual Query')
+            Button::make(__('Manual Query'))
                 ->icon('bs.arrow-repeat')
                 ->method('manualQuery')
-                ->confirm('Send manual query to provider?'),
+                ->confirm(__('Send manual query to provider?')),
 
-            Button::make('Manual Callback')
+            Button::make(__('Manual Callback'))
                 ->icon('bs.send')
                 ->method('manualCallback')
-                ->confirm('Send manual callback to merchant?'),
+                ->confirm(__('Send manual callback to merchant?')),
         ];
     }
 
@@ -52,50 +52,50 @@ class WithdrawOrderDetailScreen extends Screen
     {
         return [
             Layout::legend('order', [
-                Sight::make('system_order_no', 'System Order No'),
-                Sight::make('merchant_order_no', 'Merchant Order No'),
-                Sight::make('merchant_id', 'Merchant')->render(fn (WithdrawOrder $o) => $o->merchant?->name),
-                Sight::make('provider', 'Provider')->render(fn (WithdrawOrder $o) => $o->providerPaymentType?->provider?->name ?? '-'),
-                Sight::make('order_amount', 'Order Amount'),
-                Sight::make('actual_amount', 'Actual Amount'),
-                Sight::make('total_debit', 'Total Debit'),
-                Sight::make('merchant_fee', 'Merchant Fee'),
-                Sight::make('provider_fee', 'Provider Fee'),
-                Sight::make('agent_fee', 'Agent Fee'),
-                Sight::make('currency', 'Currency'),
-                Sight::make('bank_code', 'Bank Code'),
-                Sight::make('bank_account_name', 'Account Name'),
-                Sight::make('bank_account_no', 'Account No'),
-                Sight::make('bank_branch', 'Branch'),
-                Sight::make('status', 'Status')->render(fn (WithdrawOrder $o) => \App\Enums\OrderStatus::tryFrom($o->status)?->label() ?? $o->status),
-                Sight::make('callback_status', 'Callback Status')->render(fn (WithdrawOrder $o) => \App\Enums\CallbackStatus::tryFrom($o->callback_status)?->label() ?? '-'),
-                Sight::make('fund_status', 'Fund Status')->render(fn (WithdrawOrder $o) => \App\Enums\FundStatus::tryFrom($o->fund_status)?->label() ?? '-'),
-                Sight::make('provider_order_no', 'Provider Order No'),
-                Sight::make('remark', 'Remark'),
-                Sight::make('created_at', 'Created'),
-                Sight::make('updated_at', 'Updated'),
+                Sight::make('system_order_no', __('System Order No')),
+                Sight::make('merchant_order_no', __('Merchant Order No')),
+                Sight::make('merchant_id', __('Merchant'))->render(fn (WithdrawOrder $o) => $o->merchant?->name),
+                Sight::make('provider', __('Provider'))->render(fn (WithdrawOrder $o) => $o->providerPaymentType?->provider?->name ?? '-'),
+                Sight::make('order_amount', __('Order Amount')),
+                Sight::make('actual_amount', __('Actual Amount')),
+                Sight::make('total_debit', __('Total Debit')),
+                Sight::make('merchant_fee', __('Merchant Fee')),
+                Sight::make('provider_fee', __('Provider Fee')),
+                Sight::make('agent_fee', __('Agent Fee')),
+                Sight::make('currency', __('Currency')),
+                Sight::make('bank_code', __('Bank Code')),
+                Sight::make('bank_account_name', __('Account Name')),
+                Sight::make('bank_account_no', __('Account No')),
+                Sight::make('bank_branch', __('Branch')),
+                Sight::make('status', __('Status'))->render(fn (WithdrawOrder $o) => \App\Enums\OrderStatus::tryFrom($o->status)?->label() ?? $o->status),
+                Sight::make('callback_status', __('Callback Status'))->render(fn (WithdrawOrder $o) => \App\Enums\CallbackStatus::tryFrom($o->callback_status)?->label() ?? '-'),
+                Sight::make('fund_status', __('Fund Status'))->render(fn (WithdrawOrder $o) => \App\Enums\FundStatus::tryFrom($o->fund_status)?->label() ?? '-'),
+                Sight::make('provider_order_no', __('Provider Order No')),
+                Sight::make('remark', __('Remark')),
+                Sight::make('created_at', __('Created')),
+                Sight::make('updated_at', __('Updated')),
             ]),
 
             Layout::table('logs', [
-                TD::make('created_at', 'Time')->sort(),
-                TD::make('action', 'Action'),
-                TD::make('request_data', 'Request')
+                TD::make('created_at', __('Time'))->sort(),
+                TD::make('action', __('Action')),
+                TD::make('request_data', __('Request'))
                     ->render(fn ($log) => '<pre class="mb-0" style="max-height:100px;overflow:auto;font-size:11px">' . e(json_encode($log->request_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)) . '</pre>'),
-                TD::make('response_data', 'Response')
+                TD::make('response_data', __('Response'))
                     ->render(fn ($log) => '<pre class="mb-0" style="max-height:100px;overflow:auto;font-size:11px">' . e(json_encode($log->response_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)) . '</pre>'),
-                TD::make('ip_address', 'IP'),
-                TD::make('remark', 'Remark'),
-            ])->title('Order Logs'),
+                TD::make('ip_address', __('IP')),
+                TD::make('remark', __('Remark')),
+            ])->title(__('Order Logs')),
         ];
     }
 
     public function manualQuery(WithdrawOrder $order): void
     {
-        Toast::info('Manual query sent for order ' . $order->system_order_no);
+        Toast::info(__('Manual query sent for order') . ' ' . $order->system_order_no);
     }
 
     public function manualCallback(WithdrawOrder $order): void
     {
-        Toast::info('Manual callback sent for order ' . $order->system_order_no);
+        Toast::info(__('Manual callback sent for order') . ' ' . $order->system_order_no);
     }
 }

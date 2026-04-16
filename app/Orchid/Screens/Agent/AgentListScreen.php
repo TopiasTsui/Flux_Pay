@@ -20,20 +20,22 @@ class AgentListScreen extends Screen
 
     public function name(): ?string
     {
-        return 'Agents';
+        return __('Agents');
     }
 
     public function description(): ?string
     {
-        return 'Manage agent accounts';
+        return __('Manage agent accounts');
     }
 
     public function query(): iterable
     {
         return [
             'agents' => Agent::with('parent')
+                ->orderBy('parent_id')
+                ->orderBy('level')
+                ->orderBy('id')
                 ->filters()
-                ->defaultSort('id', 'desc')
                 ->paginate(),
         ];
     }
@@ -41,7 +43,7 @@ class AgentListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Link::make('Create')
+            Link::make(__('Create'))
                 ->icon('bs.plus')
                 ->route('platform.agents.create'),
         ];
@@ -51,19 +53,20 @@ class AgentListScreen extends Screen
     {
         return [
             Layout::table('agents', [
-                TD::make('id', 'ID')->sort(),
-                TD::make('name', 'Name')->sort()->filter(Input::make()),
-                TD::make('types', 'Type')->render(fn (Agent $a) => \App\Enums\AgentType::tryFrom($a->types)?->label() ?? $a->types),
-                TD::make('level', 'Level')->sort(),
-                TD::make('status', 'Status')
+                TD::make('id', __('ID'))->sort(),
+                TD::make('name', __('Name'))->sort()->filter(Input::make())
+                    ->render(fn (Agent $a) => str_repeat('— ', max(0, $a->level - 1)) . $a->name),
+                TD::make('types', __('Type'))->render(fn (Agent $a) => \App\Enums\AgentType::tryFrom($a->types)?->label() ?? $a->types),
+                TD::make('level', __('Level'))->sort(),
+                TD::make('status', __('Status'))
                     ->render(fn (Agent $a) => \App\Enums\EntityStatus::tryFrom($a->status)?->label() ?? $a->status)
-                    ->filter(Select::make()->options(EntityStatus::options())->empty('All')),
-                TD::make('available_balance', 'Balance')->sort()->alignRight(),
-                TD::make('parent_id', 'Parent')
+                    ->filter(Select::make()->options(EntityStatus::options())->empty(__('All'))),
+                TD::make('available_balance', __('Balance'))->sort()->alignRight(),
+                TD::make('parent_id', __('Parent'))
                     ->render(fn (Agent $a) => $a->parent?->name ?? '-'),
-                TD::make('created_at', 'Created')->sort()->defaultHidden(),
-                TD::make('actions', 'Actions')
-                    ->render(fn (Agent $a) => Link::make('Edit')
+                TD::make('created_at', __('Created'))->sort()->defaultHidden(),
+                TD::make(__('Actions'))
+                    ->render(fn (Agent $a) => Link::make(__('Edit'))
                         ->route('platform.agents.edit', $a)
                         ->icon('bs.pencil')),
             ]),

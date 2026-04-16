@@ -15,12 +15,12 @@ class DailyRevenueStatScreen extends Screen
 
     public function name(): ?string
     {
-        return 'Daily Revenue Statistics';
+        return __('Daily Revenue Statistics');
     }
 
     public function description(): ?string
     {
-        return 'Revenue breakdown by day';
+        return __('Revenue breakdown by day');
     }
 
     public function query(): iterable
@@ -48,16 +48,16 @@ class DailyRevenueStatScreen extends Screen
     {
         return [
             Layout::table('stats', [
-                TD::make('date', 'Date')->sort(),
-                TD::make('total_revenue', 'Total Revenue')->alignRight()
+                TD::make('date', __('Date'))->sort(),
+                TD::make('total_revenue', __('Total Revenue'))->alignRight()
                     ->render(fn ($r) => number_format((float) $r->total_revenue, 2)),
-                TD::make('merchant_fees', 'Merchant Fees')->alignRight()
+                TD::make('merchant_fees', __('Merchant Fees'))->alignRight()
                     ->render(fn ($r) => number_format((float) $r->merchant_fees, 2)),
-                TD::make('provider_fees', 'Provider Fees')->alignRight()
+                TD::make('provider_fees', __('Provider Fees'))->alignRight()
                     ->render(fn ($r) => number_format((float) $r->provider_fees, 2)),
-                TD::make('agent_commissions', 'Agent Commissions')->alignRight()
+                TD::make('agent_commissions', __('Agent Commissions'))->alignRight()
                     ->render(fn ($r) => number_format((float) $r->agent_commissions, 2)),
-                TD::make('net_profit', 'Net Profit')->alignRight()
+                TD::make('net_profit', __('Net Profit'))->alignRight()
                     ->render(fn ($r) => number_format((float) $r->net_profit, 2)),
             ]),
         ];

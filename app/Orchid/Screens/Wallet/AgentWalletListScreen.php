@@ -16,12 +16,12 @@ class AgentWalletListScreen extends Screen
 
     public function name(): ?string
     {
-        return 'Agent Wallet Records';
+        return __('Agent Wallet Records');
     }
 
     public function description(): ?string
     {
-        return 'View agent wallet transaction history';
+        return __('View agent wallet transaction history');
     }
 
     public function query(): iterable
@@ -43,18 +43,18 @@ class AgentWalletListScreen extends Screen
     {
         return [
             Layout::table('records', [
-                TD::make('id', 'ID')->sort(),
-                TD::make('agent_id', 'Agent')
+                TD::make('id', __('ID'))->sort(),
+                TD::make('agent_id', __('Agent'))
                     ->render(fn (AgentWalletRecord $r) => $r->agent?->name ?? '-'),
-                TD::make('sn', 'SN')->filter(Input::make()),
-                TD::make('type_code', 'Type')
+                TD::make('sn', __('SN'))->filter(Input::make()),
+                TD::make('type_code', __('Type'))
                     ->render(fn (AgentWalletRecord $r) => \App\Enums\WalletOperationType::tryFrom($r->type_code)?->label()),
-                TD::make('amount', 'Amount')->sort()->alignRight(),
-                TD::make('pre_available_balance', 'Before')->alignRight(),
-                TD::make('available_balance', 'After')->alignRight(),
-                TD::make('system_order_no', 'Order No')->filter(Input::make()),
-                TD::make('remark', 'Remark'),
-                TD::make('created_at', 'Created')->sort(),
+                TD::make('amount', __('Amount'))->sort()->alignRight(),
+                TD::make('pre_available_balance', __('Before'))->alignRight(),
+                TD::make('available_balance', __('After'))->alignRight(),
+                TD::make('system_order_no', __('Order No'))->filter(Input::make()),
+                TD::make('remark', __('Remark')),
+                TD::make('created_at', __('Created'))->sort(),
             ]),
         ];
     }

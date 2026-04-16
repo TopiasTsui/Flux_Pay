@@ -30,7 +30,7 @@ class MerchantPaymentTypeEditScreen extends Screen
 
     public function name(): ?string
     {
-        return $this->config?->exists ? 'Edit Merchant Payment Config' : 'Create Merchant Payment Config';
+        return $this->config?->exists ? __('Edit Merchant Payment Config') : __('Create Merchant Payment Config');
     }
 
     public function query(MerchantPaymentType $config): iterable
@@ -55,14 +55,14 @@ class MerchantPaymentTypeEditScreen extends Screen
                 ->icon('bs.arrow-left')
                 ->route('platform.merchant-payment-types'),
 
-            Button::make('Save')
+            Button::make(__('Save'))
                 ->icon('bs.check')
                 ->method('save'),
 
-            Button::make('Delete')
+            Button::make(__('Delete'))
                 ->icon('bs.trash')
                 ->method('remove')
-                ->confirm('Delete this config?')
+                ->confirm(__('Delete this config?'))
                 ->canSee($this->config?->exists ?? false),
         ];
     }
@@ -74,48 +74,48 @@ class MerchantPaymentTypeEditScreen extends Screen
         return [
             Layout::rows([
                 Relation::make('config.merchant_id')
-                    ->title('Merchant')
+                    ->title(__('Merchant'))
                     ->fromModel(Merchant::class, 'name')
                     ->required(),
 
                 Relation::make('config.payment_type_id')
-                    ->title('Payment Type')
+                    ->title(__('Payment Type'))
                     ->fromModel(PaymentType::class, 'name')
                     ->required(),
 
                 Select::make('config.status')
-                    ->title('Status')
+                    ->title(__('Status'))
                     ->options(EntityStatus::options())
                     ->required(),
 
                 Select::make('config.deposit_fee_type')
-                    ->title('Deposit Fee Type')
+                    ->title(__('Deposit Fee Type'))
                     ->options($feeTypeOptions)
-                    ->empty('None'),
+                    ->empty(__('None')),
 
                 Input::make('config.deposit_fee')
-                    ->title('Deposit Fee')
+                    ->title(__('Deposit Fee'))
                     ->type('number')
                     ->step('0.000001'),
 
                 Select::make('config.withdraw_fee_type')
-                    ->title('Withdraw Fee Type')
+                    ->title(__('Withdraw Fee Type'))
                     ->options($feeTypeOptions)
-                    ->empty('None'),
+                    ->empty(__('None')),
 
                 Input::make('config.withdraw_fee')
-                    ->title('Withdraw Fee')
+                    ->title(__('Withdraw Fee'))
                     ->type('number')
                     ->step('0.000001'),
 
                 TextArea::make('config.deposit_agents_fee')
-                    ->title('Deposit Agents Fee (JSON)')
-                    ->help('e.g. {"agent_1": "0.5", "agent_2": "0.3"}')
+                    ->title(__('Deposit Agents Fee (JSON)'))
+                    ->help(__('e.g. {"agent_1": "0.5", "agent_2": "0.3"}'))
                     ->rows(3),
 
                 TextArea::make('config.withdraw_agents_fee')
-                    ->title('Withdraw Agents Fee (JSON)')
-                    ->help('e.g. {"agent_1": "0.5", "agent_2": "0.3"}')
+                    ->title(__('Withdraw Agents Fee (JSON)'))
+                    ->help(__('e.g. {"agent_1": "0.5", "agent_2": "0.3"}'))
                     ->rows(3),
             ]),
         ];
@@ -155,7 +155,7 @@ class MerchantPaymentTypeEditScreen extends Screen
     public function remove(MerchantPaymentType $config): RedirectResponse
     {
         $config->delete();
-        Toast::info('Config deleted.');
+        Toast::info(__('Config deleted.'));
 
         return redirect()->route('platform.merchant-payment-types');
     }

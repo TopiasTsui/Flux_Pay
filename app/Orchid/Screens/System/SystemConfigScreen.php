@@ -21,12 +21,12 @@ class SystemConfigScreen extends Screen
 
     public function name(): ?string
     {
-        return 'System Configuration';
+        return __('System Configuration');
     }
 
     public function description(): ?string
     {
-        return 'Manage system-wide configuration values';
+        return __('Manage system-wide configuration values');
     }
 
     public function query(): iterable
@@ -39,7 +39,7 @@ class SystemConfigScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            ModalToggle::make('Create')
+            ModalToggle::make(__('Create'))
                 ->icon('bs.plus')
                 ->modal('createModal')
                 ->method('save'),
@@ -50,16 +50,16 @@ class SystemConfigScreen extends Screen
     {
         return [
             Layout::table('configs', [
-                TD::make('id', 'ID')->sort(),
-                TD::make('group', 'Group')->sort()->filter(Input::make()),
-                TD::make('key', 'Key')->sort()->filter(Input::make()),
-                TD::make('value', 'Value')
+                TD::make('id', __('ID'))->sort(),
+                TD::make('group', __('Group'))->sort()->filter(Input::make()),
+                TD::make('key', __('Key'))->sort()->filter(Input::make()),
+                TD::make('value', __('Value'))
                     ->render(fn (SystemConfig $c) => mb_strlen($c->value) > 80
                         ? mb_substr($c->value, 0, 80) . '...'
                         : $c->value),
-                TD::make('remark', 'Remark'),
-                TD::make('actions', 'Actions')
-                    ->render(fn (SystemConfig $c) => ModalToggle::make('Edit')
+                TD::make('remark', __('Remark')),
+                TD::make(__('Actions'))
+                    ->render(fn (SystemConfig $c) => ModalToggle::make(__('Edit'))
                         ->icon('bs.pencil')
                         ->modal('editModal')
                         ->method('save')
@@ -67,18 +67,18 @@ class SystemConfigScreen extends Screen
             ]),
 
             Layout::modal('createModal', Layout::rows([
-                Input::make('config.group')->title('Group')->value('general'),
-                Input::make('config.key')->title('Key')->required(),
-                TextArea::make('config.value')->title('Value')->required()->rows(3),
-                Input::make('config.remark')->title('Remark'),
-            ]))->title('Create Config')->applyButton('Save'),
+                Input::make('config.group')->title(__('Group'))->value('general'),
+                Input::make('config.key')->title(__('Key'))->required(),
+                TextArea::make('config.value')->title(__('Value'))->required()->rows(3),
+                Input::make('config.remark')->title(__('Remark')),
+            ]))->title(__('Create Config'))->applyButton(__('Save')),
 
             Layout::modal('editModal', Layout::rows([
-                Input::make('config.group')->title('Group'),
-                Input::make('config.key')->title('Key')->required(),
-                TextArea::make('config.value')->title('Value')->required()->rows(3),
-                Input::make('config.remark')->title('Remark'),
-            ]))->title('Edit Config')->applyButton('Save')->async('asyncGetConfig'),
+                Input::make('config.group')->title(__('Group')),
+                Input::make('config.key')->title(__('Key'))->required(),
+                TextArea::make('config.value')->title(__('Value'))->required()->rows(3),
+                Input::make('config.remark')->title(__('Remark')),
+            ]))->title(__('Edit Config'))->applyButton(__('Save'))->async('asyncGetConfig'),
         ];
     }
 
@@ -102,6 +102,6 @@ class SystemConfigScreen extends Screen
         $config = $id ? SystemConfig::findOrFail($id) : new SystemConfig();
         $config->fill($data['config'])->save();
 
-        Toast::info('Config saved.');
+        Toast::info(__('Config saved.'));
     }
 }

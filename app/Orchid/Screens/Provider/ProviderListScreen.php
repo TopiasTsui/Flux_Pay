@@ -19,12 +19,12 @@ class ProviderListScreen extends Screen
 
     public function name(): ?string
     {
-        return 'Providers';
+        return __('Providers');
     }
 
     public function description(): ?string
     {
-        return 'Manage payment providers';
+        return __('Manage payment providers');
     }
 
     public function query(): iterable
@@ -39,7 +39,7 @@ class ProviderListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Link::make('Create')
+            Link::make(__('Create'))
                 ->icon('bs.plus')
                 ->route('platform.providers.create'),
         ];
@@ -49,15 +49,15 @@ class ProviderListScreen extends Screen
     {
         return [
             Layout::table('providers', [
-                TD::make('id', 'ID')->sort(),
-                TD::make('name', 'Name')->sort()->filter(Input::make()),
-                TD::make('vendor_id', 'Vendor ID')->sort()->filter(Input::make()),
-                TD::make('status', 'Status')
+                TD::make('id', __('ID'))->sort(),
+                TD::make('name', __('Name'))->sort()->filter(Input::make()),
+                TD::make('vendor_id', __('Vendor ID'))->sort()->filter(Input::make()),
+                TD::make('status', __('Status'))
                     ->render(fn (Provider $p) => \App\Enums\EntityStatus::tryFrom($p->status)?->label() ?? $p->status)
-                    ->filter(Select::make()->options(EntityStatus::options())->empty('All')),
-                TD::make('available_balance', 'Balance')->sort()->alignRight(),
-                TD::make('actions', 'Actions')
-                    ->render(fn (Provider $p) => Link::make('Edit')
+                    ->filter(Select::make()->options(EntityStatus::options())->empty(__('All'))),
+                TD::make('available_balance', __('Balance'))->sort()->alignRight(),
+                TD::make(__('Actions'))
+                    ->render(fn (Provider $p) => Link::make(__('Edit'))
                         ->route('platform.providers.edit', $p)
                         ->icon('bs.pencil')),
             ]),

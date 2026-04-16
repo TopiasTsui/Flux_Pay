@@ -22,12 +22,12 @@ class PaymentTypeListScreen extends Screen
 
     public function name(): ?string
     {
-        return 'Payment Types';
+        return __('Payment Types');
     }
 
     public function description(): ?string
     {
-        return 'Manage payment type codes';
+        return __('Manage payment type codes');
     }
 
     public function query(): iterable
@@ -40,7 +40,7 @@ class PaymentTypeListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            ModalToggle::make('Create')
+            ModalToggle::make(__('Create'))
                 ->icon('bs.plus')
                 ->modal('createModal')
                 ->method('save'),
@@ -51,13 +51,13 @@ class PaymentTypeListScreen extends Screen
     {
         return [
             Layout::table('types', [
-                TD::make('id', 'ID')->sort(),
-                TD::make('payment_type_code', 'Code')->sort(),
-                TD::make('name', 'Name')->sort(),
-                TD::make('status', 'Status')
+                TD::make('id', __('ID'))->sort(),
+                TD::make('payment_type_code', __('Code'))->sort(),
+                TD::make('name', __('Name'))->sort(),
+                TD::make('status', __('Status'))
                     ->render(fn (PaymentType $t) => \App\Enums\EntityStatus::tryFrom($t->status)?->label() ?? $t->status),
-                TD::make('actions', 'Actions')
-                    ->render(fn (PaymentType $t) => ModalToggle::make('Edit')
+                TD::make(__('Actions'))
+                    ->render(fn (PaymentType $t) => ModalToggle::make(__('Edit'))
                         ->icon('bs.pencil')
                         ->modal('editModal')
                         ->method('save')
@@ -65,16 +65,16 @@ class PaymentTypeListScreen extends Screen
             ]),
 
             Layout::modal('createModal', Layout::rows([
-                Input::make('paymentType.payment_type_code')->title('Code')->required(),
-                Input::make('paymentType.name')->title('Name')->required(),
-                Select::make('paymentType.status')->title('Status')->options(EntityStatus::options())->required(),
-            ]))->title('Create Payment Type')->applyButton('Save'),
+                Input::make('paymentType.payment_type_code')->title(__('Code'))->required(),
+                Input::make('paymentType.name')->title(__('Name'))->required(),
+                Select::make('paymentType.status')->title(__('Status'))->options(EntityStatus::options())->required(),
+            ]))->title(__('Create Payment Type'))->applyButton(__('Save')),
 
             Layout::modal('editModal', Layout::rows([
-                Input::make('paymentType.payment_type_code')->title('Code')->required(),
-                Input::make('paymentType.name')->title('Name')->required(),
-                Select::make('paymentType.status')->title('Status')->options(EntityStatus::options())->required(),
-            ]))->title('Edit Payment Type')->applyButton('Save')->async('asyncGetPaymentType'),
+                Input::make('paymentType.payment_type_code')->title(__('Code'))->required(),
+                Input::make('paymentType.name')->title(__('Name'))->required(),
+                Select::make('paymentType.status')->title(__('Status'))->options(EntityStatus::options())->required(),
+            ]))->title(__('Edit Payment Type'))->applyButton(__('Save'))->async('asyncGetPaymentType'),
         ];
     }
 
@@ -97,6 +97,6 @@ class PaymentTypeListScreen extends Screen
         $type = $id ? PaymentType::findOrFail($id) : new PaymentType();
         $type->fill($data['paymentType'])->save();
 
-        Toast::info('Payment type saved.');
+        Toast::info(__('Payment type saved.'));
     }
 }

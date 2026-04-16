@@ -28,7 +28,7 @@ class ProviderEditScreen extends Screen
 
     public function name(): ?string
     {
-        return $this->provider?->exists ? 'Edit Provider' : 'Create Provider';
+        return $this->provider?->exists ? __('Edit Provider') : __('Create Provider');
     }
 
     public function query(Provider $provider): iterable
@@ -51,14 +51,14 @@ class ProviderEditScreen extends Screen
                 ->icon('bs.arrow-left')
                 ->route('platform.providers'),
 
-            Button::make('Save')
+            Button::make(__('Save'))
                 ->icon('bs.check')
                 ->method('save'),
 
-            Button::make('Delete')
+            Button::make(__('Delete'))
                 ->icon('bs.trash')
                 ->method('remove')
-                ->confirm('Are you sure you want to delete this provider?')
+                ->confirm(__('Are you sure you want to delete this provider?'))
                 ->canSee($this->provider?->exists ?? false),
         ];
     }
@@ -68,33 +68,33 @@ class ProviderEditScreen extends Screen
         return [
             Layout::rows([
                 Input::make('provider.name')
-                    ->title('Name')
+                    ->title(__('Name'))
                     ->required(),
 
                 Input::make('provider.vendor_id')
-                    ->title('Vendor ID')
+                    ->title(__('Vendor ID'))
                     ->required(),
 
                 Input::make('provider.provider_no')
-                    ->title('Provider No'),
+                    ->title(__('Provider No')),
 
                 Relation::make('provider.agent_id')
-                    ->title('Agent')
+                    ->title(__('Agent'))
                     ->fromModel(Agent::class, 'name'),
 
                 Select::make('provider.status')
-                    ->title('Status')
+                    ->title(__('Status'))
                     ->options(EntityStatus::options())
                     ->required(),
 
                 TextArea::make('provider.vendor_meta')
-                    ->title('Vendor Meta (JSON)')
-                    ->help('Provider-specific configuration in JSON format')
+                    ->title(__('Vendor Meta (JSON)'))
+                    ->help(__('Provider-specific configuration in JSON format'))
                     ->rows(6),
 
                 TextArea::make('provider.call_back_ips')
-                    ->title('Callback IPs')
-                    ->help('Comma-separated IP addresses')
+                    ->title(__('Callback IPs'))
+                    ->help(__('Comma-separated IP addresses'))
                     ->rows(2),
             ]),
         ];
@@ -130,7 +130,7 @@ class ProviderEditScreen extends Screen
     public function remove(Provider $provider): RedirectResponse
     {
         $provider->delete();
-        Toast::info('Provider deleted.');
+        Toast::info(__('Provider deleted.'));
 
         return redirect()->route('platform.providers');
     }

@@ -22,12 +22,12 @@ class BankListScreen extends Screen
 
     public function name(): ?string
     {
-        return 'Banks';
+        return __('Banks');
     }
 
     public function description(): ?string
     {
-        return 'Manage bank list';
+        return __('Manage bank list');
     }
 
     public function query(): iterable
@@ -40,7 +40,7 @@ class BankListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            ModalToggle::make('Create')
+            ModalToggle::make(__('Create'))
                 ->icon('bs.plus')
                 ->modal('createModal')
                 ->method('save'),
@@ -51,14 +51,14 @@ class BankListScreen extends Screen
     {
         return [
             Layout::table('banks', [
-                TD::make('id', 'ID')->sort(),
-                TD::make('bank_code', 'Code')->sort()->filter(Input::make()),
-                TD::make('name', 'Name')->sort(),
-                TD::make('status', 'Status')
+                TD::make('id', __('ID'))->sort(),
+                TD::make('bank_code', __('Code'))->sort()->filter(Input::make()),
+                TD::make('name', __('Name'))->sort(),
+                TD::make('status', __('Status'))
                     ->render(fn (Bank $b) => \App\Enums\EntityStatus::tryFrom($b->status)?->label() ?? $b->status),
-                TD::make('sort_order', 'Sort')->sort(),
-                TD::make('actions', 'Actions')
-                    ->render(fn (Bank $b) => ModalToggle::make('Edit')
+                TD::make('sort_order', __('Sort'))->sort(),
+                TD::make(__('Actions'))
+                    ->render(fn (Bank $b) => ModalToggle::make(__('Edit'))
                         ->icon('bs.pencil')
                         ->modal('editModal')
                         ->method('save')
@@ -66,18 +66,18 @@ class BankListScreen extends Screen
             ]),
 
             Layout::modal('createModal', Layout::rows([
-                Input::make('bank.bank_code')->title('Code')->required(),
-                Input::make('bank.name')->title('Name')->required(),
-                Select::make('bank.status')->title('Status')->options(EntityStatus::options())->required(),
-                Input::make('bank.sort_order')->title('Sort Order')->type('number')->value(0),
-            ]))->title('Create Bank')->applyButton('Save'),
+                Input::make('bank.bank_code')->title(__('Code'))->required(),
+                Input::make('bank.name')->title(__('Name'))->required(),
+                Select::make('bank.status')->title(__('Status'))->options(EntityStatus::options())->required(),
+                Input::make('bank.sort_order')->title(__('Sort Order'))->type('number')->value(0),
+            ]))->title(__('Create Bank'))->applyButton(__('Save')),
 
             Layout::modal('editModal', Layout::rows([
-                Input::make('bank.bank_code')->title('Code')->required(),
-                Input::make('bank.name')->title('Name')->required(),
-                Select::make('bank.status')->title('Status')->options(EntityStatus::options())->required(),
-                Input::make('bank.sort_order')->title('Sort Order')->type('number'),
-            ]))->title('Edit Bank')->applyButton('Save')->async('asyncGetBank'),
+                Input::make('bank.bank_code')->title(__('Code'))->required(),
+                Input::make('bank.name')->title(__('Name'))->required(),
+                Select::make('bank.status')->title(__('Status'))->options(EntityStatus::options())->required(),
+                Input::make('bank.sort_order')->title(__('Sort Order'))->type('number'),
+            ]))->title(__('Edit Bank'))->applyButton(__('Save'))->async('asyncGetBank'),
         ];
     }
 
@@ -101,6 +101,6 @@ class BankListScreen extends Screen
         $bank = $id ? Bank::findOrFail($id) : new Bank();
         $bank->fill($data['bank'])->save();
 
-        Toast::info('Bank saved.');
+        Toast::info(__('Bank saved.'));
     }
 }

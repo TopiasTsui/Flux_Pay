@@ -21,12 +21,12 @@ class BlacklistScreen extends Screen
 
     public function name(): ?string
     {
-        return 'Blacklist';
+        return __('Blacklist');
     }
 
     public function description(): ?string
     {
-        return 'Manage blacklisted entries';
+        return __('Manage blacklisted entries');
     }
 
     public function query(): iterable
@@ -39,7 +39,7 @@ class BlacklistScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            ModalToggle::make('Create')
+            ModalToggle::make(__('Create'))
                 ->icon('bs.plus')
                 ->modal('createModal')
                 ->method('save'),
@@ -50,15 +50,15 @@ class BlacklistScreen extends Screen
     {
         return [
             Layout::table('items', [
-                TD::make('id', 'ID')->sort(),
-                TD::make('type', 'Type')->sort()->filter(Input::make()),
-                TD::make('value', 'Value')->filter(Input::make()),
-                TD::make('remark', 'Remark'),
-                TD::make('status', 'Status')
+                TD::make('id', __('ID'))->sort(),
+                TD::make('type', __('Type'))->sort()->filter(Input::make()),
+                TD::make('value', __('Value'))->filter(Input::make()),
+                TD::make('remark', __('Remark')),
+                TD::make('status', __('Status'))
                     ->render(fn (Blacklist $b) => \App\Enums\EntityStatus::tryFrom($b->status)?->label() ?? $b->status),
-                TD::make('created_at', 'Created')->sort(),
-                TD::make('actions', 'Actions')
-                    ->render(fn (Blacklist $b) => ModalToggle::make('Edit')
+                TD::make('created_at', __('Created'))->sort(),
+                TD::make(__('Actions'))
+                    ->render(fn (Blacklist $b) => ModalToggle::make(__('Edit'))
                         ->icon('bs.pencil')
                         ->modal('editModal')
                         ->method('save')
@@ -66,18 +66,18 @@ class BlacklistScreen extends Screen
             ]),
 
             Layout::modal('createModal', Layout::rows([
-                Input::make('item.type')->title('Type')->required()->help('e.g. ip, card, name'),
-                Input::make('item.value')->title('Value')->required(),
-                Input::make('item.remark')->title('Remark'),
-                Select::make('item.status')->title('Status')->options(EntityStatus::options())->required(),
-            ]))->title('Create Blacklist Entry')->applyButton('Save'),
+                Input::make('item.type')->title(__('Type'))->required()->help(__('e.g. ip, card, name')),
+                Input::make('item.value')->title(__('Value'))->required(),
+                Input::make('item.remark')->title(__('Remark')),
+                Select::make('item.status')->title(__('Status'))->options(EntityStatus::options())->required(),
+            ]))->title(__('Create Blacklist Entry'))->applyButton(__('Save')),
 
             Layout::modal('editModal', Layout::rows([
-                Input::make('item.type')->title('Type')->required(),
-                Input::make('item.value')->title('Value')->required(),
-                Input::make('item.remark')->title('Remark'),
-                Select::make('item.status')->title('Status')->options(EntityStatus::options())->required(),
-            ]))->title('Edit Blacklist Entry')->applyButton('Save')->async('asyncGetItem'),
+                Input::make('item.type')->title(__('Type'))->required(),
+                Input::make('item.value')->title(__('Value'))->required(),
+                Input::make('item.remark')->title(__('Remark')),
+                Select::make('item.status')->title(__('Status'))->options(EntityStatus::options())->required(),
+            ]))->title(__('Edit Blacklist Entry'))->applyButton(__('Save'))->async('asyncGetItem'),
         ];
     }
 
@@ -101,6 +101,6 @@ class BlacklistScreen extends Screen
         $item = $id ? Blacklist::findOrFail($id) : new Blacklist();
         $item->fill($data['item'])->save();
 
-        Toast::info('Blacklist entry saved.');
+        Toast::info(__('Blacklist entry saved.'));
     }
 }

@@ -30,7 +30,7 @@ class MerchantEditScreen extends Screen
 
     public function name(): ?string
     {
-        return $this->merchant?->exists ? 'Edit Merchant' : 'Create Merchant';
+        return $this->merchant?->exists ? __('Edit Merchant') : __('Create Merchant');
     }
 
     public function query(Merchant $merchant): iterable
@@ -53,14 +53,14 @@ class MerchantEditScreen extends Screen
                 ->icon('bs.arrow-left')
                 ->route('platform.merchants'),
 
-            Button::make('Save')
+            Button::make(__('Save'))
                 ->icon('bs.check')
                 ->method('save'),
 
-            Button::make('Delete')
+            Button::make(__('Delete'))
                 ->icon('bs.trash')
                 ->method('remove')
-                ->confirm('Are you sure you want to delete this merchant?')
+                ->confirm(__('Are you sure you want to delete this merchant?'))
                 ->canSee($this->merchant?->exists ?? false),
         ];
     }
@@ -70,35 +70,35 @@ class MerchantEditScreen extends Screen
         return [
             Layout::rows([
                 Input::make('merchant.code')
-                    ->title('Code')
+                    ->title(__('Code'))
                     ->required(),
 
                 Input::make('merchant.name')
-                    ->title('Name')
+                    ->title(__('Name'))
                     ->required(),
 
                 Relation::make('merchant.agent_id')
-                    ->title('Agent')
+                    ->title(__('Agent'))
                     ->fromModel(Agent::class, 'name')
                     ->required(),
 
                 Select::make('merchant.currency_code')
-                    ->title('Currency')
+                    ->title(__('Currency'))
                     ->options(Currency::options())
                     ->required(),
 
                 Select::make('merchant.status')
-                    ->title('Status')
+                    ->title(__('Status'))
                     ->options(EntityStatus::options())
                     ->required(),
 
                 TextArea::make('merchant.white_ips')
-                    ->title('White IPs (JSON array)')
-                    ->help('e.g. ["1.2.3.4", "5.6.7.8"]')
+                    ->title(__('White IPs (JSON array)'))
+                    ->help(__('e.g. ["1.2.3.4", "5.6.7.8"]'))
                     ->rows(3),
 
                 Input::make('merchant.md5key')
-                    ->title('MD5 Key')
+                    ->title(__('MD5 Key'))
                     ->readonly()
                     ->canSee($this->merchant?->exists ?? false),
             ]),
@@ -141,7 +141,7 @@ class MerchantEditScreen extends Screen
     public function remove(Merchant $merchant): RedirectResponse
     {
         $merchant->delete();
-        Toast::info('Merchant deleted.');
+        Toast::info(__('Merchant deleted.'));
 
         return redirect()->route('platform.merchants');
     }

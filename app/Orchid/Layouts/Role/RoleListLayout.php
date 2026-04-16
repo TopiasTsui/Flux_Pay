@@ -27,9 +27,7 @@ class RoleListLayout extends Table
             TD::make('name', __('Name'))
                 ->sort()
                 ->cantHide()
-                ->filter(Input::make())
-                ->render(fn (Role $role) => Link::make($role->name)
-                    ->route('platform.systems.roles.edit', $role->id)),
+                ->filter(Input::make()),
 
             TD::make('slug', __('Slug'))
                 ->sort()
@@ -46,6 +44,12 @@ class RoleListLayout extends Table
                 ->usingComponent(DateTimeSplit::class)
                 ->align(TD::ALIGN_RIGHT)
                 ->sort(),
+
+            TD::make(__('Actions'))
+                ->alignRight()
+                ->render(fn (Role $role) => Link::make(__('Edit'))
+                    ->route('platform.systems.roles.edit', $role->id)
+                    ->icon('bs.pencil')),
         ];
     }
 }

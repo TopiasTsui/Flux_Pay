@@ -19,12 +19,12 @@ class ProviderPaymentTypeListScreen extends Screen
 
     public function name(): ?string
     {
-        return 'Provider Payment Channels';
+        return __('Provider Payment Channels');
     }
 
     public function description(): ?string
     {
-        return 'Manage provider payment type configurations';
+        return __('Manage provider payment type configurations');
     }
 
     public function query(): iterable
@@ -40,7 +40,7 @@ class ProviderPaymentTypeListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Link::make('Create')
+            Link::make(__('Create'))
                 ->icon('bs.plus')
                 ->route('platform.provider-payment-types.create'),
         ];
@@ -50,20 +50,20 @@ class ProviderPaymentTypeListScreen extends Screen
     {
         return [
             Layout::table('channels', [
-                TD::make('id', 'ID')->sort(),
-                TD::make('provider_id', 'Provider')
+                TD::make('id', __('ID'))->sort(),
+                TD::make('provider_id', __('Provider'))
                     ->render(fn (ProviderPaymentType $c) => $c->provider?->name ?? '-'),
-                TD::make('payment_type_id', 'Payment Type')
+                TD::make('payment_type_id', __('Payment Type'))
                     ->render(fn (ProviderPaymentType $c) => $c->paymentType?->name ?? '-'),
-                TD::make('type', 'Direction')
+                TD::make('type', __('Direction'))
                     ->render(fn (ProviderPaymentType $c) => \App\Enums\PaymentDirection::tryFrom($c->type)?->label()),
-                TD::make('alias', 'Alias'),
-                TD::make('status', 'Status')
+                TD::make('alias', __('Alias')),
+                TD::make('status', __('Status'))
                     ->render(fn (ProviderPaymentType $c) => \App\Enums\EntityStatus::tryFrom($c->status)?->label() ?? $c->status)
-                    ->filter(Select::make()->options(EntityStatus::options())->empty('All')),
-                TD::make('weight', 'Weight')->sort(),
-                TD::make('actions', 'Actions')
-                    ->render(fn (ProviderPaymentType $c) => Link::make('Edit')
+                    ->filter(Select::make()->options(EntityStatus::options())->empty(__('All'))),
+                TD::make('weight', __('Weight'))->sort(),
+                TD::make(__('Actions'))
+                    ->render(fn (ProviderPaymentType $c) => Link::make(__('Edit'))
                         ->route('platform.provider-payment-types.edit', $c)
                         ->icon('bs.pencil')),
             ]),

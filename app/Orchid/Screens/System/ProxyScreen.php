@@ -22,12 +22,12 @@ class ProxyScreen extends Screen
 
     public function name(): ?string
     {
-        return 'Proxies';
+        return __('Proxies');
     }
 
     public function description(): ?string
     {
-        return 'Manage proxy servers';
+        return __('Manage proxy servers');
     }
 
     public function query(): iterable
@@ -40,7 +40,7 @@ class ProxyScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            ModalToggle::make('Create')
+            ModalToggle::make(__('Create'))
                 ->icon('bs.plus')
                 ->modal('createModal')
                 ->method('save'),
@@ -51,17 +51,17 @@ class ProxyScreen extends Screen
     {
         return [
             Layout::table('proxies', [
-                TD::make('id', 'ID')->sort(),
-                TD::make('name', 'Name')->sort()->filter(Input::make()),
-                TD::make('protocol', 'Protocol'),
-                TD::make('host', 'Host'),
-                TD::make('port', 'Port'),
-                TD::make('status', 'Status')
+                TD::make('id', __('ID'))->sort(),
+                TD::make('name', __('Name'))->sort()->filter(Input::make()),
+                TD::make('protocol', __('Protocol')),
+                TD::make('host', __('Host')),
+                TD::make('port', __('Port')),
+                TD::make('status', __('Status'))
                     ->render(fn (Proxy $p) => \App\Enums\EntityStatus::tryFrom($p->status)?->label() ?? $p->status),
-                TD::make('priority', 'Priority')->sort(),
-                TD::make('description', 'Description'),
-                TD::make('actions', 'Actions')
-                    ->render(fn (Proxy $p) => ModalToggle::make('Edit')
+                TD::make('priority', __('Priority'))->sort(),
+                TD::make('description', __('Description')),
+                TD::make(__('Actions'))
+                    ->render(fn (Proxy $p) => ModalToggle::make(__('Edit'))
                         ->icon('bs.pencil')
                         ->modal('editModal')
                         ->method('save')
@@ -69,30 +69,30 @@ class ProxyScreen extends Screen
             ]),
 
             Layout::modal('createModal', Layout::rows([
-                Input::make('proxy.name')->title('Name')->required(),
-                Select::make('proxy.protocol')->title('Protocol')
+                Input::make('proxy.name')->title(__('Name'))->required(),
+                Select::make('proxy.protocol')->title(__('Protocol'))
                     ->options(['http' => 'HTTP', 'https' => 'HTTPS', 'socks5' => 'SOCKS5'])->required(),
-                Input::make('proxy.host')->title('Host')->required(),
-                Input::make('proxy.port')->title('Port')->type('number')->required(),
-                Input::make('proxy.username')->title('Username'),
-                Input::make('proxy.password')->title('Password')->type('password'),
-                Select::make('proxy.status')->title('Status')->options(EntityStatus::options())->required(),
-                Input::make('proxy.priority')->title('Priority')->type('number')->value(0),
-                Input::make('proxy.description')->title('Description'),
-            ]))->title('Create Proxy')->applyButton('Save'),
+                Input::make('proxy.host')->title(__('Host'))->required(),
+                Input::make('proxy.port')->title(__('Port'))->type('number')->required(),
+                Input::make('proxy.username')->title(__('Username')),
+                Input::make('proxy.password')->title(__('Password'))->type('password'),
+                Select::make('proxy.status')->title(__('Status'))->options(EntityStatus::options())->required(),
+                Input::make('proxy.priority')->title(__('Priority'))->type('number')->value(0),
+                Input::make('proxy.description')->title(__('Description')),
+            ]))->title(__('Create Proxy'))->applyButton(__('Save')),
 
             Layout::modal('editModal', Layout::rows([
-                Input::make('proxy.name')->title('Name')->required(),
-                Select::make('proxy.protocol')->title('Protocol')
+                Input::make('proxy.name')->title(__('Name'))->required(),
+                Select::make('proxy.protocol')->title(__('Protocol'))
                     ->options(['http' => 'HTTP', 'https' => 'HTTPS', 'socks5' => 'SOCKS5'])->required(),
-                Input::make('proxy.host')->title('Host')->required(),
-                Input::make('proxy.port')->title('Port')->type('number')->required(),
-                Input::make('proxy.username')->title('Username'),
-                Input::make('proxy.password')->title('Password')->type('password'),
-                Select::make('proxy.status')->title('Status')->options(EntityStatus::options())->required(),
-                Input::make('proxy.priority')->title('Priority')->type('number'),
-                Input::make('proxy.description')->title('Description'),
-            ]))->title('Edit Proxy')->applyButton('Save')->async('asyncGetProxy'),
+                Input::make('proxy.host')->title(__('Host'))->required(),
+                Input::make('proxy.port')->title(__('Port'))->type('number')->required(),
+                Input::make('proxy.username')->title(__('Username')),
+                Input::make('proxy.password')->title(__('Password'))->type('password'),
+                Select::make('proxy.status')->title(__('Status'))->options(EntityStatus::options())->required(),
+                Input::make('proxy.priority')->title(__('Priority'))->type('number'),
+                Input::make('proxy.description')->title(__('Description')),
+            ]))->title(__('Edit Proxy'))->applyButton(__('Save'))->async('asyncGetProxy'),
         ];
     }
 
@@ -128,6 +128,6 @@ class ProxyScreen extends Screen
 
         $proxy->fill($proxyData)->save();
 
-        Toast::info('Proxy saved.');
+        Toast::info(__('Proxy saved.'));
     }
 }

@@ -21,12 +21,12 @@ class ProviderBankCodeScreen extends Screen
 
     public function name(): ?string
     {
-        return 'Provider Bank Code Mappings';
+        return __('Provider Bank Code Mappings');
     }
 
     public function description(): ?string
     {
-        return 'Map system bank codes to provider-specific codes';
+        return __('Map system bank codes to provider-specific codes');
     }
 
     public function query(): iterable
@@ -39,7 +39,7 @@ class ProviderBankCodeScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            ModalToggle::make('Create')
+            ModalToggle::make(__('Create'))
                 ->icon('bs.plus')
                 ->modal('createModal')
                 ->method('save'),
@@ -50,14 +50,14 @@ class ProviderBankCodeScreen extends Screen
     {
         return [
             Layout::table('mappings', [
-                TD::make('id', 'ID')->sort(),
-                TD::make('bank_config_key', 'Config Key')->sort()->filter(Input::make()),
-                TD::make('bank_code', 'Bank Code')->filter(Input::make()),
-                TD::make('provider_bank_code', 'Provider Code'),
-                TD::make('status', 'Status')
+                TD::make('id', __('ID'))->sort(),
+                TD::make('bank_config_key', __('Config Key'))->sort()->filter(Input::make()),
+                TD::make('bank_code', __('Bank Code'))->filter(Input::make()),
+                TD::make('provider_bank_code', __('Provider Code')),
+                TD::make('status', __('Status'))
                     ->render(fn (ProviderBankCode $m) => \App\Enums\EntityStatus::tryFrom($m->status)?->label() ?? $m->status),
-                TD::make('actions', 'Actions')
-                    ->render(fn (ProviderBankCode $m) => ModalToggle::make('Edit')
+                TD::make(__('Actions'))
+                    ->render(fn (ProviderBankCode $m) => ModalToggle::make(__('Edit'))
                         ->icon('bs.pencil')
                         ->modal('editModal')
                         ->method('save')
@@ -65,18 +65,18 @@ class ProviderBankCodeScreen extends Screen
             ]),
 
             Layout::modal('createModal', Layout::rows([
-                Input::make('mapping.bank_config_key')->title('Config Key')->required(),
-                Input::make('mapping.bank_code')->title('Bank Code')->required(),
-                Input::make('mapping.provider_bank_code')->title('Provider Bank Code')->required(),
-                Select::make('mapping.status')->title('Status')->options(EntityStatus::options())->required(),
-            ]))->title('Create Mapping')->applyButton('Save'),
+                Input::make('mapping.bank_config_key')->title(__('Config Key'))->required(),
+                Input::make('mapping.bank_code')->title(__('Bank Code'))->required(),
+                Input::make('mapping.provider_bank_code')->title(__('Provider Bank Code'))->required(),
+                Select::make('mapping.status')->title(__('Status'))->options(EntityStatus::options())->required(),
+            ]))->title(__('Create Mapping'))->applyButton(__('Save')),
 
             Layout::modal('editModal', Layout::rows([
-                Input::make('mapping.bank_config_key')->title('Config Key')->required(),
-                Input::make('mapping.bank_code')->title('Bank Code')->required(),
-                Input::make('mapping.provider_bank_code')->title('Provider Bank Code')->required(),
-                Select::make('mapping.status')->title('Status')->options(EntityStatus::options())->required(),
-            ]))->title('Edit Mapping')->applyButton('Save')->async('asyncGetMapping'),
+                Input::make('mapping.bank_config_key')->title(__('Config Key'))->required(),
+                Input::make('mapping.bank_code')->title(__('Bank Code'))->required(),
+                Input::make('mapping.provider_bank_code')->title(__('Provider Bank Code'))->required(),
+                Select::make('mapping.status')->title(__('Status'))->options(EntityStatus::options())->required(),
+            ]))->title(__('Edit Mapping'))->applyButton(__('Save'))->async('asyncGetMapping'),
         ];
     }
 
@@ -100,6 +100,6 @@ class ProviderBankCodeScreen extends Screen
         $mapping = $id ? ProviderBankCode::findOrFail($id) : new ProviderBankCode();
         $mapping->fill($data['mapping'])->save();
 
-        Toast::info('Mapping saved.');
+        Toast::info(__('Mapping saved.'));
     }
 }

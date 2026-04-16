@@ -17,12 +17,12 @@ class AdminDashboardScreen extends Screen
 {
     public function name(): ?string
     {
-        return 'Dashboard';
+        return __('Dashboard');
     }
 
     public function description(): ?string
     {
-        return 'FluxPay System Overview';
+        return __('FluxPay System Overview');
     }
 
     public function query(): iterable
@@ -63,19 +63,19 @@ class AdminDashboardScreen extends Screen
     {
         return [
             Layout::metrics([
-                'Today Deposits' => 'metrics.deposit_count',
-                'Deposit Amount' => 'metrics.deposit_amount',
-                'Deposit Success Rate' => 'metrics.deposit_rate',
+                __('Today Deposits') => 'metrics.deposit_count',
+                __('Deposit Amount') => 'metrics.deposit_amount',
+                __('Deposit Success Rate') => 'metrics.deposit_rate',
             ]),
             Layout::metrics([
-                'Today Withdrawals' => 'metrics.withdraw_count',
-                'Withdrawal Amount' => 'metrics.withdraw_amount',
-                'Withdrawal Success Rate' => 'metrics.withdraw_rate',
+                __('Today Withdrawals') => 'metrics.withdraw_count',
+                __('Withdrawal Amount') => 'metrics.withdraw_amount',
+                __('Withdrawal Success Rate') => 'metrics.withdraw_rate',
             ]),
             Layout::metrics([
-                'Total Merchants' => 'metrics.merchants',
-                'Total Agents' => 'metrics.agents',
-                'Total Providers' => 'metrics.providers',
+                __('Total Merchants') => 'metrics.merchants',
+                __('Total Agents') => 'metrics.agents',
+                __('Total Providers') => 'metrics.providers',
             ]),
         ];
     }

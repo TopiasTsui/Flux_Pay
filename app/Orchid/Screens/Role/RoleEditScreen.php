@@ -41,7 +41,7 @@ class RoleEditScreen extends Screen
      */
     public function name(): ?string
     {
-        return 'Edit Role';
+        return __('Edit Role');
     }
 
     /**
@@ -49,7 +49,7 @@ class RoleEditScreen extends Screen
      */
     public function description(): ?string
     {
-        return 'Modify the privileges and permissions associated with a specific role.';
+        return __('Modify the privileges and permissions associated with a specific role.');
     }
 
     /**
@@ -92,14 +92,14 @@ class RoleEditScreen extends Screen
             Layout::block([
                 RoleEditLayout::class,
             ])
-                ->title('Role')
-                ->description('Defines a set of privileges that grant users access to various services and allow them to perform specific tasks or operations.'),
+                ->title(__('Role'))
+                ->description(__('Defines a set of privileges that grant users access to various services and allow them to perform specific tasks or operations.')),
 
             Layout::block([
                 RolePermissionLayout::class,
             ])
-                ->title('Permission/Privilege')
-                ->description('A privilege is necessary to perform certain tasks and operations in an area.'),
+                ->title(__('Permission/Privilege'))
+                ->description(__('A privilege is necessary to perform certain tasks and operations in an area.')),
         ];
     }
 

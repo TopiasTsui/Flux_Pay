@@ -28,7 +28,7 @@ class AgentEditScreen extends Screen
 
     public function name(): ?string
     {
-        return $this->agent?->exists ? 'Edit Agent' : 'Create Agent';
+        return $this->agent?->exists ? __('Edit Agent') : __('Create Agent');
     }
 
     public function query(Agent $agent): iterable
@@ -45,14 +45,14 @@ class AgentEditScreen extends Screen
                 ->icon('bs.arrow-left')
                 ->route('platform.agents'),
 
-            Button::make('Save')
+            Button::make(__('Save'))
                 ->icon('bs.check')
                 ->method('save'),
 
-            Button::make('Delete')
+            Button::make(__('Delete'))
                 ->icon('bs.trash')
                 ->method('remove')
-                ->confirm('Are you sure you want to delete this agent?')
+                ->confirm(__('Are you sure you want to delete this agent?'))
                 ->canSee($this->agent?->exists ?? false),
         ];
     }
@@ -62,30 +62,30 @@ class AgentEditScreen extends Screen
         return [
             Layout::rows([
                 Input::make('agent.name')
-                    ->title('Name')
+                    ->title(__('Name'))
                     ->required(),
 
                 Select::make('agent.types')
-                    ->title('Type')
+                    ->title(__('Type'))
                     ->options(collect(AgentType::cases())->mapWithKeys(fn ($c) => [$c->value => $c->label()])->all())
                     ->required(),
 
                 Select::make('agent.level')
-                    ->title('Level')
-                    ->options([1 => 'Level 1', 2 => 'Level 2', 3 => 'Level 3'])
+                    ->title(__('Level'))
+                    ->options([1 => __('Level 1'), 2 => __('Level 2'), 3 => __('Level 3')])
                     ->required(),
 
                 Relation::make('agent.parent_id')
-                    ->title('Parent Agent')
+                    ->title(__('Parent Agent'))
                     ->fromModel(Agent::class, 'name'),
 
                 Select::make('agent.status')
-                    ->title('Status')
+                    ->title(__('Status'))
                     ->options(EntityStatus::options())
                     ->required(),
 
                 Select::make('agent.currency')
-                    ->title('Currency')
+                    ->title(__('Currency'))
                     ->options(Currency::options())
                     ->required(),
             ]),
@@ -109,7 +109,7 @@ class AgentEditScreen extends Screen
         if (!empty($agentData['parent_id'])) {
             $parent = Agent::find($agentData['parent_id']);
             if ($parent && $agentData['level'] <= $parent->level) {
-                Toast::error('Agent level must be greater than parent level.');
+                Toast::error(__('Agent level must be greater than parent level.'));
                 return redirect()->route('platform.agents');
             }
         }
@@ -124,7 +124,7 @@ class AgentEditScreen extends Screen
     public function remove(Agent $agent): RedirectResponse
     {
         $agent->delete();
-        Toast::info('Agent deleted.');
+        Toast::info(__('Agent deleted.'));
 
         return redirect()->route('platform.agents');
     }

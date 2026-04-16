@@ -30,7 +30,7 @@ class ProviderPaymentTypeEditScreen extends Screen
 
     public function name(): ?string
     {
-        return $this->channel?->exists ? 'Edit Provider Channel' : 'Create Provider Channel';
+        return $this->channel?->exists ? __('Edit Provider Channel') : __('Create Provider Channel');
     }
 
     public function query(ProviderPaymentType $channel): iterable
@@ -47,14 +47,14 @@ class ProviderPaymentTypeEditScreen extends Screen
                 ->icon('bs.arrow-left')
                 ->route('platform.provider-payment-types'),
 
-            Button::make('Save')
+            Button::make(__('Save'))
                 ->icon('bs.check')
                 ->method('save'),
 
-            Button::make('Delete')
+            Button::make(__('Delete'))
                 ->icon('bs.trash')
                 ->method('remove')
-                ->confirm('Delete this channel?')
+                ->confirm(__('Delete this channel?'))
                 ->canSee($this->channel?->exists ?? false),
         ];
     }
@@ -67,74 +67,74 @@ class ProviderPaymentTypeEditScreen extends Screen
         return [
             Layout::rows([
                 Relation::make('channel.provider_id')
-                    ->title('Provider')
+                    ->title(__('Provider'))
                     ->fromModel(Provider::class, 'name')
                     ->required(),
 
                 Relation::make('channel.payment_type_id')
-                    ->title('Payment Type')
+                    ->title(__('Payment Type'))
                     ->fromModel(PaymentType::class, 'name')
                     ->required(),
 
                 Select::make('channel.type')
-                    ->title('Direction')
+                    ->title(__('Direction'))
                     ->options($directionOptions)
                     ->required(),
 
                 Input::make('channel.alias')
-                    ->title('Alias'),
+                    ->title(__('Alias')),
 
                 Select::make('channel.status')
-                    ->title('Status')
+                    ->title(__('Status'))
                     ->options(EntityStatus::options())
                     ->required(),
 
                 Input::make('channel.weight')
-                    ->title('Weight')
+                    ->title(__('Weight'))
                     ->type('number')
                     ->value(0),
 
                 Input::make('channel.single_min_amount')
-                    ->title('Min Amount')
+                    ->title(__('Min Amount'))
                     ->type('number')
                     ->step('0.01'),
 
                 Input::make('channel.single_max_amount')
-                    ->title('Max Amount')
+                    ->title(__('Max Amount'))
                     ->type('number')
                     ->step('0.01'),
 
                 Input::make('channel.daily_amount_limit')
-                    ->title('Daily Amount Limit')
+                    ->title(__('Daily Amount Limit'))
                     ->type('number')
                     ->step('0.01'),
 
                 Input::make('channel.daily_count_limit')
-                    ->title('Daily Count Limit')
+                    ->title(__('Daily Count Limit'))
                     ->type('number'),
 
                 Select::make('channel.deposit_fee_type')
-                    ->title('Deposit Fee Type')
+                    ->title(__('Deposit Fee Type'))
                     ->options($feeTypeOptions)
-                    ->empty('None'),
+                    ->empty(__('None')),
 
                 Input::make('channel.deposit_fee')
-                    ->title('Deposit Fee')
+                    ->title(__('Deposit Fee'))
                     ->type('number')
                     ->step('0.000001'),
 
                 Select::make('channel.withdraw_fee_type')
-                    ->title('Withdraw Fee Type')
+                    ->title(__('Withdraw Fee Type'))
                     ->options($feeTypeOptions)
-                    ->empty('None'),
+                    ->empty(__('None')),
 
                 Input::make('channel.withdraw_fee')
-                    ->title('Withdraw Fee')
+                    ->title(__('Withdraw Fee'))
                     ->type('number')
                     ->step('0.000001'),
 
                 Input::make('channel.agent_fee')
-                    ->title('Agent Fee')
+                    ->title(__('Agent Fee'))
                     ->type('number')
                     ->step('0.000001'),
             ]),
@@ -171,7 +171,7 @@ class ProviderPaymentTypeEditScreen extends Screen
     public function remove(ProviderPaymentType $channel): RedirectResponse
     {
         $channel->delete();
-        Toast::info('Provider channel deleted.');
+        Toast::info(__('Provider channel deleted.'));
 
         return redirect()->route('platform.provider-payment-types');
     }

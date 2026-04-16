@@ -19,12 +19,12 @@ class MerchantListScreen extends Screen
 
     public function name(): ?string
     {
-        return 'Merchants';
+        return __('Merchants');
     }
 
     public function description(): ?string
     {
-        return 'Manage merchant accounts';
+        return __('Manage merchant accounts');
     }
 
     public function query(): iterable
@@ -40,7 +40,7 @@ class MerchantListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Link::make('Create')
+            Link::make(__('Create'))
                 ->icon('bs.plus')
                 ->route('platform.merchants.create'),
         ];
@@ -50,18 +50,18 @@ class MerchantListScreen extends Screen
     {
         return [
             Layout::table('merchants', [
-                TD::make('id', 'ID')->sort(),
-                TD::make('code', 'Code')->sort()->filter(Input::make()),
-                TD::make('name', 'Name')->sort()->filter(Input::make()),
-                TD::make('agent_id', 'Agent')
+                TD::make('id', __('ID'))->sort(),
+                TD::make('code', __('Code'))->sort()->filter(Input::make()),
+                TD::make('name', __('Name'))->sort()->filter(Input::make()),
+                TD::make('agent_id', __('Agent'))
                     ->render(fn (Merchant $m) => $m->agent?->name ?? '-'),
-                TD::make('status', 'Status')
+                TD::make('status', __('Status'))
                     ->render(fn (Merchant $m) => \App\Enums\EntityStatus::tryFrom($m->status)?->label() ?? $m->status)
-                    ->filter(Select::make()->options(EntityStatus::options())->empty('All')),
-                TD::make('available_balance', 'Balance')->sort()->alignRight(),
-                TD::make('created_at', 'Created')->sort(),
-                TD::make('actions', 'Actions')
-                    ->render(fn (Merchant $m) => Link::make('Edit')
+                    ->filter(Select::make()->options(EntityStatus::options())->empty(__('All'))),
+                TD::make('available_balance', __('Balance'))->sort()->alignRight(),
+                TD::make('created_at', __('Created'))->sort(),
+                TD::make(__('Actions'))
+                    ->render(fn (Merchant $m) => Link::make(__('Edit'))
                         ->route('platform.merchants.edit', $m)
                         ->icon('bs.pencil')),
             ]),
