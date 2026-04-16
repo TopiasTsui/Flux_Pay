@@ -14,12 +14,27 @@ use App\Models\MerchantProviderPaymentType;
 use App\Models\PaymentType;
 use App\Models\Provider;
 use App\Models\ProviderPaymentType;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class TestDataSeeder extends Seeder
 {
     public function run(): void
     {
+        // Admin user
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@fluxpay.com'],
+            [
+                'name' => 'admin',
+                'password' => Hash::make('password123'),
+            ],
+        );
+        // Assign all permissions via Orchid
+        $adminRole = \Orchid\Platform\Models\Role::where('slug', 'administrator')->first();
+        if ($adminRole && !$admin->inRole($adminRole)) {
+            $admin->addRole($adminRole);
+        }
         // Level-1 agent
         $agentL1 = Agent::updateOrCreate(
             ['name' => 'Test Agent L1'],
