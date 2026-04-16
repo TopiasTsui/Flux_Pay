@@ -28,9 +28,45 @@ class TestDataSeeder extends Seeder
             [
                 'name' => 'admin',
                 'password' => Hash::make('password123'),
+                'permissions' => [
+                    'platform.index' => true,
+                    'platform.systems.roles' => true,
+                    'platform.systems.users' => true,
+                    'platform.systems.attachment' => true,
+                    'platform.orders' => true,
+                    'platform.orders.actions' => true,
+                    'platform.merchants' => true,
+                    'platform.agents' => true,
+                    'platform.providers' => true,
+                    'platform.payment-config' => true,
+                    'platform.wallets' => true,
+                    'platform.reports' => true,
+                    'platform.banks' => true,
+                    'platform.system' => true,
+                ],
             ],
         );
-        // Assign all permissions via Orchid
+        // Also update permissions if user already exists
+        $admin->forceFill([
+            'permissions' => [
+                'platform.index' => true,
+                'platform.systems.roles' => true,
+                'platform.systems.users' => true,
+                'platform.systems.attachment' => true,
+                'platform.orders' => true,
+                'platform.orders.actions' => true,
+                'platform.merchants' => true,
+                'platform.agents' => true,
+                'platform.providers' => true,
+                'platform.payment-config' => true,
+                'platform.wallets' => true,
+                'platform.reports' => true,
+                'platform.banks' => true,
+                'platform.system' => true,
+            ],
+        ])->save();
+
+        // Assign administrator role
         $adminRole = \Orchid\Platform\Models\Role::where('slug', 'administrator')->first();
         if ($adminRole && !$admin->inRole($adminRole)) {
             $admin->addRole($adminRole);

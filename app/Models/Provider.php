@@ -9,10 +9,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Orchid\Filters\Filterable;
+use Orchid\Screen\AsSource;
 
 class Provider extends Model
 {
-    use HasFactory, HasTenantScope, HasWallet;
+    use AsSource, Filterable, HasFactory, HasTenantScope, HasWallet;
 
     protected $fillable = [
         'agent_id', 'name', 'provider_no', 'vendor_id', 'vendor_meta',

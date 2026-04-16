@@ -4,9 +4,12 @@ namespace App\Models;
 
 use App\Enums\EntityStatus;
 use Illuminate\Database\Eloquent\Model;
+use Orchid\Filters\Filterable;
+use Orchid\Screen\AsSource;
 
 class Proxy extends Model
 {
+    use AsSource, Filterable;
     protected $fillable = ['name', 'host', 'port', 'username', 'password', 'protocol', 'status', 'priority', 'description'];
 
     protected $casts = ['status' => EntityStatus::class];

@@ -13,20 +13,27 @@ class RolePermissionSeeder extends Seeder
     {
         $allPermissions = [
             'platform.index' => true,
+            // Access Controls
             'platform.systems.roles' => true,
             'platform.systems.users' => true,
             'platform.systems.attachment' => true,
-            'platform.orders.deposits' => true,
-            'platform.orders.withdrawals' => true,
-            'platform.wallets.merchant' => true,
-            'platform.wallets.agent' => true,
-            'platform.wallets.provider' => true,
+            // Payment
+            'platform.orders' => true,
+            'platform.orders.actions' => true,
+            // Entities
             'platform.merchants' => true,
             'platform.agents' => true,
             'platform.providers' => true,
-            'platform.payment-types' => true,
+            // Payment Config
+            'platform.payment-config' => true,
+            // Finance
+            'platform.wallets' => true,
+            // Reports
+            'platform.reports' => true,
+            // Banks
             'platform.banks' => true,
-            'platform.settings' => true,
+            // System
+            'platform.system' => true,
         ];
 
         Role::updateOrCreate(
@@ -54,9 +61,8 @@ class RolePermissionSeeder extends Seeder
                 'name' => 'Merchant',
                 'permissions' => [
                     'platform.index' => true,
-                    'platform.orders.deposits' => true,
-                    'platform.orders.withdrawals' => true,
-                    'platform.wallets.merchant' => true,
+                    'platform.orders' => true,
+                    'platform.wallets' => true,
                 ],
             ],
         );
@@ -67,9 +73,8 @@ class RolePermissionSeeder extends Seeder
                 'name' => 'Agent',
                 'permissions' => [
                     'platform.index' => true,
-                    'platform.orders.deposits' => true,
-                    'platform.orders.withdrawals' => true,
-                    'platform.wallets.agent' => true,
+                    'platform.orders' => true,
+                    'platform.wallets' => true,
                     'platform.merchants' => true,
                 ],
             ],
