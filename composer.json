@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^11.31",
+        "laravel/horizon": "^5.45",
         "laravel/tinker": "^2.9",
         "orchid/platform": "^14.53"
     },
