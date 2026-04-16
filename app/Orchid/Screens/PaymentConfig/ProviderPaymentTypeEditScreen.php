@@ -12,7 +12,9 @@ use App\Models\Provider;
 use App\Models\ProviderPaymentType;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Http\RedirectResponse;
 use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Relation;
 use Orchid\Screen\Fields\Select;
@@ -41,6 +43,10 @@ class ProviderPaymentTypeEditScreen extends Screen
     public function commandBar(): iterable
     {
         return [
+            Link::make(__('Back'))
+                ->icon('bs.arrow-left')
+                ->route('platform.provider-payment-types'),
+
             Button::make('Save')
                 ->icon('bs.check')
                 ->method('save'),
@@ -135,7 +141,7 @@ class ProviderPaymentTypeEditScreen extends Screen
         ];
     }
 
-    public function save(ProviderPaymentType $channel, Request $request): void
+    public function save(ProviderPaymentType $channel, Request $request): RedirectResponse
     {
         $data = $request->validate([
             'channel.provider_id' => 'required|exists:providers,id',
@@ -157,12 +163,16 @@ class ProviderPaymentTypeEditScreen extends Screen
 
         $channel->fill($data['channel'])->save();
 
-        Toast::info('Provider channel saved.');
+        Toast::info(__('Saved successfully.'));
+
+        return redirect()->route('platform.provider-payment-types');
     }
 
-    public function remove(ProviderPaymentType $channel): void
+    public function remove(ProviderPaymentType $channel): RedirectResponse
     {
         $channel->delete();
         Toast::info('Provider channel deleted.');
+
+        return redirect()->route('platform.provider-payment-types');
     }
 }

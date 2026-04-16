@@ -11,7 +11,9 @@ use App\Models\Merchant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Http\RedirectResponse;
 use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Relation;
 use Orchid\Screen\Fields\Select;
@@ -47,6 +49,10 @@ class MerchantEditScreen extends Screen
     public function commandBar(): iterable
     {
         return [
+            Link::make(__('Back'))
+                ->icon('bs.arrow-left')
+                ->route('platform.merchants'),
+
             Button::make('Save')
                 ->icon('bs.check')
                 ->method('save'),
@@ -99,7 +105,7 @@ class MerchantEditScreen extends Screen
         ];
     }
 
-    public function save(Merchant $merchant, Request $request): void
+    public function save(Merchant $merchant, Request $request): RedirectResponse
     {
         $data = $request->validate([
             'merchant.code' => ['required', 'string', 'max:64', Rule::unique('merchants', 'code')->ignore($merchant->id)],
@@ -127,12 +133,16 @@ class MerchantEditScreen extends Screen
 
         $merchant->fill($merchantData)->save();
 
-        Toast::info('Merchant saved successfully.');
+        Toast::info(__('Saved successfully.'));
+
+        return redirect()->route('platform.merchants');
     }
 
-    public function remove(Merchant $merchant): void
+    public function remove(Merchant $merchant): RedirectResponse
     {
         $merchant->delete();
         Toast::info('Merchant deleted.');
+
+        return redirect()->route('platform.merchants');
     }
 }

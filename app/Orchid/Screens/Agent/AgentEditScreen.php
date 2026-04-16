@@ -10,7 +10,9 @@ use App\Enums\EntityStatus;
 use App\Models\Agent;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Http\RedirectResponse;
 use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Relation;
 use Orchid\Screen\Fields\Select;
@@ -39,6 +41,10 @@ class AgentEditScreen extends Screen
     public function commandBar(): iterable
     {
         return [
+            Link::make(__('Back'))
+                ->icon('bs.arrow-left')
+                ->route('platform.agents'),
+
             Button::make('Save')
                 ->icon('bs.check')
                 ->method('save'),
@@ -86,7 +92,7 @@ class AgentEditScreen extends Screen
         ];
     }
 
-    public function save(Agent $agent, Request $request): void
+    public function save(Agent $agent, Request $request): RedirectResponse
     {
         $data = $request->validate([
             'agent.name' => 'required|string|max:255',
@@ -104,18 +110,22 @@ class AgentEditScreen extends Screen
             $parent = Agent::find($agentData['parent_id']);
             if ($parent && $agentData['level'] <= $parent->level) {
                 Toast::error('Agent level must be greater than parent level.');
-                return;
+                return redirect()->route('platform.agents');
             }
         }
 
         $agent->fill($agentData)->save();
 
-        Toast::info('Agent saved successfully.');
+        Toast::info(__('Saved successfully.'));
+
+        return redirect()->route('platform.agents');
     }
 
-    public function remove(Agent $agent): void
+    public function remove(Agent $agent): RedirectResponse
     {
         $agent->delete();
         Toast::info('Agent deleted.');
+
+        return redirect()->route('platform.agents');
     }
 }

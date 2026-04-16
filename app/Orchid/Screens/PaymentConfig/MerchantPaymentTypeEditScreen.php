@@ -11,7 +11,9 @@ use App\Models\MerchantPaymentType;
 use App\Models\PaymentType;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Http\RedirectResponse;
 use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Relation;
 use Orchid\Screen\Fields\Select;
@@ -49,6 +51,10 @@ class MerchantPaymentTypeEditScreen extends Screen
     public function commandBar(): iterable
     {
         return [
+            Link::make(__('Back'))
+                ->icon('bs.arrow-left')
+                ->route('platform.merchant-payment-types'),
+
             Button::make('Save')
                 ->icon('bs.check')
                 ->method('save'),
@@ -115,7 +121,7 @@ class MerchantPaymentTypeEditScreen extends Screen
         ];
     }
 
-    public function save(MerchantPaymentType $config, Request $request): void
+    public function save(MerchantPaymentType $config, Request $request): RedirectResponse
     {
         $data = $request->validate([
             'config.merchant_id' => 'required|exists:merchants,id',
@@ -141,12 +147,16 @@ class MerchantPaymentTypeEditScreen extends Screen
 
         $config->fill($configData)->save();
 
-        Toast::info('Merchant payment config saved.');
+        Toast::info(__('Saved successfully.'));
+
+        return redirect()->route('platform.merchant-payment-types');
     }
 
-    public function remove(MerchantPaymentType $config): void
+    public function remove(MerchantPaymentType $config): RedirectResponse
     {
         $config->delete();
         Toast::info('Config deleted.');
+
+        return redirect()->route('platform.merchant-payment-types');
     }
 }
