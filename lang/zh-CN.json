@@ -36,7 +36,6 @@
     "Orders": "订单",
     "Order Actions (Query/Callback)": "订单操作（查询/回调）",
     "Entities": "主体",
-
     "Back": "返回",
     "Save": "保存",
     "Delete": "删除",
@@ -52,7 +51,6 @@
     "Slug": "标识",
     "Permissions": "权限",
     "Regular User": "普通用户",
-
     "Saved successfully.": "保存成功。",
     "Profile updated.": "资料已更新。",
     "Password changed.": "密码已修改。",
@@ -61,7 +59,6 @@
     "User was removed": "用户已删除",
     "Role was saved": "角色已保存",
     "Role was removed": "角色已删除",
-
     "Profile Information": "个人资料",
     "Update your account's profile information and email address.": "更新您的账户资料和邮箱。",
     "Update Password": "修改密码",
@@ -76,18 +73,15 @@
     "Language Settings": "语言设置",
     "Language": "语言",
     "Select your preferred language for the admin panel.": "选择您的后台管理界面语言。",
-
     "Impersonate user": "模拟登录",
     "You can revert to your original state by logging out.": "您可以通过注销恢复原始身份。",
     "You are now impersonating this user": "您正在模拟此用户",
     "Once the account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.": "删除账户后，其所有数据将被永久删除。请在删除前备份您需要保留的数据。",
-
     "A Role defines a set of tasks a user assigned the role is allowed to perform.": "角色定义了用户可执行的一组权限。",
     "Allow the user to perform some actions that are not provided for by his roles": "允许用户执行角色未授予的额外操作",
     "Role display name": "角色显示名称",
     "Actual name in the system": "系统中的实际标识",
     "Name role": "角色名称",
-
     "ID": "ID",
     "Code": "代码",
     "Type": "类型",
@@ -134,7 +128,6 @@
     "Response": "响应",
     "IP": "IP",
     "Updated": "更新时间",
-
     "Manage agent accounts": "管理代理账户",
     "Manage merchant accounts": "管理商户账户",
     "Manage payment providers": "管理支付供应商",
@@ -162,7 +155,6 @@
     "Transaction volume and success rates by day": "按日统计交易量和成功率",
     "Daily Revenue Statistics": "每日营收统计",
     "Revenue breakdown by day": "按日营收明细",
-
     "Manual Adjustment": "手动调账",
     "Manually credit or debit wallets": "手动增加或扣减钱包余额",
     "Entity Type": "实体类型",
@@ -173,7 +165,6 @@
     "Adjustment Amount": "调账金额",
     "Adjustment Remark": "调账备注",
     "Adjustment saved successfully.": "调账保存成功。",
-
     "Edit Agent": "编辑代理",
     "Create Agent": "创建代理",
     "Edit Merchant": "编辑商户",
@@ -190,7 +181,6 @@
     "Role Management": "角色管理",
     "User Management": "用户管理",
     "My Account": "我的账户",
-
     "Deposit Order": "代收订单",
     "Withdraw Order": "代付订单",
     "System Order No": "系统订单号",
@@ -212,12 +202,10 @@
     "Send manual callback to merchant?": "确认向商户发送手动回调？",
     "Manual query sent for order": "已发送手动查询，订单",
     "Manual callback sent for order": "已发送手动回调，订单",
-
     "Total Debit": "总扣款",
     "Account Name": "账户名",
     "Account No": "账号",
     "Branch": "支行",
-
     "Payment Type": "支付类型",
     "Create Payment Type": "创建支付类型",
     "Edit Payment Type": "编辑支付类型",
@@ -233,7 +221,6 @@
     "Deposit Agents Fee (JSON)": "代收代理费率 (JSON)",
     "Withdraw Agents Fee (JSON)": "代付代理费率 (JSON)",
     "e.g. {\"agent_1\": \"0.5\", \"agent_2\": \"0.3\"}": "例如 {\"agent_1\": \"0.5\", \"agent_2\": \"0.3\"}",
-
     "Config Key": "配置键",
     "Provider Code": "供应商代码",
     "Provider Bank Code": "供应商银行代码",
@@ -248,7 +235,6 @@
     "Config saved.": "配置已保存。",
     "Config deleted.": "配置已删除。",
     "Provider channel deleted.": "供应商通道已删除。",
-
     "Create Blacklist Entry": "创建黑名单条目",
     "Edit Blacklist Entry": "编辑黑名单条目",
     "Blacklist entry saved.": "黑名单条目已保存。",
@@ -256,7 +242,6 @@
     "Create Proxy": "创建代理",
     "Edit Proxy": "编辑代理",
     "Proxy saved.": "代理已保存。",
-
     "Parent Agent": "上级代理",
     "Level 1": "一级",
     "Level 2": "二级",
@@ -270,7 +255,6 @@
     "Are you sure you want to delete this agent?": "确认删除此代理？",
     "Are you sure you want to delete this merchant?": "确认删除此商户？",
     "Are you sure you want to delete this provider?": "确认删除此供应商？",
-
     "Vendor ID": "供应商ID",
     "Provider No": "供应商编号",
     "Vendor Meta (JSON)": "供应商元数据 (JSON)",
@@ -280,7 +264,6 @@
     "White IPs (JSON array)": "IP白名单 (JSON数组)",
     "e.g. [\"1.2.3.4\", \"5.6.7.8\"]": "例如 [\"1.2.3.4\", \"5.6.7.8\"]",
     "MD5 Key": "MD5密钥",
-
     "Today Deposits": "今日代收",
     "Deposit Amount": "代收金额",
     "Deposit Success Rate": "代收成功率",
@@ -303,7 +286,6 @@
     "Provider Fees": "供应商手续费",
     "Agent Commissions": "代理佣金",
     "Net Profit": "净利润",
-
     "Update your account details such as name, email address and password": "更新您的账户信息，如名称、邮箱和密码",
     "Back to my account": "返回我的账户",
     "Sign out": "退出登录",
@@ -315,7 +297,6 @@
     "Defines a set of privileges that grant users access to various services and allow them to perform specific tasks or operations.": "定义一组特权，授予用户访问各种服务并允许其执行特定任务的权限。",
     "Permission/Privilege": "权限/特权",
     "A privilege is necessary to perform certain tasks and operations in an area.": "执行某些任务和操作需要相应的特权。",
-
     "Organization": "组织",
     "Notes": "备注",
     "Active": "启用",
@@ -326,5 +307,23 @@
     "Remember me": "记住我",
     "Enter your username": "请输入用户名",
     "Enter your password": "请输入密码",
-    "Sign in to your account": "登入您的帐户"
+    "Sign in to your account": "登入您的帐户",
+    "Menu Management": "菜单管理",
+    "Manage admin sidebar menu items": "管理后台侧边栏菜单项",
+    "Initialize Default": "初始化默认菜单",
+    "This will reset menu to defaults. Continue?": "将重置菜单为默认值，确认继续？",
+    "Title": "标题",
+    "Route": "路由",
+    "External URL, overrides route": "外部链接，优先于路由",
+    "Menu saved.": "菜单已保存。",
+    "Default menus initialized.": "默认菜单已初始化。",
+    "-- Top Level --": "-- 顶级 --",
+    "-- Select --": "-- 请选择 --",
+    "Create Menu": "新增菜单",
+    "Edit Menu": "编辑菜单",
+    "Submit Adjustment": "提交调账",
+    "Are you sure you want to adjust the wallet?": "确认调整钱包余额？",
+    "Available": "可用",
+    "Hold": "冻结",
+    "Current Balance": "当前余额"
 }

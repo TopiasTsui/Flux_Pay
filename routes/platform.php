@@ -25,7 +25,7 @@ use App\Orchid\Screens\Report\DailyTransactionStatScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\System\BlacklistScreen;
-use App\Orchid\Screens\System\ProxyScreen;
+use App\Orchid\Screens\System\MenuManagementScreen;
 use App\Orchid\Screens\System\SystemConfigScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
@@ -242,11 +242,11 @@ Route::screen('system/blacklist', BlacklistScreen::class)
         ->parent('platform.index')
         ->push('Blacklist', route('platform.system.blacklist')));
 
-Route::screen('system/proxies', ProxyScreen::class)
-    ->name('platform.system.proxies')
+Route::screen('system/menus', MenuManagementScreen::class)
+    ->name('platform.system.menus')
     ->breadcrumbs(fn (Trail $trail) => $trail
         ->parent('platform.index')
-        ->push('Proxies', route('platform.system.proxies')));
+        ->push(__('Menu Management'), route('platform.system.menus')));
 
 // ── Access Controls ─────────────────────────────────────────────────────
 Route::screen('users/{user}/edit', UserEditScreen::class)

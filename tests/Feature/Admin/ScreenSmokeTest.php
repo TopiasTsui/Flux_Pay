@@ -14,7 +14,6 @@ use App\Models\PaymentType;
 use App\Models\Provider;
 use App\Models\ProviderBankCode;
 use App\Models\ProviderPaymentType;
-use App\Models\Proxy;
 use App\Models\SystemConfig;
 use App\Models\User;
 use App\Models\WithdrawOrder;
@@ -75,7 +74,6 @@ class ScreenSmokeTest extends TestCase
             'provider-bank-codes' => ['/admin/provider-bank-codes'],
             'system-configs' => ['/admin/system/configs'],
             'system-blacklist' => ['/admin/system/blacklist'],
-            'system-proxies' => ['/admin/system/proxies'],
             'users' => ['/admin/users'],
             'roles' => ['/admin/roles'],
             'profile' => ['/admin/profile'],

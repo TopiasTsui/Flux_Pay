@@ -36,7 +36,6 @@
     "Orders": "訂單",
     "Order Actions (Query/Callback)": "訂單操作（查詢/回調）",
     "Entities": "主體",
-
     "Back": "返回",
     "Save": "儲存",
     "Delete": "刪除",
@@ -52,7 +51,6 @@
     "Slug": "標識",
     "Permissions": "權限",
     "Regular User": "一般使用者",
-
     "Saved successfully.": "儲存成功。",
     "Profile updated.": "資料已更新。",
     "Password changed.": "密碼已修改。",
@@ -61,7 +59,6 @@
     "User was removed": "使用者已刪除",
     "Role was saved": "角色已儲存",
     "Role was removed": "角色已刪除",
-
     "Profile Information": "個人資料",
     "Update your account's profile information and email address.": "更新您的帳戶資料和電子郵件。",
     "Update Password": "修改密碼",
@@ -76,18 +73,15 @@
     "Language Settings": "語言設定",
     "Language": "語言",
     "Select your preferred language for the admin panel.": "選擇您的後台管理介面語言。",
-
     "Impersonate user": "模擬登入",
     "You can revert to your original state by logging out.": "您可以透過登出恢復原始身份。",
     "You are now impersonating this user": "您正在模擬此使用者",
     "Once the account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.": "刪除帳戶後，其所有資料將被永久刪除。請在刪除前備份您需要保留的資料。",
-
     "A Role defines a set of tasks a user assigned the role is allowed to perform.": "角色定義了使用者可執行的一組權限。",
     "Allow the user to perform some actions that are not provided for by his roles": "允許使用者執行角色未授予的額外操作",
     "Role display name": "角色顯示名稱",
     "Actual name in the system": "系統中的實際標識",
     "Name role": "角色名稱",
-
     "ID": "ID",
     "Code": "代碼",
     "Type": "類型",
@@ -134,7 +128,6 @@
     "Response": "回應",
     "IP": "IP",
     "Updated": "更新時間",
-
     "Manage agent accounts": "管理代理帳戶",
     "Manage merchant accounts": "管理商戶帳戶",
     "Manage payment providers": "管理支付供應商",
@@ -162,7 +155,6 @@
     "Transaction volume and success rates by day": "按日統計交易量和成功率",
     "Daily Revenue Statistics": "每日營收統計",
     "Revenue breakdown by day": "按日營收明細",
-
     "Manual Adjustment": "手動調帳",
     "Manually credit or debit wallets": "手動增加或扣減錢包餘額",
     "Entity Type": "實體類型",
@@ -173,7 +165,6 @@
     "Adjustment Amount": "調帳金額",
     "Adjustment Remark": "調帳備註",
     "Adjustment saved successfully.": "調帳儲存成功。",
-
     "Edit Agent": "編輯代理",
     "Create Agent": "建立代理",
     "Edit Merchant": "編輯商戶",
@@ -190,7 +181,6 @@
     "Role Management": "角色管理",
     "User Management": "使用者管理",
     "My Account": "我的帳戶",
-
     "Deposit Order": "代收訂單",
     "Withdraw Order": "代付訂單",
     "System Order No": "系統訂單號",
@@ -212,12 +202,10 @@
     "Send manual callback to merchant?": "確認向商戶發送手動回調？",
     "Manual query sent for order": "已發送手動查詢，訂單",
     "Manual callback sent for order": "已發送手動回調，訂單",
-
     "Total Debit": "總扣款",
     "Account Name": "帳戶名",
     "Account No": "帳號",
     "Branch": "分行",
-
     "Payment Type": "支付類型",
     "Create Payment Type": "建立支付類型",
     "Edit Payment Type": "編輯支付類型",
@@ -233,7 +221,6 @@
     "Deposit Agents Fee (JSON)": "代收代理費率 (JSON)",
     "Withdraw Agents Fee (JSON)": "代付代理費率 (JSON)",
     "e.g. {\"agent_1\": \"0.5\", \"agent_2\": \"0.3\"}": "例如 {\"agent_1\": \"0.5\", \"agent_2\": \"0.3\"}",
-
     "Config Key": "配置鍵",
     "Provider Code": "供應商代碼",
     "Provider Bank Code": "供應商銀行代碼",
@@ -248,7 +235,6 @@
     "Config saved.": "配置已儲存。",
     "Config deleted.": "配置已刪除。",
     "Provider channel deleted.": "供應商通道已刪除。",
-
     "Create Blacklist Entry": "建立黑名單條目",
     "Edit Blacklist Entry": "編輯黑名單條目",
     "Blacklist entry saved.": "黑名單條目已儲存。",
@@ -256,7 +242,6 @@
     "Create Proxy": "建立代理",
     "Edit Proxy": "編輯代理",
     "Proxy saved.": "代理已儲存。",
-
     "Parent Agent": "上級代理",
     "Level 1": "一級",
     "Level 2": "二級",
@@ -270,7 +255,6 @@
     "Are you sure you want to delete this agent?": "確認刪除此代理？",
     "Are you sure you want to delete this merchant?": "確認刪除此商戶？",
     "Are you sure you want to delete this provider?": "確認刪除此供應商？",
-
     "Vendor ID": "供應商ID",
     "Provider No": "供應商編號",
     "Vendor Meta (JSON)": "供應商元資料 (JSON)",
@@ -280,7 +264,6 @@
     "White IPs (JSON array)": "IP白名單 (JSON陣列)",
     "e.g. [\"1.2.3.4\", \"5.6.7.8\"]": "例如 [\"1.2.3.4\", \"5.6.7.8\"]",
     "MD5 Key": "MD5金鑰",
-
     "Today Deposits": "今日代收",
     "Deposit Amount": "代收金額",
     "Deposit Success Rate": "代收成功率",
@@ -303,7 +286,6 @@
     "Provider Fees": "供應商手續費",
     "Agent Commissions": "代理佣金",
     "Net Profit": "淨利潤",
-
     "Update your account details such as name, email address and password": "更新您的帳戶資訊，如名稱、電子郵件和密碼",
     "Back to my account": "返回我的帳戶",
     "Sign out": "登出",
@@ -315,7 +297,6 @@
     "Defines a set of privileges that grant users access to various services and allow them to perform specific tasks or operations.": "定義一組特權，授予使用者存取各種服務並允許其執行特定任務的權限。",
     "Permission/Privilege": "權限/特權",
     "A privilege is necessary to perform certain tasks and operations in an area.": "執行某些任務和操作需要相應的特權。",
-
     "Organization": "組織",
     "Notes": "備註",
     "Active": "啟用",
@@ -326,5 +307,23 @@
     "Remember me": "記住我",
     "Enter your username": "請輸入使用者名稱",
     "Enter your password": "請輸入密碼",
-    "Sign in to your account": "登入您的帳戶"
+    "Sign in to your account": "登入您的帳戶",
+    "Menu Management": "選單管理",
+    "Manage admin sidebar menu items": "管理後台側邊欄選單項",
+    "Initialize Default": "初始化預設選單",
+    "This will reset menu to defaults. Continue?": "將重置選單為預設值，確認繼續？",
+    "Title": "標題",
+    "Route": "路由",
+    "External URL, overrides route": "外部連結，優先於路由",
+    "Menu saved.": "選單已儲存。",
+    "Default menus initialized.": "預設選單已初始化。",
+    "-- Top Level --": "-- 頂級 --",
+    "-- Select --": "-- 請選擇 --",
+    "Create Menu": "新增選單",
+    "Edit Menu": "編輯選單",
+    "Submit Adjustment": "提交調帳",
+    "Are you sure you want to adjust the wallet?": "確認調整錢包餘額？",
+    "Available": "可用",
+    "Hold": "凍結",
+    "Current Balance": "目前餘額"
 }
