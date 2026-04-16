@@ -33,6 +33,12 @@ class MerchantEditScreen extends Screen
 
     public function query(Merchant $merchant): iterable
     {
+        if ($merchant->exists) {
+            $merchant->white_ips = is_array($merchant->white_ips)
+                ? json_encode($merchant->white_ips, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
+                : $merchant->white_ips;
+        }
+
         return [
             'merchant' => $merchant,
         ];

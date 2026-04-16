@@ -31,6 +31,12 @@ class ProviderEditScreen extends Screen
 
     public function query(Provider $provider): iterable
     {
+        if ($provider->exists) {
+            $provider->vendor_meta = is_array($provider->vendor_meta)
+                ? json_encode($provider->vendor_meta, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
+                : $provider->vendor_meta;
+        }
+
         return [
             'provider' => $provider,
         ];

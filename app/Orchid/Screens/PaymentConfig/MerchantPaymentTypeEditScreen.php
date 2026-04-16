@@ -33,6 +33,14 @@ class MerchantPaymentTypeEditScreen extends Screen
 
     public function query(MerchantPaymentType $config): iterable
     {
+        if ($config->exists) {
+            foreach (['deposit_agents_fee', 'withdraw_agents_fee'] as $field) {
+                $config->$field = is_array($config->$field)
+                    ? json_encode($config->$field, JSON_PRETTY_PRINT)
+                    : $config->$field;
+            }
+        }
+
         return [
             'config' => $config,
         ];
