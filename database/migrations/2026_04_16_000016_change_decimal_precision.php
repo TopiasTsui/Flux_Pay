@@ -7,6 +7,11 @@ return new class extends Migration
 {
     public function up(): void
     {
+        // SQLite has no strict decimal precision and doesn't support MODIFY — skip there.
+        if (DB::connection()->getDriverName() !== 'mysql') {
+            return;
+        }
+
         // agents
         DB::statement("ALTER TABLE agents MODIFY total_balance DECIMAL(20,2) NOT NULL DEFAULT 0");
         DB::statement("ALTER TABLE agents MODIFY available_balance DECIMAL(20,2) NOT NULL DEFAULT 0");
@@ -86,6 +91,10 @@ return new class extends Migration
 
     public function down(): void
     {
+        if (DB::connection()->getDriverName() !== 'mysql') {
+            return;
+        }
+
         // agents
         DB::statement("ALTER TABLE agents MODIFY total_balance DECIMAL(20,6) NOT NULL DEFAULT 0");
         DB::statement("ALTER TABLE agents MODIFY available_balance DECIMAL(20,6) NOT NULL DEFAULT 0");

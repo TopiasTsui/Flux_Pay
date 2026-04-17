@@ -34,6 +34,7 @@ class RolePermissionSeeder extends Seeder
             'platform.banks' => true,
             // System
             'platform.system' => true,
+            'platform.system.i18n' => true,
         ];
 
         Role::updateOrCreate(

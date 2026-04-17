@@ -6,6 +6,8 @@ namespace App\Orchid\Screens\Bank;
 
 use App\Enums\EntityStatus;
 use App\Models\ProviderBankCode;
+use App\Orchid\Concerns\HasFilters;
+use App\Orchid\Layouts\Shared\FilterPanel;
 use Illuminate\Http\Request;
 use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Fields\Input;
@@ -17,6 +19,8 @@ use Orchid\Support\Facades\Toast;
 
 class ProviderBankCodeScreen extends Screen
 {
+    use HasFilters;
+
     public $permission = 'platform.banks';
 
     public function name(): ?string
@@ -29,10 +33,27 @@ class ProviderBankCodeScreen extends Screen
         return __('Map system bank codes to provider-specific codes');
     }
 
-    public function query(): iterable
+    public function query(Request $request): iterable
     {
+        $filter = (array) $request->input('filter', []);
+
+        $query = ProviderBankCode::query()->defaultSort('id', 'desc');
+
+        if (!empty($filter['bank_config_key'])) {
+            $query->where('bank_config_key', 'like', "%{$filter['bank_config_key']}%");
+        }
+        if (!empty($filter['bank_code'])) {
+            $query->where('bank_code', 'like', "%{$filter['bank_code']}%");
+        }
+        if (!empty($filter['provider_bank_code'])) {
+            $query->where('provider_bank_code', 'like', "%{$filter['provider_bank_code']}%");
+        }
+        if (isset($filter['status']) && $filter['status'] !== '') {
+            $query->where('status', (int) $filter['status']);
+        }
+
         return [
-            'mappings' => ProviderBankCode::filters()->defaultSort('id', 'desc')->paginate(),
+            'mappings' => $query->paginate(),
         ];
     }
 
@@ -48,14 +69,30 @@ class ProviderBankCodeScreen extends Screen
 
     public function layout(): iterable
     {
+        $filter = (array) request('filter', []);
+        $summary = $this->buildFilterSummary($filter);
+
         return [
+            FilterPanel::make(
+                fields: [
+                    Input::make('filter.bank_config_key')->title(__('Config Key'))->value($filter['bank_config_key'] ?? ''),
+                    Input::make('filter.bank_code')->title(__('Bank Code'))->value($filter['bank_code'] ?? ''),
+                    Input::make('filter.provider_bank_code')->title(__('Provider Code'))->value($filter['provider_bank_code'] ?? ''),
+                    Select::make('filter.status')->title(__('Status'))
+                        ->empty(__('-- Any --'), '')
+                        ->options(EntityStatus::options())
+                        ->value($filter['status'] ?? ''),
+                ],
+                summary: $summary,
+            ),
+
             Layout::table('mappings', [
                 TD::make('id', __('ID'))->sort(),
-                TD::make('bank_config_key', __('Config Key'))->sort()->filter(Input::make()),
-                TD::make('bank_code', __('Bank Code'))->filter(Input::make()),
+                TD::make('bank_config_key', __('Config Key'))->sort(),
+                TD::make('bank_code', __('Bank Code')),
                 TD::make('provider_bank_code', __('Provider Code')),
                 TD::make('status', __('Status'))
-                    ->render(fn (ProviderBankCode $m) => \App\Enums\EntityStatus::tryFrom($m->status)?->label() ?? $m->status),
+                    ->render(fn (ProviderBankCode $m) => EntityStatus::tryFrom($m->status)?->label() ?? $m->status),
                 TD::make(__('Actions'))
                     ->render(fn (ProviderBankCode $m) => ModalToggle::make(__('Edit'))
                         ->icon('bs.pencil')
@@ -65,6 +102,7 @@ class ProviderBankCodeScreen extends Screen
             ]),
 
             Layout::modal('createModal', Layout::rows([
+                Input::make('mapping.id')->type('hidden'),
                 Input::make('mapping.bank_config_key')->title(__('Config Key'))->required(),
                 Input::make('mapping.bank_code')->title(__('Bank Code'))->required(),
                 Input::make('mapping.provider_bank_code')->title(__('Provider Bank Code'))->required(),
@@ -72,6 +110,7 @@ class ProviderBankCodeScreen extends Screen
             ]))->title(__('Create Mapping'))->applyButton(__('Save')),
 
             Layout::modal('editModal', Layout::rows([
+                Input::make('mapping.id')->type('hidden'),
                 Input::make('mapping.bank_config_key')->title(__('Config Key'))->required(),
                 Input::make('mapping.bank_code')->title(__('Bank Code'))->required(),
                 Input::make('mapping.provider_bank_code')->title(__('Provider Bank Code'))->required(),
@@ -101,5 +140,30 @@ class ProviderBankCodeScreen extends Screen
         $mapping->fill($data['mapping'])->save();
 
         Toast::info(__('Mapping saved.'));
+    }
+
+    protected function filterRoute(): string
+    {
+        return 'platform.provider-bank-codes';
+    }
+
+    private function buildFilterSummary(array $f): array
+    {
+        $s = [];
+
+        if (!empty($f['bank_config_key'])) {
+            $s[__('Config Key')] = $f['bank_config_key'];
+        }
+        if (!empty($f['bank_code'])) {
+            $s[__('Bank Code')] = $f['bank_code'];
+        }
+        if (!empty($f['provider_bank_code'])) {
+            $s[__('Provider Code')] = $f['provider_bank_code'];
+        }
+        if (isset($f['status']) && $f['status'] !== '') {
+            $s[__('Status')] = EntityStatus::tryFrom((int) $f['status'])?->label() ?? $f['status'];
+        }
+
+        return $s;
     }
 }

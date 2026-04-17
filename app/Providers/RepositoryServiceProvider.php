@@ -15,6 +15,7 @@ class RepositoryServiceProvider extends ServiceProvider
         \App\Contracts\Repositories\MerchantWalletRecordRepositoryInterface::class => \App\Repositories\MerchantWalletRecordRepository::class,
         \App\Contracts\Repositories\AgentWalletRecordRepositoryInterface::class => \App\Repositories\AgentWalletRecordRepository::class,
         \App\Contracts\Repositories\ProviderWalletRecordRepositoryInterface::class => \App\Repositories\ProviderWalletRecordRepository::class,
+        \App\Contracts\Repositories\TranslationRepositoryInterface::class => \App\Repositories\TranslationRepository::class,
     ];
 
     public function register(): void

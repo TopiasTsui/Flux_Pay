@@ -44,6 +44,7 @@ class TestDataSeeder extends Seeder
                     'platform.reports' => true,
                     'platform.banks' => true,
                     'platform.system' => true,
+                    'platform.system.i18n' => true,
                 ],
             ],
         );
@@ -64,6 +65,7 @@ class TestDataSeeder extends Seeder
                 'platform.reports' => true,
                 'platform.banks' => true,
                 'platform.system' => true,
+                'platform.system.i18n' => true,
             ],
         ])->save();
 

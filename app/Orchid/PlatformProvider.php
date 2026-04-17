@@ -162,6 +162,8 @@ class PlatformProvider extends OrchidServiceProvider
                     Menu::make(__('System Config'))->icon('bs.gear')->route('platform.system.configs'),
                     Menu::make(__('Blacklist'))->icon('bs.shield-x')->route('platform.system.blacklist'),
                     Menu::make(__('Menu Management'))->icon('bs.list')->route('platform.system.menus'),
+                    Menu::make(__('Locales'))->icon('bs.translate')->route('platform.system.i18n.locales')->permission('platform.system.i18n'),
+                    Menu::make(__('Translations'))->icon('bs.chat-left-text')->route('platform.system.i18n.translations')->permission('platform.system.i18n'),
                 ]),
 
             Menu::make(__('Access Controls'))
@@ -200,6 +202,7 @@ class PlatformProvider extends OrchidServiceProvider
 
             ItemPermission::group(__('System'))
                 ->addPermission('platform.system', __('System Configuration'))
+                ->addPermission('platform.system.i18n', __('Localization'))
                 ->addPermission('platform.systems.roles', __('Roles'))
                 ->addPermission('platform.systems.users', __('Users')),
         ];

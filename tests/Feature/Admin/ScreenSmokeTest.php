@@ -74,6 +74,8 @@ class ScreenSmokeTest extends TestCase
             'provider-bank-codes' => ['/admin/provider-bank-codes'],
             'system-configs' => ['/admin/system/configs'],
             'system-blacklist' => ['/admin/system/blacklist'],
+            'system-i18n-locales' => ['/admin/system/i18n/locales'],
+            'system-i18n-translations' => ['/admin/system/i18n/translations'],
             'users' => ['/admin/users'],
             'roles' => ['/admin/roles'],
             'profile' => ['/admin/profile'],

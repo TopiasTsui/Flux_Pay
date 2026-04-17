@@ -4,46 +4,59 @@ declare(strict_types=1);
 
 namespace App\Orchid\Screens\User;
 
+use App\Models\User;
+use App\Orchid\Concerns\HasFilters;
+use App\Orchid\Layouts\Shared\FilterPanel;
 use App\Orchid\Layouts\User\UserEditLayout;
-use App\Orchid\Layouts\User\UserFiltersLayout;
 use App\Orchid\Layouts\User\UserListLayout;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Models\User;
-use Orchid\Screen\Action;
+use Orchid\Platform\Models\Role;
 use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
 
 class UserListScreen extends Screen
 {
-    /**
-     * Fetch data to be displayed on the screen.
-     *
-     * @return array
-     */
-    public function query(): iterable
+    use HasFilters;
+
+    public function query(Request $request): iterable
     {
+        $filter = (array) $request->input('filter', []);
+
+        $query = User::with('roles')->defaultSort('id', 'desc');
+
+        if (!empty($filter['search'])) {
+            $s = $filter['search'];
+            $query->where(function ($q) use ($s) {
+                $q->where('username', 'like', "%{$s}%")
+                    ->orWhere('name', 'like', "%{$s}%")
+                    ->orWhere('email', 'like', "%{$s}%");
+            });
+        }
+
+        if (!empty($filter['role'])) {
+            $role = $filter['role'];
+            $query->whereHas('roles', fn ($r) => $r->where('slug', $role));
+        }
+
+        if (isset($filter['is_active']) && $filter['is_active'] !== '') {
+            $query->where('is_active', (bool) $filter['is_active']);
+        }
+
         return [
-            'users' => User::with('roles')
-                ->filters(UserFiltersLayout::class)
-                ->defaultSort('id', 'desc')
-                ->paginate(),
+            'users' => $query->paginate(),
         ];
     }
 
-    /**
-     * The name of the screen displayed in the header.
-     */
     public function name(): ?string
     {
         return __('User Management');
     }
 
-    /**
-     * Display header description.
-     */
     public function description(): ?string
     {
         return __('A comprehensive list of all registered users, including their profiles and privileges.');
@@ -56,11 +69,6 @@ class UserListScreen extends Screen
         ];
     }
 
-    /**
-     * The screen's action buttons.
-     *
-     * @return Action[]
-     */
     public function commandBar(): iterable
     {
         return [
@@ -70,15 +78,31 @@ class UserListScreen extends Screen
         ];
     }
 
-    /**
-     * The screen's layout elements.
-     *
-     * @return string[]|\Orchid\Screen\Layout[]
-     */
     public function layout(): iterable
     {
+        $filter = (array) request('filter', []);
+        $summary = $this->buildFilterSummary($filter);
+
+        $roleOptions = Role::orderBy('name')->pluck('name', 'slug')->all();
+
         return [
-            UserFiltersLayout::class,
+            FilterPanel::make(
+                fields: [
+                    Input::make('filter.search')->title(__('Search'))
+                        ->placeholder(__('Username / name / email'))
+                        ->value($filter['search'] ?? ''),
+                    Select::make('filter.role')->title(__('Role'))
+                        ->empty(__('-- Any --'), '')
+                        ->options($roleOptions)
+                        ->value($filter['role'] ?? ''),
+                    Select::make('filter.is_active')->title(__('Active'))
+                        ->empty(__('-- Any --'), '')
+                        ->options([1 => __('Active'), 0 => __('Inactive')])
+                        ->value($filter['is_active'] ?? ''),
+                ],
+                summary: $summary,
+            ),
+
             UserListLayout::class,
 
             Layout::modal('editUserModal', UserEditLayout::class)
@@ -86,11 +110,6 @@ class UserListScreen extends Screen
         ];
     }
 
-    /**
-     * Loads user data when opening the modal window.
-     *
-     * @return array
-     */
     public function loadUserOnOpenModal(User $user): iterable
     {
         return [
@@ -123,5 +142,28 @@ class UserListScreen extends Screen
         User::findOrFail($request->get('id'))->delete();
 
         Toast::info(__('User was removed'));
+    }
+
+    protected function filterRoute(): string
+    {
+        return 'platform.systems.users';
+    }
+
+    private function buildFilterSummary(array $f): array
+    {
+        $s = [];
+
+        if (!empty($f['search'])) {
+            $s[__('Search')] = $f['search'];
+        }
+        if (!empty($f['role'])) {
+            $name = Role::where('slug', $f['role'])->value('name');
+            $s[__('Role')] = $name ?: $f['role'];
+        }
+        if (isset($f['is_active']) && $f['is_active'] !== '') {
+            $s[__('Active')] = ((int) $f['is_active']) === 1 ? __('Active') : __('Inactive');
+        }
+
+        return $s;
     }
 }

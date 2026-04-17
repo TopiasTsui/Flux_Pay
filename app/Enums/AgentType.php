@@ -14,4 +14,11 @@ enum AgentType: string
             self::PROVIDER => 'Provider Agent',
         };
     }
+
+    public static function options(): array
+    {
+        return collect(self::cases())->mapWithKeys(
+            fn (self $c) => [$c->value => $c->label()]
+        )->all();
+    }
 }

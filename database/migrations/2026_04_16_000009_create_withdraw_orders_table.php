@@ -43,11 +43,11 @@ return new class extends Migration
             $table->text('remark')->nullable();
             $table->timestamps();
 
-            $table->index(['merchant_id', 'merchant_order_no'], 'idx_merchant_order');
-            $table->index('status');
-            $table->index('fund_status');
-            $table->index('created_at');
-            $table->index('provider_payment_type_id', 'idx_ppt_id');
+            $table->index(['merchant_id', 'merchant_order_no'], 'idx_withdraw_merchant_order');
+            $table->index('status', 'idx_withdraw_status');
+            $table->index('fund_status', 'idx_withdraw_fund_status');
+            $table->index('created_at', 'idx_withdraw_created_at');
+            $table->index('provider_payment_type_id', 'idx_withdraw_ppt_id');
             $table->foreign('provider_payment_type_id')->references('id')->on('provider_payment_types')->nullOnDelete();
         });
     }

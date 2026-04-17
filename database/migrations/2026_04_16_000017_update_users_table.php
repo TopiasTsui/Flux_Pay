@@ -16,13 +16,18 @@ return new class extends Migration
             $table->boolean('is_active')->default(true)->after('notes');
         });
 
-        // Make email nullable using raw SQL to avoid doctrine/dbal dependency
-        DB::statement("ALTER TABLE users MODIFY email VARCHAR(255) NULL");
+        // Make email nullable using raw SQL to avoid doctrine/dbal dependency.
+        // SQLite ignores NOT NULL strictness on pre-existing columns anyway — skip the ALTER.
+        if (DB::connection()->getDriverName() === 'mysql') {
+            DB::statement("ALTER TABLE users MODIFY email VARCHAR(255) NULL");
+        }
     }
 
     public function down(): void
     {
-        DB::statement("ALTER TABLE users MODIFY email VARCHAR(255) NOT NULL");
+        if (DB::connection()->getDriverName() === 'mysql') {
+            DB::statement("ALTER TABLE users MODIFY email VARCHAR(255) NOT NULL");
+        }
 
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn(['username', 'organization', 'notes', 'is_active']);

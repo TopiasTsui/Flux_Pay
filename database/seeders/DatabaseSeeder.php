@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             RolePermissionSeeder::class,
             PaymentTypeSeeder::class,
             BankSeeder::class,
+            LocaleSeeder::class,
             TestDataSeeder::class,
         ]);
     }

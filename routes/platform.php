@@ -25,8 +25,10 @@ use App\Orchid\Screens\Report\DailyTransactionStatScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\System\BlacklistScreen;
+use App\Orchid\Screens\System\LocaleListScreen;
 use App\Orchid\Screens\System\MenuManagementScreen;
 use App\Orchid\Screens\System\SystemConfigScreen;
+use App\Orchid\Screens\System\TranslationListScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
@@ -247,6 +249,18 @@ Route::screen('system/menus', MenuManagementScreen::class)
     ->breadcrumbs(fn (Trail $trail) => $trail
         ->parent('platform.index')
         ->push(__('Menu Management'), route('platform.system.menus')));
+
+Route::screen('system/i18n/locales', LocaleListScreen::class)
+    ->name('platform.system.i18n.locales')
+    ->breadcrumbs(fn (Trail $trail) => $trail
+        ->parent('platform.index')
+        ->push(__('Locales'), route('platform.system.i18n.locales')));
+
+Route::screen('system/i18n/translations', TranslationListScreen::class)
+    ->name('platform.system.i18n.translations')
+    ->breadcrumbs(fn (Trail $trail) => $trail
+        ->parent('platform.index')
+        ->push(__('Translations'), route('platform.system.i18n.translations')));
 
 // ── Access Controls ─────────────────────────────────────────────────────
 Route::screen('users/{user}/edit', UserEditScreen::class)

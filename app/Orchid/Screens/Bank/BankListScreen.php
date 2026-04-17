@@ -6,8 +6,9 @@ namespace App\Orchid\Screens\Bank;
 
 use App\Enums\EntityStatus;
 use App\Models\Bank;
+use App\Orchid\Concerns\HasFilters;
+use App\Orchid\Layouts\Shared\FilterPanel;
 use Illuminate\Http\Request;
-use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Select;
@@ -18,6 +19,8 @@ use Orchid\Support\Facades\Toast;
 
 class BankListScreen extends Screen
 {
+    use HasFilters;
+
     public $permission = 'platform.banks';
 
     public function name(): ?string
@@ -30,10 +33,24 @@ class BankListScreen extends Screen
         return __('Manage bank list');
     }
 
-    public function query(): iterable
+    public function query(Request $request): iterable
     {
+        $filter = (array) $request->input('filter', []);
+
+        $query = Bank::query()->defaultSort('sort_order');
+
+        if (!empty($filter['bank_code'])) {
+            $query->where('bank_code', 'like', "%{$filter['bank_code']}%");
+        }
+        if (!empty($filter['name'])) {
+            $query->where('name', 'like', "%{$filter['name']}%");
+        }
+        if (isset($filter['status']) && $filter['status'] !== '') {
+            $query->where('status', (int) $filter['status']);
+        }
+
         return [
-            'banks' => Bank::filters()->defaultSort('sort_order')->paginate(),
+            'banks' => $query->paginate(),
         ];
     }
 
@@ -49,13 +66,28 @@ class BankListScreen extends Screen
 
     public function layout(): iterable
     {
+        $filter = (array) request('filter', []);
+        $summary = $this->buildFilterSummary($filter);
+
         return [
+            FilterPanel::make(
+                fields: [
+                    Input::make('filter.bank_code')->title(__('Code'))->value($filter['bank_code'] ?? ''),
+                    Input::make('filter.name')->title(__('Name'))->value($filter['name'] ?? ''),
+                    Select::make('filter.status')->title(__('Status'))
+                        ->empty(__('-- Any --'), '')
+                        ->options(EntityStatus::options())
+                        ->value($filter['status'] ?? ''),
+                ],
+                summary: $summary,
+            ),
+
             Layout::table('banks', [
                 TD::make('id', __('ID'))->sort(),
-                TD::make('bank_code', __('Code'))->sort()->filter(Input::make()),
+                TD::make('bank_code', __('Code'))->sort(),
                 TD::make('name', __('Name'))->sort(),
                 TD::make('status', __('Status'))
-                    ->render(fn (Bank $b) => \App\Enums\EntityStatus::tryFrom($b->status)?->label() ?? $b->status),
+                    ->render(fn (Bank $b) => EntityStatus::tryFrom($b->status)?->label() ?? $b->status),
                 TD::make('sort_order', __('Sort'))->sort(),
                 TD::make(__('Actions'))
                     ->render(fn (Bank $b) => ModalToggle::make(__('Edit'))
@@ -66,6 +98,7 @@ class BankListScreen extends Screen
             ]),
 
             Layout::modal('createModal', Layout::rows([
+                Input::make('bank.id')->type('hidden'),
                 Input::make('bank.bank_code')->title(__('Code'))->required(),
                 Input::make('bank.name')->title(__('Name'))->required(),
                 Select::make('bank.status')->title(__('Status'))->options(EntityStatus::options())->required(),
@@ -73,6 +106,7 @@ class BankListScreen extends Screen
             ]))->title(__('Create Bank'))->applyButton(__('Save')),
 
             Layout::modal('editModal', Layout::rows([
+                Input::make('bank.id')->type('hidden'),
                 Input::make('bank.bank_code')->title(__('Code'))->required(),
                 Input::make('bank.name')->title(__('Name'))->required(),
                 Select::make('bank.status')->title(__('Status'))->options(EntityStatus::options())->required(),
@@ -102,5 +136,27 @@ class BankListScreen extends Screen
         $bank->fill($data['bank'])->save();
 
         Toast::info(__('Bank saved.'));
+    }
+
+    protected function filterRoute(): string
+    {
+        return 'platform.banks';
+    }
+
+    private function buildFilterSummary(array $f): array
+    {
+        $s = [];
+
+        if (!empty($f['bank_code'])) {
+            $s[__('Code')] = $f['bank_code'];
+        }
+        if (!empty($f['name'])) {
+            $s[__('Name')] = $f['name'];
+        }
+        if (isset($f['status']) && $f['status'] !== '') {
+            $s[__('Status')] = EntityStatus::tryFrom((int) $f['status'])?->label() ?? $f['status'];
+        }
+
+        return $s;
     }
 }

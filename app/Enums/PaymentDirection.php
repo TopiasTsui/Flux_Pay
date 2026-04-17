@@ -14,4 +14,11 @@ enum PaymentDirection: string
             self::WITHDRAW => 'Withdraw',
         };
     }
+
+    public static function options(): array
+    {
+        return collect(self::cases())->mapWithKeys(
+            fn (self $c) => [$c->value => $c->label()]
+        )->all();
+    }
 }

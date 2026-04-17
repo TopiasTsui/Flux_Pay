@@ -4,13 +4,19 @@ declare(strict_types=1);
 
 namespace App\Orchid\Screens\Report;
 
+use App\Orchid\Concerns\HasFilters;
+use App\Orchid\Layouts\Shared\FilterPanel;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Orchid\Screen\Fields\DateRange;
 use Orchid\Screen\Screen;
 use Orchid\Screen\TD;
 use Orchid\Support\Facades\Layout;
 
 class DailyRevenueStatScreen extends Screen
 {
+    use HasFilters;
+
     public $permission = 'platform.reports';
 
     public function name(): ?string
@@ -23,15 +29,17 @@ class DailyRevenueStatScreen extends Screen
         return __('Revenue breakdown by day');
     }
 
-    public function query(): iterable
+    public function query(Request $request): iterable
     {
+        $filter = (array) $request->input('filter', []);
+
         $query = DB::table('daily_revenue_stats')->orderBy('date', 'desc');
 
-        if (request('filter.date_start')) {
-            $query->where('date', '>=', request('filter.date_start'));
+        if (!empty($filter['date']['start'])) {
+            $query->where('date', '>=', $filter['date']['start']);
         }
-        if (request('filter.date_end')) {
-            $query->where('date', '<=', request('filter.date_end'));
+        if (!empty($filter['date']['end'])) {
+            $query->where('date', '<=', $filter['date']['end']);
         }
 
         return [
@@ -46,7 +54,17 @@ class DailyRevenueStatScreen extends Screen
 
     public function layout(): iterable
     {
+        $filter = (array) request('filter', []);
+        $summary = $this->buildFilterSummary($filter);
+
         return [
+            FilterPanel::make(
+                fields: [
+                    DateRange::make('filter.date')->title(__('Date Range'))->value($filter['date'] ?? []),
+                ],
+                summary: $summary,
+            ),
+
             Layout::table('stats', [
                 TD::make('date', __('Date'))->sort(),
                 TD::make('total_revenue', __('Total Revenue'))->alignRight()
@@ -61,5 +79,21 @@ class DailyRevenueStatScreen extends Screen
                     ->render(fn ($r) => number_format((float) $r->net_profit, 2)),
             ]),
         ];
+    }
+
+    protected function filterRoute(): string
+    {
+        return 'platform.reports.revenue';
+    }
+
+    private function buildFilterSummary(array $f): array
+    {
+        $s = [];
+
+        if (!empty($f['date']['start']) || !empty($f['date']['end'])) {
+            $s[__('Date')] = ($f['date']['start'] ?? '…') . ' ~ ' . ($f['date']['end'] ?? '…');
+        }
+
+        return $s;
     }
 }
