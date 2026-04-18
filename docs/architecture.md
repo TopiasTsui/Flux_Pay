@@ -23,7 +23,7 @@ FluxPay 是一个 **第四方支付聚合平台**，提供：
 | 层面 | 选型 |
 |------|------|
 | 后端框架 | Laravel 11 |
-| 运行时 | PHP 8.2+（CLI 固定 `php8.2`） |
+| 运行时 | PHP 8.2+ |
 | 后台管理 | Orchid Platform 14 |
 | 数据库 | MariaDB 10.6+ |
 | 缓存 / 队列 / 会话 | Redis 7+ |
@@ -387,7 +387,7 @@ config/gateways.php 默认值
 | `fluxpay-gateway` | 网关查询 / 轮询 | |
 | `fluxpay-stats` | 每日统计聚合 | |
 
-通过 `php8.2 artisan horizon` 统一管理。
+通过 `php artisan horizon` 统一管理。
 
 ---
 

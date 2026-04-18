@@ -1036,26 +1036,7 @@ DB::listen(function ($query) {
 
 ---
 
-## 14. 相较 sifangpay 的改进
-
-| 方面 | sifangpay | FluxPay |
-|------|-----------|---------|
-| 架构分层 | Controller → Service → Model | Controller → Service → Repository → Model |
-| 网关配置 | PHP 常量 | `config/gateways.php` + DB 合并 |
-| 后台 | dcat-admin | Orchid Platform |
-| 事件系统 | 无（过程式调用） | Laravel Events/Listeners |
-| 参数校验 | Controller 内联 | FormRequest 类 |
-| 订单日志 | 分表 | 多态统一 order_logs |
-| 通知 Job | 2 个独立 Job | 1 个统一 MerchantNotificationJob |
-| 佣金计算 | 散落多处 | 独立 CommissionCalculator |
-| 通道选择 | 手动 | ChannelSelector（权重+限额感知） |
-| 高并发 | 无特殊设计 | Octane + 读写分离 + 分布式锁 + 队列分区 + 分表 |
-| 测试 | 极少 | 完整测试套件 + FakeGateway |
-| 租户隔离 | dcat-admin 专用 | 框架无关，Orchid 兼容 |
-
----
-
-## 15. 验证方式
+## 14. 验证方式
 
 1. **单元测试**：`php artisan test --testsuite=Unit`
 2. **功能测试**：`php artisan test --testsuite=Feature`

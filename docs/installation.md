@@ -9,7 +9,7 @@
 | 组件 | 最低版本 | 说明 |
 |------|----------|------|
 | 操作系统 | Ubuntu 22.04 / Debian 12 / CentOS Stream 9 | 其他 Linux 发行版亦可，需自行调整包管理命令 |
-| PHP | 8.2+ | 必须是 8.2 以上，本项目 CLI 固定使用 `php8.2` |
+| PHP | 8.2+ | 8.2 或以上 |
 | Composer | 2.x | PHP 包管理器 |
 | MariaDB | 10.6+ | 或兼容的 MySQL 8.0+ |
 | Redis | 7+ | 缓存、队列、会话 |
@@ -44,14 +44,14 @@ sudo apt install -y php8.2 php8.2-fpm php8.2-cli \
 验证：
 
 ```bash
-php8.2 -v
-php8.2 -m | grep -E 'bcmath|redis|pdo_mysql'
+php -v
+php -m | grep -E 'bcmath|redis|pdo_mysql'
 ```
 
 ### 2.2 安装 Composer
 
 ```bash
-curl -sS https://getcomposer.org/installer | sudo php8.2 -- \
+curl -sS https://getcomposer.org/installer | sudo php -- \
   --install-dir=/usr/local/bin --filename=composer
 composer --version
 ```
@@ -103,16 +103,14 @@ sudo chmod -R 775 storage bootstrap/cache
 
 ## 4. 安装依赖
 
-本项目 **统一使用 `php8.2`**，不可用裸 `php` 命令。
-
 ```bash
-php8.2 $(which composer) install --no-dev --optimize-autoloader
+php $(which composer) install --no-dev --optimize-autoloader
 ```
 
 开发环境若要安装 dev 依赖：
 
 ```bash
-php8.2 $(which composer) install
+php $(which composer) install
 ```
 
 ---
@@ -123,7 +121,7 @@ php8.2 $(which composer) install
 
 ```bash
 cp .env.example .env
-php8.2 artisan key:generate
+php artisan key:generate
 ```
 
 ### 5.2 编辑 `.env`
@@ -181,13 +179,13 @@ FLUSH PRIVILEGES;
 ### 6.2 执行迁移
 
 ```bash
-php8.2 artisan migrate --force
+php artisan migrate --force
 ```
 
 ### 6.3 执行 Seeder（首次部署必需）
 
 ```bash
-php8.2 artisan db:seed --force
+php artisan db:seed --force
 ```
 
 Seeder 会初始化：
@@ -200,9 +198,9 @@ Seeder 会初始化：
 仅执行指定 Seeder（生产环境建议跳过测试数据）：
 
 ```bash
-php8.2 artisan db:seed --class=RolePermissionSeeder --force
-php8.2 artisan db:seed --class=PaymentTypeSeeder --force
-php8.2 artisan db:seed --class=BankSeeder --force
+php artisan db:seed --class=RolePermissionSeeder --force
+php artisan db:seed --class=PaymentTypeSeeder --force
+php artisan db:seed --class=BankSeeder --force
 ```
 
 ---
@@ -210,9 +208,9 @@ php8.2 artisan db:seed --class=BankSeeder --force
 ## 7. 建立首个超级管理员
 
 ```bash
-php8.2 artisan orchid:admin <用户名> <邮箱> <密码>
+php artisan orchid:admin <用户名> <邮箱> <密码>
 # 例：
-php8.2 artisan orchid:admin admin admin@fluxpay.com StrongPass123!
+php artisan orchid:admin admin admin@fluxpay.com StrongPass123!
 ```
 
 创建完毕后，登录后台需在 `users` 表中为该账号附加 `administrator` 角色（Seeder 已自动授予默认账号，如手动新建可在后台 `系统 → 角色` 中关联）。
@@ -222,9 +220,9 @@ php8.2 artisan orchid:admin admin admin@fluxpay.com StrongPass123!
 ## 8. 发布前端资源
 
 ```bash
-php8.2 artisan vendor:publish --tag=laravel-assets --force
-php8.2 artisan vendor:publish --tag=orchid-migrations --force
-php8.2 artisan storage:link
+php artisan vendor:publish --tag=laravel-assets --force
+php artisan vendor:publish --tag=orchid-migrations --force
+php artisan storage:link
 ```
 
 ---
@@ -232,16 +230,16 @@ php8.2 artisan storage:link
 ## 9. 缓存与优化（生产环境）
 
 ```bash
-php8.2 artisan config:cache
-php8.2 artisan route:cache
-php8.2 artisan view:cache
-php8.2 artisan event:cache
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+php artisan event:cache
 ```
 
 如需清除：
 
 ```bash
-php8.2 artisan optimize:clear
+php artisan optimize:clear
 ```
 
 ---
@@ -315,7 +313,7 @@ FluxPay 的商户回调、钱包结算、订单轮询均走 Redis 队列，**必
 ```ini
 [program:fluxpay-horizon]
 process_name=%(program_name)s
-command=/usr/bin/php8.2 /var/www/html/fluxpay/artisan horizon
+command=/usr/bin/php /var/www/html/fluxpay/artisan horizon
 autostart=true
 autorestart=true
 user=www-data
@@ -350,7 +348,7 @@ sudo crontab -e -u www-data
 加入：
 
 ```
-* * * * * cd /var/www/html/fluxpay && /usr/bin/php8.2 artisan schedule:run >> /dev/null 2>&1
+* * * * * cd /var/www/html/fluxpay && /usr/bin/php artisan schedule:run >> /dev/null 2>&1
 ```
 
 ---
@@ -365,7 +363,7 @@ sudo crontab -e -u www-data
 | Redis | `redis-cli ping` 返回 `PONG` |
 | Horizon | `https://your-domain.com/horizon` 显示绿色 Active |
 | 队列 | 在后台触发一次测试订单，查看 Horizon `fluxpay-*` 队列是否有执行记录 |
-| 排程 | `php8.2 artisan schedule:list` 能列出已注册任务 |
+| 排程 | `php artisan schedule:list` 能列出已注册任务 |
 | 日志 | `tail -f storage/logs/laravel.log` 无致命错误 |
 
 ---
@@ -386,8 +384,8 @@ sudo chmod -R 775 storage bootstrap/cache
 ### 14.3 Orchid 后台静态资源 404
 
 ```bash
-php8.2 artisan vendor:publish --tag=laravel-assets --force
-php8.2 artisan optimize:clear
+php artisan vendor:publish --tag=laravel-assets --force
+php artisan optimize:clear
 ```
 
 ### 14.4 Horizon 启动后立即退出
@@ -408,12 +406,12 @@ php8.2 artisan optimize:clear
 cd /var/www/html/fluxpay
 git pull origin main
 
-php8.2 $(which composer) install --no-dev --optimize-autoloader
-php8.2 artisan migrate --force
-php8.2 artisan optimize:clear
-php8.2 artisan config:cache
-php8.2 artisan route:cache
-php8.2 artisan view:cache
+php $(which composer) install --no-dev --optimize-autoloader
+php artisan migrate --force
+php artisan optimize:clear
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
 
 sudo supervisorctl restart fluxpay-horizon
 ```
