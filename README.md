@@ -32,7 +32,7 @@
 ### 1. 拉取源码与安装依赖
 
 ```bash
-git clone <your-repo-url> fluxpay
+git clone https://github.com/TopiasTsui/Flux_Pay.git fluxpay
 cd fluxpay
 php $(which composer) install
 ```
