@@ -130,6 +130,24 @@ php artisan test
 
 ---
 
+## 捐赠
+
+<a id="donate"></a>
+
+如果 FluxPay 对你有帮助，欢迎请作者喝杯咖啡 ☕
+
+通过 **Polygon PoS 网络** 转账 **USDT / USDC** 到以下地址：
+
+```
+0x5072b3d05f1550f30bd22b0175ca55bb27294bca
+```
+
+[在 Polygonscan 上查看该地址 →](https://polygonscan.com/address/0x5072b3d05f1550f30bd22b0175ca55bb27294bca)
+
+> 仅支持 Polygon PoS 网络的 USDT / USDC，请勿从其它链转入，以免资产丢失。
+
+---
+
 ## 版本历史
 
 本节记录每次较大更新的内容。新增版本时请 **在顶部插入新条目**，并同步更新上方的「当前版本」。

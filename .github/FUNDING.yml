@@ -1,0 +1,6 @@
+# GitHub 没有原生的加密货币赞助字段；仓库的 “Sponsor” 按钮会指向
+# README 的捐赠章节（Polygon PoS 网络上的 USDT / USDC）以及
+# Polygonscan 上的收款地址。
+custom:
+  - "https://github.com/TopiasTsui/Flux_Pay#donate"
+  - "https://polygonscan.com/address/0x5072b3d05f1550f30bd22b0175ca55bb27294bca"
