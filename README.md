@@ -118,7 +118,6 @@ Controller → Service → Repository → Model
 | [`docs/user-guide.md`](docs/user-guide.md) | 后台操作 + 商户 API 对接指南 |
 | [`docs/developer-guide.md`](docs/developer-guide.md) | 二次开发技术手册：网关对接、测试、除错 |
 | [`docs/FluxPay.md`](docs/FluxPay.md) | 架构规划与未来演进路线 |
-| [`CLAUDE.md`](CLAUDE.md) | AI 协作开发约定 |
 
 ---
 

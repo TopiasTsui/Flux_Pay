@@ -22,3 +22,6 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# AI 协作约定，仅本地保留
+/CLAUDE.md
