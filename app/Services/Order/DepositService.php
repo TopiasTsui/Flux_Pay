@@ -13,10 +13,13 @@ use App\Enums\FundStatus;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentDirection;
 use App\Enums\WalletOperationType;
+use App\Events\Order\DepositCallbackReceived;
+use App\Events\Order\DepositFundSettled;
 use App\Helpers\MoneyHelper;
 use App\Helpers\OrderNumberGenerator;
 use App\Models\DepositOrder;
 use App\Models\Merchant;
+use App\Models\OrderLog;
 use App\Services\Agent\CommissionCalculator;
 use App\Services\Gateway\PaymentGatewayFactory;
 use App\Services\Provider\ChannelSelector;
@@ -136,6 +139,7 @@ class DepositService
     {
         if (OrderStatus::from($order->status)->isFinal()) {
             Log::info("Deposit order #{$order->system_order_no} already in final state, skipping callback");
+
             return;
         }
 
@@ -222,5 +226,82 @@ class DepositService
                 'fund_at' => now(),
             ]);
         });
+    }
+
+    /**
+     * Manually query the provider for the latest order status and, if a final
+     * status is returned, feed it through the same pipeline as a real callback.
+     */
+    public function manualQuery(DepositOrder $order): DepositCallbackResult
+    {
+        $provider = $order->providerPaymentType?->provider;
+
+        if (! $provider) {
+            throw new \RuntimeException("Deposit order #{$order->system_order_no} has no provider");
+        }
+
+        $gateway = $this->gatewayFactory->createFromProvider($provider);
+
+        $result = $gateway->depositQuery([
+            'system_order_no' => $order->system_order_no,
+            'provider_order_no' => $order->provider_order_no,
+        ]);
+
+        OrderLog::create([
+            'orderable_type' => DepositOrder::class,
+            'orderable_id' => $order->id,
+            'action' => 'manual_query',
+            'request_data' => [
+                'system_order_no' => $order->system_order_no,
+                'provider_order_no' => $order->provider_order_no,
+            ],
+            'response_data' => [
+                'success' => $result->success,
+                'status' => $result->status?->name,
+                'provider_order_no' => $result->providerOrderNo,
+                'actual_amount' => $result->actualAmount,
+            ],
+            'ip_address' => request()->ip(),
+            'remark' => 'Manual query',
+            'created_at' => now(),
+        ]);
+
+        if ($result->success
+            && $result->status?->isFinal()
+            && ! OrderStatus::from($order->status)->isFinal()) {
+            DepositCallbackReceived::dispatch($order, $result);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Re-send the merchant success notification for an already-successful order.
+     * Returns false when the order is not eligible (not SUCCESS or no notify URL).
+     */
+    public function resendMerchantNotification(DepositOrder $order): bool
+    {
+        if (OrderStatus::from($order->status) !== OrderStatus::SUCCESS) {
+            return false;
+        }
+
+        if (! $order->merchant_notify_url) {
+            return false;
+        }
+
+        OrderLog::create([
+            'orderable_type' => DepositOrder::class,
+            'orderable_id' => $order->id,
+            'action' => 'manual_callback',
+            'request_data' => ['system_order_no' => $order->system_order_no],
+            'response_data' => [],
+            'ip_address' => request()->ip(),
+            'remark' => 'Manual merchant notification re-dispatched',
+            'created_at' => now(),
+        ]);
+
+        DepositFundSettled::dispatch($order);
+
+        return true;
     }
 }

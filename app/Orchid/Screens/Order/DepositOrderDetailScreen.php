@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Orchid\Screens\Order;
 
+use App\Enums\CallbackStatus;
+use App\Enums\FundStatus;
+use App\Enums\OrderStatus;
 use App\Models\DepositOrder;
+use App\Services\Order\DepositService;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Screen;
 use Orchid\Screen\Sight;
@@ -20,7 +24,7 @@ class DepositOrderDetailScreen extends Screen
 
     public function name(): ?string
     {
-        return __('Deposit Order') . ': ' . ($this->order?->system_order_no ?? '');
+        return __('Deposit Order').': '.($this->order?->system_order_no ?? '');
     }
 
     public function query(DepositOrder $order): iterable
@@ -62,9 +66,9 @@ class DepositOrderDetailScreen extends Screen
                 Sight::make('provider_fee', __('Provider Fee')),
                 Sight::make('agent_fee', __('Agent Fee')),
                 Sight::make('currency', __('Currency')),
-                Sight::make('status', __('Status'))->render(fn (DepositOrder $o) => \App\Enums\OrderStatus::tryFrom($o->status)?->label() ?? $o->status),
-                Sight::make('callback_status', __('Callback Status'))->render(fn (DepositOrder $o) => \App\Enums\CallbackStatus::tryFrom($o->callback_status)?->label() ?? '-'),
-                Sight::make('fund_status', __('Fund Status'))->render(fn (DepositOrder $o) => \App\Enums\FundStatus::tryFrom($o->fund_status)?->label() ?? '-'),
+                Sight::make('status', __('Status'))->render(fn (DepositOrder $o) => OrderStatus::tryFrom($o->status)?->label() ?? $o->status),
+                Sight::make('callback_status', __('Callback Status'))->render(fn (DepositOrder $o) => CallbackStatus::tryFrom($o->callback_status)?->label() ?? '-'),
+                Sight::make('fund_status', __('Fund Status'))->render(fn (DepositOrder $o) => FundStatus::tryFrom($o->fund_status)?->label() ?? '-'),
                 Sight::make('bank_code', __('Bank Code')),
                 Sight::make('payer_name', __('Payer Name')),
                 Sight::make('provider_order_no', __('Provider Order No')),
@@ -80,9 +84,9 @@ class DepositOrderDetailScreen extends Screen
                     ->render(fn ($log) => $log->created_at?->format('Y-m-d H:i:s')),
                 TD::make('action', __('Action')),
                 TD::make('request_data', __('Request'))
-                    ->render(fn ($log) => '<pre class="mb-0" style="max-height:100px;overflow:auto;font-size:11px">' . e(json_encode($log->request_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)) . '</pre>'),
+                    ->render(fn ($log) => '<pre class="mb-0" style="max-height:100px;overflow:auto;font-size:11px">'.e(json_encode($log->request_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)).'</pre>'),
                 TD::make('response_data', __('Response'))
-                    ->render(fn ($log) => '<pre class="mb-0" style="max-height:100px;overflow:auto;font-size:11px">' . e(json_encode($log->response_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)) . '</pre>'),
+                    ->render(fn ($log) => '<pre class="mb-0" style="max-height:100px;overflow:auto;font-size:11px">'.e(json_encode($log->response_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)).'</pre>'),
                 TD::make('ip_address', __('IP')),
                 TD::make('remark', __('Remark')),
             ])->title(__('Order Logs')),
@@ -91,13 +95,27 @@ class DepositOrderDetailScreen extends Screen
 
     public function manualQuery(DepositOrder $order): void
     {
-        // TODO: Implement manual query via service
-        Toast::info(__('Manual query sent for order') . ' ' . $order->system_order_no);
+        try {
+            $result = app(DepositService::class)->manualQuery($order);
+        } catch (\Throwable $e) {
+            Toast::error(__('Manual query failed').': '.$e->getMessage());
+
+            return;
+        }
+
+        if ($result->status?->isFinal()) {
+            Toast::success(__('Manual query completed, order updated').' '.$order->system_order_no);
+        } else {
+            Toast::info(__('Manual query sent, status still pending').' '.$order->system_order_no);
+        }
     }
 
     public function manualCallback(DepositOrder $order): void
     {
-        // TODO: Implement manual callback via service
-        Toast::info(__('Manual callback sent for order') . ' ' . $order->system_order_no);
+        if (app(DepositService::class)->resendMerchantNotification($order)) {
+            Toast::success(__('Merchant notification re-sent for order').' '.$order->system_order_no);
+        } else {
+            Toast::warning(__('Order must be successful and have a notify URL before re-sending'));
+        }
     }
 }

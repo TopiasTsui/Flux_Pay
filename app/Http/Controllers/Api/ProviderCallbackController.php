@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\OrderStatus;
 use App\Events\Order\DepositCallbackReceived;
 use App\Events\Order\WithdrawCallbackReceived;
 use App\Http\Controllers\Controller;
@@ -58,6 +59,7 @@ class ProviderCallbackController extends Controller
                     'vendor' => $vendor,
                     'data' => $request->all(),
                 ]);
+
                 return response('fail', 200);
             }
 
@@ -68,14 +70,16 @@ class ProviderCallbackController extends Controller
                     'system_order_no' => $result->systemOrderNo,
                     'vendor' => $vendor,
                 ]);
+
                 return response('fail', 200);
             }
 
-            if ($order->status->isFinal()) {
+            if (OrderStatus::from($order->status)->isFinal()) {
                 Log::info('Deposit callback: order already in final state', [
                     'system_order_no' => $result->systemOrderNo,
-                    'status' => $order->status->name,
+                    'status' => OrderStatus::from($order->status)->name,
                 ]);
+
                 return response('success', 200);
             }
 
@@ -130,6 +134,7 @@ class ProviderCallbackController extends Controller
                     'vendor' => $vendor,
                     'data' => $request->all(),
                 ]);
+
                 return response('fail', 200);
             }
 
@@ -140,14 +145,16 @@ class ProviderCallbackController extends Controller
                     'system_order_no' => $result->systemOrderNo,
                     'vendor' => $vendor,
                 ]);
+
                 return response('fail', 200);
             }
 
-            if ($order->status->isFinal()) {
+            if (OrderStatus::from($order->status)->isFinal()) {
                 Log::info('Withdraw callback: order already in final state', [
                     'system_order_no' => $result->systemOrderNo,
-                    'status' => $order->status->name,
+                    'status' => OrderStatus::from($order->status)->name,
                 ]);
+
                 return response('success', 200);
             }
 

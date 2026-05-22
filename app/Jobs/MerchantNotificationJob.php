@@ -44,11 +44,12 @@ class MerchantNotificationJob implements ShouldQueue
                 'order_type' => $this->orderType,
                 'order_id' => $this->orderId,
             ]);
+
             return;
         }
 
         if ($success) {
-            $order->update(['callback_status' => CallbackStatus::MERCHANT_SUCCESS]);
+            $order->update(['callback_status' => CallbackStatus::MERCHANT_SUCCESS->value]);
         } else {
             throw new \RuntimeException("Merchant notification failed for {$this->orderType} order #{$this->orderId}");
         }
@@ -66,7 +67,7 @@ class MerchantNotificationJob implements ShouldQueue
         $order = $this->resolveOrder();
 
         if ($order) {
-            $order->update(['callback_status' => CallbackStatus::MERCHANT_FAILED]);
+            $order->update(['callback_status' => CallbackStatus::MERCHANT_FAILED->value]);
         }
     }
 

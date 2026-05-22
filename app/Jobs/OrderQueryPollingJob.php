@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
+use App\Enums\OrderStatus;
 use App\Events\Order\DepositCallbackReceived;
 use App\Events\Order\WithdrawCallbackReceived;
 use App\Models\DepositOrder;
@@ -44,7 +45,7 @@ class OrderQueryPollingJob implements ShouldQueue
     {
         $order = DepositOrder::find($this->orderId);
 
-        if (! $order || $order->status->isFinal()) {
+        if (! $order || OrderStatus::from($order->status)->isFinal()) {
             return;
         }
 
@@ -53,6 +54,7 @@ class OrderQueryPollingJob implements ShouldQueue
             Log::warning('OrderQueryPollingJob: No provider payment type for deposit order', [
                 'order_id' => $this->orderId,
             ]);
+
             return;
         }
 
@@ -72,7 +74,7 @@ class OrderQueryPollingJob implements ShouldQueue
     {
         $order = WithdrawOrder::find($this->orderId);
 
-        if (! $order || $order->status->isFinal()) {
+        if (! $order || OrderStatus::from($order->status)->isFinal()) {
             return;
         }
 
@@ -81,6 +83,7 @@ class OrderQueryPollingJob implements ShouldQueue
             Log::warning('OrderQueryPollingJob: No provider payment type for withdraw order', [
                 'order_id' => $this->orderId,
             ]);
+
             return;
         }
 
