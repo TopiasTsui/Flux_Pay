@@ -174,4 +174,15 @@ class DepositCallbackTest extends TestCase
 
         $this->assertFalse(app(DepositService::class)->resendMerchantNotification($order));
     }
+
+    #[Test]
+    public function each_listener_is_registered_exactly_once(): void
+    {
+        // Regression guard: order listeners must be registered only via Laravel's
+        // automatic discovery, never also manually in AppServiceProvider.
+        $raw = Event::getRawListeners();
+        $deposit = $raw[DepositCallbackReceived::class] ?? [];
+
+        $this->assertCount(2, $deposit); // SettleDepositFunds + LogOrderStatusChange
+    }
 }
