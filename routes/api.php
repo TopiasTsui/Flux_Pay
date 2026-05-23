@@ -5,7 +5,7 @@ use App\Http\Controllers\Api\ProviderCallbackController;
 use Illuminate\Support\Facades\Route;
 
 // Merchant payment API
-Route::middleware(['request.logging', 'merchant.auth'])->group(function () {
+Route::middleware(['request.logging', 'merchant.throttle', 'merchant.auth'])->group(function () {
     Route::post('deposit/apply', [MerchantApiController::class, 'depositApply']);
     Route::post('deposit/query', [MerchantApiController::class, 'depositQuery']);
     Route::post('withdraw/apply', [MerchantApiController::class, 'withdrawApply']);

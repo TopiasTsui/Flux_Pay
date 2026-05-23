@@ -55,4 +55,16 @@ return [
     'stalled_min_age_seconds' => (int) env('FLUXPAY_STALLED_MIN_AGE', 120),
     'stalled_max_age_seconds' => (int) env('FLUXPAY_STALLED_MAX_AGE', 86400),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Merchant API Rate Limit
+    |--------------------------------------------------------------------------
+    |
+    | Max requests per minute per merchantNo on /api/* endpoints. Requests
+    | without a merchantNo are bucketed by client IP. Exceeding the limit
+    | returns HTTP 429.
+    |
+    */
+    'merchant_api_rate_limit_per_minute' => (int) env('FLUXPAY_MERCHANT_API_RATE_LIMIT', 60),
+
 ];

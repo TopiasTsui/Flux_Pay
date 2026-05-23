@@ -41,6 +41,13 @@ class WithdrawService
 
     public function apply(Merchant $merchant, array $data): WithdrawOrder
     {
+        $existing = WithdrawOrder::where('merchant_id', $merchant->id)
+            ->where('merchant_order_no', $data['merchant_order_no'])
+            ->first();
+        if ($existing) {
+            return $existing;
+        }
+
         $amount = (string) $data['amount'];
         $paymentTypeCode = $data['payment_type_code'] ?? null;
 
@@ -77,45 +84,57 @@ class WithdrawService
         // Total debit = amount + merchant_fee
         $totalDebit = MoneyHelper::add($amount, $merchantFee);
 
-        $order = DB::transaction(function () use (
-            $merchant, $data, $amount, $channel, $merchantFee, $providerFee,
-            $agentResult, $systemOrderNo, $totalDebit,
-        ) {
-            // Freeze the total debit amount from merchant wallet
-            $this->merchantWallet->freeze(
-                $merchant->id,
-                $totalDebit,
-                $systemOrderNo,
-                "Withdraw freeze: {$systemOrderNo}",
-            );
+        try {
+            $order = DB::transaction(function () use (
+                $merchant, $data, $amount, $channel, $merchantFee, $providerFee,
+                $agentResult, $systemOrderNo, $totalDebit,
+            ) {
+                // Freeze the total debit amount from merchant wallet
+                $this->merchantWallet->freeze(
+                    $merchant->id,
+                    $totalDebit,
+                    $systemOrderNo,
+                    "Withdraw freeze: {$systemOrderNo}",
+                );
 
-            return $this->orderRepo->create([
-                'merchant_id' => $merchant->id,
-                'merchant_order_no' => $data['merchant_order_no'],
-                'system_order_no' => $systemOrderNo,
-                'provider_payment_type_id' => $channel->id,
-                'order_amount' => $amount,
-                'actual_amount' => $amount,
-                'merchant_fee' => $merchantFee,
-                'provider_fee' => $providerFee,
-                'agent_fee' => $agentResult?->total ?? '0',
-                'agent_fee_map' => $agentResult?->agentFeeMap ?? [],
-                'provider_agent_fee' => '0',
-                'provider_agent_fee_map' => [],
-                'total_debit' => $totalDebit,
-                'currency' => $merchant->currency_code,
-                'status' => OrderStatus::PENDING->value,
-                'callback_status' => CallbackStatus::PENDING->value,
-                'fund_status' => FundStatus::PENDING->value,
-                'merchant_notify_url' => $data['notify_url'] ?? null,
-                'merchant_extra' => $data['extend'] ?? null,
-                'bank_code' => $data['bank_code'] ?? null,
-                'bank_account_name' => $data['bank_account_name'] ?? null,
-                'bank_account_no' => $data['bank_account_no'] ?? null,
-                'bank_branch' => $data['bank_branch'] ?? null,
-                'remark' => $data['remark'] ?? null,
-            ]);
-        });
+                return $this->orderRepo->create([
+                    'merchant_id' => $merchant->id,
+                    'merchant_order_no' => $data['merchant_order_no'],
+                    'system_order_no' => $systemOrderNo,
+                    'provider_payment_type_id' => $channel->id,
+                    'order_amount' => $amount,
+                    'actual_amount' => $amount,
+                    'merchant_fee' => $merchantFee,
+                    'provider_fee' => $providerFee,
+                    'agent_fee' => $agentResult?->total ?? '0',
+                    'agent_fee_map' => $agentResult?->agentFeeMap ?? [],
+                    'provider_agent_fee' => '0',
+                    'provider_agent_fee_map' => [],
+                    'total_debit' => $totalDebit,
+                    'currency' => $merchant->currency_code,
+                    'status' => OrderStatus::PENDING->value,
+                    'callback_status' => CallbackStatus::PENDING->value,
+                    'fund_status' => FundStatus::PENDING->value,
+                    'merchant_notify_url' => $data['notify_url'] ?? null,
+                    'merchant_extra' => $data['extend'] ?? null,
+                    'bank_code' => $data['bank_code'] ?? null,
+                    'bank_account_name' => $data['bank_account_name'] ?? null,
+                    'bank_account_no' => $data['bank_account_no'] ?? null,
+                    'bank_branch' => $data['bank_branch'] ?? null,
+                    'remark' => $data['remark'] ?? null,
+                ]);
+            });
+        } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+            // Concurrent retry: the unique constraint won the race, transaction rolled back
+            // (including the freeze). Return the row that already exists.
+            $winner = WithdrawOrder::where('merchant_id', $merchant->id)
+                ->where('merchant_order_no', $data['merchant_order_no'])
+                ->first();
+            if ($winner) {
+                return $winner;
+            }
+            throw $e;
+        }
 
         // Call payment gateway
         $gateway = $this->gatewayFactory->createFromProvider($channel->provider);

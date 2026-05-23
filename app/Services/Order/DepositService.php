@@ -44,6 +44,13 @@ class DepositService
 
     public function apply(Merchant $merchant, array $data): DepositOrder
     {
+        $existing = DepositOrder::where('merchant_id', $merchant->id)
+            ->where('merchant_order_no', $data['merchant_order_no'])
+            ->first();
+        if ($existing) {
+            return $existing;
+        }
+
         $amount = (string) $data['amount'];
         $paymentTypeCode = $data['payment_type_code'] ?? null;
 
@@ -80,30 +87,41 @@ class DepositService
         // Net amount credited to merchant = amount - merchant_fee
         $merchantBalanceChange = MoneyHelper::sub($amount, $merchantFee);
 
-        $order = $this->orderRepo->create([
-            'merchant_id' => $merchant->id,
-            'merchant_order_no' => $data['merchant_order_no'],
-            'system_order_no' => $systemOrderNo,
-            'provider_payment_type_id' => $channel->id,
-            'order_amount' => $amount,
-            'actual_amount' => $amount,
-            'merchant_balance_change' => $merchantBalanceChange,
-            'merchant_fee' => $merchantFee,
-            'provider_fee' => $providerFee,
-            'agent_fee' => $agentResult?->total ?? '0',
-            'agent_fee_map' => $agentResult?->agentFeeMap ?? [],
-            'provider_agent_fee' => '0',
-            'provider_agent_fee_map' => [],
-            'currency' => $merchant->currency_code,
-            'status' => OrderStatus::PENDING->value,
-            'callback_status' => CallbackStatus::PENDING->value,
-            'fund_status' => FundStatus::PENDING->value,
-            'merchant_notify_url' => $data['notify_url'] ?? null,
-            'merchant_extra' => $data['extend'] ?? null,
-            'bank_code' => $data['bank_code'] ?? null,
-            'payer_name' => $data['payer_name'] ?? null,
-            'remark' => $data['remark'] ?? null,
-        ]);
+        try {
+            $order = $this->orderRepo->create([
+                'merchant_id' => $merchant->id,
+                'merchant_order_no' => $data['merchant_order_no'],
+                'system_order_no' => $systemOrderNo,
+                'provider_payment_type_id' => $channel->id,
+                'order_amount' => $amount,
+                'actual_amount' => $amount,
+                'merchant_balance_change' => $merchantBalanceChange,
+                'merchant_fee' => $merchantFee,
+                'provider_fee' => $providerFee,
+                'agent_fee' => $agentResult?->total ?? '0',
+                'agent_fee_map' => $agentResult?->agentFeeMap ?? [],
+                'provider_agent_fee' => '0',
+                'provider_agent_fee_map' => [],
+                'currency' => $merchant->currency_code,
+                'status' => OrderStatus::PENDING->value,
+                'callback_status' => CallbackStatus::PENDING->value,
+                'fund_status' => FundStatus::PENDING->value,
+                'merchant_notify_url' => $data['notify_url'] ?? null,
+                'merchant_extra' => $data['extend'] ?? null,
+                'bank_code' => $data['bank_code'] ?? null,
+                'payer_name' => $data['payer_name'] ?? null,
+                'remark' => $data['remark'] ?? null,
+            ]);
+        } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+            // Concurrent retry with same merchant_order_no — return the row that won the race.
+            $winner = DepositOrder::where('merchant_id', $merchant->id)
+                ->where('merchant_order_no', $data['merchant_order_no'])
+                ->first();
+            if ($winner) {
+                return $winner;
+            }
+            throw $e;
+        }
 
         // Call payment gateway
         $gateway = $this->gatewayFactory->createFromProvider($channel->provider);

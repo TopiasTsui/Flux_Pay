@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'merchant.auth' => \App\Http\Middleware\MerchantAuthMiddleware::class,
+            'merchant.throttle' => \App\Http\Middleware\MerchantThrottleMiddleware::class,
             'provider.callback' => \App\Http\Middleware\ProviderCallbackMiddleware::class,
             'request.logging' => \App\Http\Middleware\RequestLoggingMiddleware::class,
         ]);
