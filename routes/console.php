@@ -3,6 +3,7 @@
 use App\Console\Commands\ResetProviderDailyLimitsCommand;
 use App\Console\Commands\StalledOrderCheckCommand;
 use App\Jobs\AggregateDailyStatsJob;
+use App\Jobs\AlertStalledOrdersJob;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
@@ -23,4 +24,8 @@ Schedule::command(ResetProviderDailyLimitsCommand::class)
 
 Schedule::job(new AggregateDailyStatsJob)
     ->dailyAt('00:05')
+    ->onOneServer();
+
+Schedule::job(new AlertStalledOrdersJob)
+    ->hourly()
     ->onOneServer();

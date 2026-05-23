@@ -67,4 +67,22 @@ return [
     */
     'merchant_api_rate_limit_per_minute' => (int) env('FLUXPAY_MERCHANT_API_RATE_LIMIT', 60),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Operational Alerts
+    |--------------------------------------------------------------------------
+    |
+    | Where to send alerts for stalled orders and failed merchant callbacks.
+    | Recipients can be a comma-separated list of email addresses; Slack and
+    | Feishu (Lark) are configured by their incoming-webhook URLs. Channels
+    | left empty are silently skipped.
+    |
+    */
+    'alert_recipients' => array_filter(array_map('trim', explode(',', (string) env('FLUXPAY_ALERT_RECIPIENTS', '')))),
+    'alert_slack_webhook' => env('FLUXPAY_ALERT_SLACK_WEBHOOK'),
+    'alert_feishu_webhook' => env('FLUXPAY_ALERT_FEISHU_WEBHOOK'),
+
+    'alert_stalled_threshold_hours' => (int) env('FLUXPAY_ALERT_STALLED_HOURS', 4),
+    'alert_dedupe_ttl_seconds' => (int) env('FLUXPAY_ALERT_DEDUPE_TTL', 86400),
+
 ];

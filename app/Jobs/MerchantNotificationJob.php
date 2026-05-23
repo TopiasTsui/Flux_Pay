@@ -7,6 +7,7 @@ namespace App\Jobs;
 use App\Enums\CallbackStatus;
 use App\Models\DepositOrder;
 use App\Models\WithdrawOrder;
+use App\Services\Alert\AlertDispatcher;
 use App\Services\Merchant\MerchantNotificationService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -68,6 +69,22 @@ class MerchantNotificationJob implements ShouldQueue
 
         if ($order) {
             $order->update(['callback_status' => CallbackStatus::MERCHANT_FAILED->value]);
+        }
+
+        // Best-effort operational alert; never let it mask the original failure.
+        try {
+            app(AlertDispatcher::class)->dispatch(
+                'Merchant callback exhausted retries',
+                "Failed to notify merchant after {$this->tries} attempts.",
+                [
+                    'order_type' => $this->orderType,
+                    'order_id' => $this->orderId,
+                    'url' => $this->url,
+                    'error' => $exception?->getMessage(),
+                ],
+            );
+        } catch (\Throwable $alertError) {
+            Log::warning('MerchantNotificationJob: alert dispatch failed', ['error' => $alertError->getMessage()]);
         }
     }
 
