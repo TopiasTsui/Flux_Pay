@@ -26,8 +26,8 @@ class OrderQueryPollingJob implements ShouldQueue
     public int $backoff = 30;
 
     public function __construct(
-        private readonly string $orderType,
-        private readonly int $orderId,
+        public readonly string $orderType,
+        public readonly int $orderId,
     ) {
         $this->onQueue('fluxpay-gateway');
     }

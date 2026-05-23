@@ -42,4 +42,17 @@ return [
     */
     'default_currency' => env('FLUXPAY_DEFAULT_CURRENCY', 'PHP'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Stalled Order Thresholds
+    |--------------------------------------------------------------------------
+    |
+    | Orders stuck at SENT_TO_PROVIDER are polled by StalledOrderCheckCommand.
+    | "min_age": skip orders younger than this (give the callback a chance).
+    | "max_age": skip orders older than this (avoid polling forever; ops decides).
+    |
+    */
+    'stalled_min_age_seconds' => (int) env('FLUXPAY_STALLED_MIN_AGE', 120),
+    'stalled_max_age_seconds' => (int) env('FLUXPAY_STALLED_MAX_AGE', 86400),
+
 ];
