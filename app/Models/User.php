@@ -28,6 +28,8 @@ class User extends Authenticatable
         'organization',
         'notes',
         'is_active',
+        'two_factor_secret',
+        'two_factor_confirmed_at',
     ];
 
     /**
@@ -39,6 +41,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
         'permissions',
+        'two_factor_secret',
     ];
 
     /**
@@ -50,6 +53,8 @@ class User extends Authenticatable
         'permissions'          => 'array',
         'email_verified_at'    => 'datetime',
         'is_active'            => 'boolean',
+        'two_factor_secret'    => 'encrypted',
+        'two_factor_confirmed_at' => 'datetime',
     ];
 
     /**

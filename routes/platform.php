@@ -29,6 +29,7 @@ use App\Orchid\Screens\System\LocaleListScreen;
 use App\Orchid\Screens\System\MenuManagementScreen;
 use App\Orchid\Screens\System\SystemConfigScreen;
 use App\Orchid\Screens\System\TranslationListScreen;
+use App\Http\Controllers\Platform\TwoFactorController;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
@@ -43,6 +44,10 @@ use Tabuna\Breadcrumbs\Trail;
 | Dashboard Routes
 |--------------------------------------------------------------------------
 */
+
+// Two-factor challenge — runs after Orchid login, before reaching the dashboard.
+Route::get('/2fa/challenge', [TwoFactorController::class, 'challenge'])->name('platform.2fa.challenge');
+Route::post('/2fa/verify', [TwoFactorController::class, 'verify'])->name('platform.2fa.verify');
 
 // Dashboard
 Route::screen('/main', AdminDashboardScreen::class)
