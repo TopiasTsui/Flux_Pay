@@ -63,6 +63,11 @@ class UserProfileScreen extends Screen
                 ->icon('bs.people')
                 ->route('platform.switch.logout'),
 
+            Button::make(__('Security'))
+                ->novalidate()
+                ->icon('bs.shield-lock')
+                ->route('platform.profile.security'),
+
             Button::make(__('Sign out'))
                 ->novalidate()
                 ->icon('bs.box-arrow-left')

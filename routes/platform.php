@@ -33,6 +33,7 @@ use App\Http\Controllers\Platform\TwoFactorController;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
+use App\Orchid\Screens\User\UserSecurityScreen;
 use App\Orchid\Screens\Wallet\AgentWalletListScreen;
 use App\Orchid\Screens\Wallet\MerchantWalletListScreen;
 use App\Orchid\Screens\Wallet\ProviderWalletListScreen;
@@ -62,6 +63,12 @@ Route::screen('profile', UserProfileScreen::class)
     ->breadcrumbs(fn (Trail $trail) => $trail
         ->parent('platform.index')
         ->push(__('Profile'), route('platform.profile')));
+
+Route::screen('profile/security', UserSecurityScreen::class)
+    ->name('platform.profile.security')
+    ->breadcrumbs(fn (Trail $trail) => $trail
+        ->parent('platform.profile')
+        ->push(__('Security'), route('platform.profile.security')));
 
 // ── Agents ──────────────────────────────────────────────────────────────
 Route::screen('agents', AgentListScreen::class)
