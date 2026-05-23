@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\OrderStatus;
 use App\Http\Controllers\Controller;
 use App\Models\DepositOrder;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class FrontendPayController extends Controller
                 return view('payment.error', ['message' => 'Order not found']);
             }
 
-            if ($order->status->isFinal()) {
+            if (OrderStatus::from($order->status)->isFinal()) {
                 return view('payment.error', ['message' => 'Order is no longer available for payment']);
             }
 
